@@ -6,13 +6,15 @@ website:
   title: "Data Mining Techniques"
 #  favicon: images/beer-mug-icon.png
   page-footer:
-    center: "Data Mining Techniques"
-    background: "#008cba"
+    center: |
+      <a href="https://clickityklein.github.io/Carl-Klein/">About Carl Klein</a>
+    background: "#8A6D3B"
     
   navbar:
     left:
-      - href: index.qmd
-        text: "About"
+# index is automatically included under the main title page
+#      - href: index.qmd
+#        text: "About"
       - href: terminology.qmd
         text: "Terminology"
       - href: web_scraping.qmd
@@ -21,9 +23,13 @@ website:
         text: "Data Visualization"
       - href: frequent_patterns.qmd
         text: "Frequent Patterns"
-#    right:
-#      - icon: github
-#        href: https://github.com/The-Brewery-Project/The-Brewery-Project
+    right:
+      - icon: github
+        menu:
+          - text: "Source Code"
+            href: https://github.com/clickityKlein/Data-Mining
+          - text: "Carl Klein's Main Page"
+            href: https://github.com/clickityKlein
 
 format:
   html:
@@ -35,7 +41,7 @@ format:
     citations-hover: true
     code-link: true
     code-fold: true
-    theme: yeti
+    theme: sandstone
     css: styles.css
-    code-block-border-left: "#008cba"
+    code-block-border-left: "#8A6D3B"
     toc: true
