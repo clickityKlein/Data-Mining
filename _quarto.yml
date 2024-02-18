@@ -1,0 +1,41 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Data Mining Techniques"
+#  favicon: images/beer-mug-icon.png
+  page-footer:
+    center: "Data Mining Techniques"
+    background: "#008cba"
+    
+  navbar:
+    left:
+      - href: index.qmd
+        text: "About"
+      - href: terminology.qmd
+        text: "Terminology"
+      - href: web_scraping.qmd
+        text: "Web Scraping"
+      - href: data_visualization.qmd
+        text: "Data Visualization"
+      - href: frequent_patterns.qmd
+        text: "Frequent Patterns"
+#    right:
+#      - icon: github
+#        href: https://github.com/The-Brewery-Project/The-Brewery-Project
+
+format:
+  html:
+    email-obfuscation: javascript
+    grid: 
+      body-width: 2000px
+      sidebar-width: 200px
+      margin-width: 200px
+    citations-hover: true
+    code-link: true
+    code-fold: true
+    theme: yeti
+    css: styles.css
+    code-block-border-left: "#008cba"
+    toc: true

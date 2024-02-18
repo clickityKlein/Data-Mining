@@ -1,0 +1,5 @@
+---
+title: "Terminology"
+---
+
+This page has information about data mining terminology, ranging from basic to complex.

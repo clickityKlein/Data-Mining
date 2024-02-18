@@ -1,0 +1,5 @@
+---
+title: "Frequent Patterns"
+---
+
+This page has information about frequent patterns, the theoretical and applied side of them, and how to implement in python.

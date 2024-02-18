@@ -1,0 +1,44 @@
+[
+  {
+    "objectID": "web_scraping.html",
+    "href": "web_scraping.html",
+    "title": "Web Scraping",
+    "section": "",
+    "text": "This page has information about web scraping."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "About",
+    "section": "",
+    "text": "This website contains knowledge, techniques, and examples on the topic of data mining."
+  },
+  {
+    "objectID": "data_visualization.html",
+    "href": "data_visualization.html",
+    "title": "Data Visualization",
+    "section": "",
+    "text": "This page has information about data visualization, containing types of plots, use cases, and how to implement using various python libraries."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\nCode1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "frequent_patterns.html",
+    "href": "frequent_patterns.html",
+    "title": "Frequent Patterns",
+    "section": "",
+    "text": "This page has information about frequent patterns, the theoretical and applied side of them, and how to implement in python."
+  },
+  {
+    "objectID": "terminology.html",
+    "href": "terminology.html",
+    "title": "Terminology",
+    "section": "",
+    "text": "This page has information about data mining terminology, ranging from basic to complex."
+  }
+]

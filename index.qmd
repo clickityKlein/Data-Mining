@@ -1,0 +1,5 @@
+---
+title: "About"
+---
+
+This website contains knowledge, techniques, and examples on the topic of data mining.
