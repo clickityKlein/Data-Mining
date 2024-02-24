@@ -135,7 +135,34 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data-mining-pipeline" id="toc-data-mining-pipeline" class="nav-link" data-scroll-target="#data-mining-pipeline">Data Mining Pipeline</a>
+  <ul class="collapse">
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a>
+  <ul class="collapse">
+  <li><a href="#cleaning" id="toc-cleaning" class="nav-link" data-scroll-target="#cleaning">Cleaning</a></li>
+  <li><a href="#integration" id="toc-integration" class="nav-link" data-scroll-target="#integration">Integration</a></li>
+  <li><a href="#transformations" id="toc-transformations" class="nav-link" data-scroll-target="#transformations">Transformations</a></li>
+  <li><a href="#selection" id="toc-selection" class="nav-link" data-scroll-target="#selection">Selection</a></li>
+  </ul></li>
+  <li><a href="#data-mining" id="toc-data-mining" class="nav-link" data-scroll-target="#data-mining">Data Mining</a></li>
+  <li><a href="#patternmodel-evaluation" id="toc-patternmodel-evaluation" class="nav-link" data-scroll-target="#patternmodel-evaluation">Pattern/Model Evaluation</a></li>
+  <li><a href="#knowledge-presentation" id="toc-knowledge-presentation" class="nav-link" data-scroll-target="#knowledge-presentation">Knowledge Presentation</a></li>
+  </ul></li>
+  <li><a href="#types-of-data" id="toc-types-of-data" class="nav-link" data-scroll-target="#types-of-data">Types of Data</a>
+  <ul class="collapse">
+  <li><a href="#record-data" id="toc-record-data" class="nav-link" data-scroll-target="#record-data">Record Data</a></li>
+  <li><a href="#graphs-networks" id="toc-graphs-networks" class="nav-link" data-scroll-target="#graphs-networks">Graphs &amp; Networks</a></li>
+  <li><a href="#ordered-data" id="toc-ordered-data" class="nav-link" data-scroll-target="#ordered-data">Ordered Data</a></li>
+  <li><a href="#spatial-image-multimedia-data" id="toc-spatial-image-multimedia-data" class="nav-link" data-scroll-target="#spatial-image-multimedia-data">Spatial, Image, &amp; Multimedia Data</a></li>
+  </ul></li>
+  <li><a href="#describing-data" id="toc-describing-data" class="nav-link" data-scroll-target="#describing-data">Describing Data</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -159,9 +186,74 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This page has information about data mining terminology, ranging from basic to complex.</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p><strong>Data Mining</strong> is the process of discovering interesting patterns, models, and other kinds of knowledge from massive amounts of data.</p>
+<p><strong>Interestingness</strong> is an either subjective or objective measure to guide the discovery process in data mining in which knowledge from data is judged on being novel, useful, and easily understood by humans.</p>
+</section>
+<section id="data-mining-pipeline" class="level1">
+<h1>Data Mining Pipeline</h1>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
+<section id="cleaning" class="level3">
+<h3 class="anchored" data-anchor-id="cleaning">Cleaning</h3>
+<p><strong>Removing noise and inconsistent data.</strong></p>
+</section>
+<section id="integration" class="level3">
+<h3 class="anchored" data-anchor-id="integration">Integration</h3>
+<p><strong>Multiple data sources may be combined.</strong></p>
+</section>
+<section id="transformations" class="level3">
+<h3 class="anchored" data-anchor-id="transformations">Transformations</h3>
+<p><strong>Data is transformed and consolidated into forms appropriate for mining.</strong></p>
+</section>
+<section id="selection" class="level3">
+<h3 class="anchored" data-anchor-id="selection">Selection</h3>
+<p><strong>Data relevant to the analysis task are retrieved.</strong></p>
+</section>
+</section>
+<section id="data-mining" class="level2">
+<h2 class="anchored" data-anchor-id="data-mining">Data Mining</h2>
+<p><strong>Process where intelligent methods are applied to extract patterns or construct models.</strong></p>
+</section>
+<section id="patternmodel-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="patternmodel-evaluation">Pattern/Model Evaluation</h2>
+<p><strong>Identify patterns or models representing knowledge based on interestingness measures.</strong></p>
+</section>
+<section id="knowledge-presentation" class="level2">
+<h2 class="anchored" data-anchor-id="knowledge-presentation">Knowledge Presentation</h2>
+<p><strong>Using visualization and knowledge representation techniques to present mined knowledge.</strong></p>
+</section>
+</section>
+<section id="types-of-data" class="level1">
+<h1>Types of Data</h1>
+<section id="record-data" class="level2">
+<h2 class="anchored" data-anchor-id="record-data">Record Data</h2>
+<ul>
+<li>Relational records or tables (highly structured)</li>
+<li>Data matrix, numerical matrix, crosstabs</li>
+<li>Transaction data</li>
+<li>Document data: term-frequency vector from text documents</li>
+</ul>
+</section>
+<section id="graphs-networks" class="level2">
+<h2 class="anchored" data-anchor-id="graphs-networks">Graphs &amp; Networks</h2>
+<ul>
+<li>Transportation network</li>
+</ul>
+</section>
+<section id="ordered-data" class="level2">
+<h2 class="anchored" data-anchor-id="ordered-data">Ordered Data</h2>
+</section>
+<section id="spatial-image-multimedia-data" class="level2">
+<h2 class="anchored" data-anchor-id="spatial-image-multimedia-data">Spatial, Image, &amp; Multimedia Data</h2>
+</section>
+</section>
+<section id="describing-data" class="level1">
+<h1>Describing Data</h1>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

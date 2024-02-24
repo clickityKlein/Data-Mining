@@ -39,6 +39,62 @@
     "href": "terminology.html",
     "title": "Terminology",
     "section": "",
-    "text": "This page has information about data mining terminology, ranging from basic to complex."
+    "text": "Data Mining is the process of discovering interesting patterns, models, and other kinds of knowledge from massive amounts of data.\nInterestingness is an either subjective or objective measure to guide the discovery process in data mining in which knowledge from data is judged on being novel, useful, and easily understood by humans."
+  },
+  {
+    "objectID": "terminology.html#data-preparation",
+    "href": "terminology.html#data-preparation",
+    "title": "Terminology",
+    "section": "Data Preparation",
+    "text": "Data Preparation\n\nCleaning\nRemoving noise and inconsistent data.\n\n\nIntegration\nMultiple data sources may be combined.\n\n\nTransformations\nData is transformed and consolidated into forms appropriate for mining.\n\n\nSelection\nData relevant to the analysis task are retrieved."
+  },
+  {
+    "objectID": "terminology.html#data-mining",
+    "href": "terminology.html#data-mining",
+    "title": "Terminology",
+    "section": "Data Mining",
+    "text": "Data Mining\nProcess where intelligent methods are applied to extract patterns or construct models."
+  },
+  {
+    "objectID": "terminology.html#patternmodel-evaluation",
+    "href": "terminology.html#patternmodel-evaluation",
+    "title": "Terminology",
+    "section": "Pattern/Model Evaluation",
+    "text": "Pattern/Model Evaluation\nIdentify patterns or models representing knowledge based on interestingness measures."
+  },
+  {
+    "objectID": "terminology.html#knowledge-presentation",
+    "href": "terminology.html#knowledge-presentation",
+    "title": "Terminology",
+    "section": "Knowledge Presentation",
+    "text": "Knowledge Presentation\nUsing visualization and knowledge representation techniques to present mined knowledge."
+  },
+  {
+    "objectID": "terminology.html#record-data",
+    "href": "terminology.html#record-data",
+    "title": "Terminology",
+    "section": "Record Data",
+    "text": "Record Data\n\nRelational records or tables (highly structured)\nData matrix, numerical matrix, crosstabs\nTransaction data\nDocument data: term-frequency vector from text documents"
+  },
+  {
+    "objectID": "terminology.html#graphs-networks",
+    "href": "terminology.html#graphs-networks",
+    "title": "Terminology",
+    "section": "Graphs & Networks",
+    "text": "Graphs & Networks\n\nTransportation network"
+  },
+  {
+    "objectID": "terminology.html#ordered-data",
+    "href": "terminology.html#ordered-data",
+    "title": "Terminology",
+    "section": "Ordered Data",
+    "text": "Ordered Data"
+  },
+  {
+    "objectID": "terminology.html#spatial-image-multimedia-data",
+    "href": "terminology.html#spatial-image-multimedia-data",
+    "title": "Terminology",
+    "section": "Spatial, Image, & Multimedia Data",
+    "text": "Spatial, Image, & Multimedia Data"
   }
 ]

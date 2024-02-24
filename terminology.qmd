@@ -2,4 +2,76 @@
 title: "Terminology"
 ---
 
-This page has information about data mining terminology, ranging from basic to complex.
+# Introduction
+
+**Data Mining** is the process of discovering interesting patterns, models, and other kinds of knowledge from massive amounts of data.
+
+**Interestingness** is an either subjective or objective measure to guide the discovery process in data mining in which knowledge from data is judged on being novel, useful, and easily understood by humans.
+
+
+# Data Mining Pipeline
+
+## Data Preparation
+
+### Cleaning
+
+**Removing noise and inconsistent data.**
+
+### Integration
+
+**Multiple data sources may be combined.**
+
+### Transformations
+
+**Data is transformed and consolidated into forms appropriate for mining.**
+
+### Selection
+
+**Data relevant to the analysis task are retrieved.**
+
+## Data Mining
+
+**Process where intelligent methods are applied to extract patterns or construct models.**
+
+## Pattern/Model Evaluation
+
+**Identify patterns or models representing knowledge based on interestingness measures.**
+
+## Knowledge Presentation
+
+**Using visualization and knowledge representation techniques to present mined knowledge.**
+
+
+# Types of Data
+
+## Record Data
+
+- Relational records or tables (highly structured)
+- Data matrix, numerical matrix, crosstabs
+- Transaction data
+- Document data: term-frequency vector from text documents
+
+## Graphs & Networks
+
+- Transportation network
+
+## Ordered Data
+
+## Spatial, Image, & Multimedia Data
+
+
+# Describing Data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
