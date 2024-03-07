@@ -18,7 +18,7 @@
     "href": "data_visualization.html",
     "title": "Data Visualization",
     "section": "",
-    "text": "This page has information about data visualization, containing types of plots, use cases, and how to implement using various python libraries."
+    "text": "This page has information about data visualization, containing types of plots, use cases, and how to implement using various python libraries.\nLecture 5"
   },
   {
     "objectID": "about.html",
@@ -46,28 +46,14 @@
     "href": "terminology.html#data-preparation",
     "title": "Terminology",
     "section": "Data Preparation",
-    "text": "Data Preparation\n\nCleaning\nRemoving noise and inconsistent data.\n\n\nIntegration\nMultiple data sources may be combined.\n\n\nTransformations\nData is transformed and consolidated into forms appropriate for mining.\n\n\nSelection\nData relevant to the analysis task are retrieved."
+    "text": "Data Preparation\n\nCleaning\nRemoving noisy and inconsistent data.\nData in the real world is messy, and comes with potential for incorrectness whether that comes from instrument failures, human error, or transmission issues. Some errors we’ll find are:\n\nIncomplete Data: lacking attribute values, lacking certain attributes of interest, or containing only aggregate data.\n\nignore the data\ndelete the data (if not too much data loss occurs)\nfill in data manually\nfill in data automatically with methods like averages or modes (fill all, backwards fill, forwards fill, etc.)\npossible smarter technique is to use an inference-based approach (Bayesian)\n\nNoisy: containing noise, errors, or outliers.\n\nRegression: fit data into regression functions\nClustering: detect and remove outliers\nSemi-supervised: detect suspicious values and check via human\n\nInconsistent: containing discrepancies in codes or names.\nIntentional: disguising missing data (i.e. dates either being the first or the last of a given month, or every birthday is January 1).\n\n\n\nIntegration\nMultiple data sources may be combined.\n\n\nTransformations\nData is transformed and consolidated into forms appropriate for mining.\nSome common transformation techniques are:\n\nsmoothing: remove noise from data\naggregation: summarization (i.e. daily \\(\\rightarrow\\) monthly)\ngeneralizatoin: concept hierarchy climbing (i.e. street \\(\\rightarrow\\) city \\(\\rightarrow\\) state)\nnormalization: scale to fall within a range\nattribute/feature construction\nDiscretization: process of converting continuous type data into discrete type data, which reduces the difficulty of data evaluation, management, and mining.\n\n\n\nSelection\nData relevant to the analysis task are retrieved.\n\n\nData Mining\nProcess where intelligent methods are applied to extract patterns or construct models.\n\n\nPattern/Model Evaluation\nIdentify patterns or models representing knowledge based on interestingness measures.\n\n\nKnowledge Presentation\nUsing visualization and knowledge representation techniques to present mined knowledge."
   },
   {
-    "objectID": "terminology.html#data-mining",
-    "href": "terminology.html#data-mining",
+    "objectID": "terminology.html#data-reduction",
+    "href": "terminology.html#data-reduction",
     "title": "Terminology",
-    "section": "Data Mining",
-    "text": "Data Mining\nProcess where intelligent methods are applied to extract patterns or construct models."
-  },
-  {
-    "objectID": "terminology.html#patternmodel-evaluation",
-    "href": "terminology.html#patternmodel-evaluation",
-    "title": "Terminology",
-    "section": "Pattern/Model Evaluation",
-    "text": "Pattern/Model Evaluation\nIdentify patterns or models representing knowledge based on interestingness measures."
-  },
-  {
-    "objectID": "terminology.html#knowledge-presentation",
-    "href": "terminology.html#knowledge-presentation",
-    "title": "Terminology",
-    "section": "Knowledge Presentation",
-    "text": "Knowledge Presentation\nUsing visualization and knowledge representation techniques to present mined knowledge."
+    "section": "Data Reduction",
+    "text": "Data Reduction\nData reduction is used to to reduce the size of the data (less storage, faster processing, etc.). The data is smaller in volume but can produce similary analytical results. This can be relevant for multiple steps in the data mining pipeline. Some method of data reduction are:\n\nregression and log-linear models\nhistograms, clustering, sampling\ndata cube aggregation\ndata compression\nSampling\n\n\nParametric Data Reduction: Regression Analysis\nRegression analysis is a collective name for techniques involving modeling and analysis of numerical data consisting of values of a dependent variable (response variable) and one or more independent variables (predictors). Some common regression analysis techniques are:\n\nlinear regression\nmultiple linear regression\nnonlinear regression\nlog-linear regression\n\n\n\nNon-Parametric Data Reduction:\n\nData Cube Aggregation\nHistogram Analysis\nClustering\n\n\n\nDimensionality Reduction\nThe curse of dimensionality: data becomes increasingly sparse, density and distance between points becomes less meaningful (detrimental for clustering and outlier analysis), and the possible subspaces will grow exponentially.\nDimensionality reduction is the process of reducing the number of random variables under consideration, via obtaining a set of principal variables.\nNot only do dimensionality reduction techniques help to avoid the curse of dimensionality, but also eliminate irrelevant features and reduce noise. Overall, this reduces the time and space complexity required for data mining and allows for easier visualization.\nMethodologies:\n\nfeature selection: find a subset o the original variables.\nfeature extraction: transform the data in the high-dimensional space to a space of fewer dimensions.\n\nA common technique is Principal Component Analysis (PCA). It’s a statistical procedure that uses an orthogonal transformation to convert a set of observations of possibly correlated variables into a set of values of linearly uncorrelated variables called principal components. The original data are projected onto a much smaller space, resulting in dimensionality reduction."
   },
   {
     "objectID": "terminology.html#record-data",
@@ -81,20 +67,41 @@
     "href": "terminology.html#graphs-networks",
     "title": "Terminology",
     "section": "Graphs & Networks",
-    "text": "Graphs & Networks\n\nTransportation network"
+    "text": "Graphs & Networks\n\nTransportation network\nWorld Wide Web\nMolecular Structures\nSocial Information Networks"
   },
   {
     "objectID": "terminology.html#ordered-data",
     "href": "terminology.html#ordered-data",
     "title": "Terminology",
     "section": "Ordered Data",
-    "text": "Ordered Data"
+    "text": "Ordered Data\n\nVideo Data (sequences of images)\nTemporal Data (time series)\nSequential Data (i.e. Transaction Sequences)\nGenetic Sequence Data"
   },
   {
     "objectID": "terminology.html#spatial-image-multimedia-data",
     "href": "terminology.html#spatial-image-multimedia-data",
     "title": "Terminology",
     "section": "Spatial, Image, & Multimedia Data",
-    "text": "Spatial, Image, & Multimedia Data"
+    "text": "Spatial, Image, & Multimedia Data\n\nSpatial Data\nImage Data\nVideo Data"
+  },
+  {
+    "objectID": "terminology.html#measures-of-central-tendency",
+    "href": "terminology.html#measures-of-central-tendency",
+    "title": "Terminology",
+    "section": "Measures of Central Tendency",
+    "text": "Measures of Central Tendency\n\nmean: also known as the average, and has some variations:\n\nstandard mean: \\(\\bar{x} = \\frac{1}{n} \\sum\\limits_{i=1}^{n}x_i\\)\nweighted mean: \\(\\bar{x} = \\frac{\\sum\\limits_{i=1}^{n}x_i w_i}{\\sum\\limits_{i=1}^{n}w_i}\\)\ntrimmed mean: removing outliers (extreme values) before calculating the mean\n\nmedian: middle-most value of ordered set (exact middle if odd numbered set, average of the middle if even numbered set)\nmode: most frequent value(s) in a set\nmidrange: \\(\\frac{\\text{minimum + maximum}}{2}\\)\n\nThey each have their importance.\nThe mean is one of the more common measures to describe a dataset. For a dataset which is symmetric, it is the center of the distribution. We use a weighted mean when each value has a relevant associated significance, importance, or occurence frequency. The trimmed mean is useful because even a small number of extreme occurences can corrupt the mean. We can remove small portions of the top and bottom of an ordered dataset, but should avoid removing too much as that can lead to unwanted information loss.\nExamples of when the standard form of mean is used is when comparing ages for a dataset or grades on an exam. A prime example for weighted means is calculating grade point average (GPA), where a grade might be a decimal, but is weighted by the number of credits it is worth.\nFor skewed datasets, or if it’s desired to retain outliers, the median is a better measure of the center of the data.\nSince trimmed means and medians are both good to combat the effect of skew and outliers, a decent example for both of these could be when calculating metrics from a dataset containing salaries. Image we have values with a median around $100,000, but there are just a few values upwards of $500,000. This could significantly alter the standard form of average, but if we trim off these high (and/or low) outliers, and then take the trimmed mean we might see it closer to the median.\nThe mode is useful for both qualitative and quantitative attributes, and represents the highest frequency of an attribute. There can be multiple modes, in which case the data is multimodal (unimodal, bimodal, trimodal for 1, 2 and 3 modes). Or, if each value only occurs once, there is no mode! A good visual for representing mode can be a bar chart. Imagine you’re trying to find the day of the week you have the most customers, the day the highest frequency of customers come in, which day has the tallest bar on the bar chart?\nFor a perfectly symmetric curve, the mean, median, and mode are all at the center of the distribution.\nThe midrange is actually another type of mean that can make for a quick statistic in a dataset. However, for asymmetric data, or data with extreme outliers, it’s unreliable."
+  },
+  {
+    "objectID": "terminology.html#measures-of-dispersion",
+    "href": "terminology.html#measures-of-dispersion",
+    "title": "Terminology",
+    "section": "Measures of Dispersion",
+    "text": "Measures of Dispersion\n\nRange: the difference between the maximum and minimum values\nQuartiles:\n\n\\(Q_1\\): \\(25^{th}\\) percentile of data (point at which 25% of the data lies to the left on the distribution)\n\\(Q_2\\): \\(50^{th}\\) percentile of data (also known as the median)\n\\(Q_3\\): \\(75^{th}\\) percentile of data\n\nVariance & Standard Deviation: measure of how much the values deviate from the mean, or simply put, how spread apart the data is. The Standard Deviation is the square root of the Variance. They can be calculated in the following manner:\n\nPopulation Variance: \\(Var(X) = \\frac{1}{N} \\sum\\limits_{i=1}^{N}(x_i - \\mu)^2\\)\nSample Variance: \\(Var(X) = \\frac{1}{n-1} \\sum\\limits_{i=1}^{n}(x_i - \\mu)^2\\)\nIt can also be shown: \\(Var(X) = E[X^2] - E[X]^2\\)\n\\(SD(X) = \\sqrt{Var(X)}\\)\n\nInterquartile Range: the range covered by the middle half of the data, calculated by \\(IQR = Q_3 - Q_1\\)\n\nRange, Quartiles, Variance, Standard Deviation, and the Interquartile Range are known as the five-number summary, and together make up a clearer picture of the data. A rule of thumb about outliers is that a suspected outlier is anything at least \\(1.5 x IQR\\) above \\(Q_3\\) or below \\(Q_1\\).\nOften times, it’s helpful to consider all of these metrics together to start forming hypotheses about data. A good way to visualize the five-number summary is with a box plot."
+  },
+  {
+    "objectID": "terminology.html#similarity-and-dissimilarity",
+    "href": "terminology.html#similarity-and-dissimilarity",
+    "title": "Terminology",
+    "section": "Similarity and Dissimilarity",
+    "text": "Similarity and Dissimilarity\n\nDissimilarity Matrix: given a data matrix containing \\(n\\) objects with \\(p\\) attributes, a dissimilarity matrix stores a collection of proximities for all pairs of \\(n\\) objects (usually an \\(nxn\\) table)\n\n\\(d(i, j)\\) is the distance between objects \\(i\\) and \\(j\\)\n\\(d(i, i) = 0\\)\n\\(d(i, j) = d(j, i)\\)\n\nIf \\(d(i, j)\\) is a measure of dissimilarity, then a measure of similarity is \\(sim(i, j) = 1 - d(i, j)\\)\nDissimilarity for Nominal Attributes: \\(d(i, j) = \\frac{p-m}{p}\\); \\(p\\) is the total attributes and \\(m\\) are the matches (weights can be assigned to \\(m\\) as well. This also implies \\(sim(i, j) = 1 - d(i, j) = \\frac{m}{p}\\)\nProximity Measures for Binary Attributes: notably the Jaccard coefficient is used for this. If we let:\n\n\\(q\\) be the number of attributes that both objects have\n\\(r\\) the number of attributes that object \\(i\\) has but not object \\(j\\)\n\\(s\\) the number of attributes that object \\(j\\) has but not object \\(i\\)\n\\(t\\) the number of attributes that neither object has, then…\nJaccard coefficient \\(= sim(i, j) = \\frac{q}{q+r+s} = 1 - d(i, j)\\)\n\nDissimilarity of Numeric Data: Minkowski Distance (Manhattan, Euclidean, etc.). The Minkowski distance generalizes the Manhattan, Euclidean and higher order distance measurements:\n\nManhattan: \\(d(i, j) = \\sum\\limits_{n=1}^{p}|x_{in} - x_{jn}|\\)\nEuclidean: \\(d(i, j) = \\sqrt{\\sum\\limits_{n=1}^{p} (x_{in} - x_{jn})^2}\\)\nMinknowski Generalization: \\(d(i, j) = (\\sum\\limits_{n=1}^{p} |x_{in} - x_{jn}|)^{\\frac{1}{h}}\\)\n\nThere are a plethora of other variations as well… included dissimilarity functions for Ordinal and Mixed attributes, and even a measure of similarity between documetns which used frequency vectors to produce Cosine Similarities\n\nPerhaps the measure listed above most people are familiar with is the Euclidean Distance. This was likely learned in high school, and it’s still a very common method to measure distances between points.\nFor a single example, these methods can be useful in finding clusters. Suppose a dataset isn’t showing any particular linear pattern. What happens if we set a maximum distance between points to be considered a certain family? Clusters may form."
   }
 ]

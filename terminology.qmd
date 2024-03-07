@@ -15,7 +15,22 @@ title: "Terminology"
 
 ### Cleaning
 
-**Removing noise and inconsistent data.**
+**Removing noisy and inconsistent data.**
+
+Data in the real world is messy, and comes with potential for incorrectness whether that comes from instrument failures, human error, or transmission issues. Some errors we'll find are:
+
+- Incomplete Data: lacking attribute values, lacking certain attributes of interest, or containing only aggregate data.
+  - ignore the data
+  - delete the data (if not too much data loss occurs)
+  - fill in data manually
+  - fill in data automatically with methods like averages or modes (fill all, backwards fill, forwards fill, etc.)
+  - possible *smarter* technique is to use an inference-based approach (Bayesian)
+- Noisy: containing noise, errors, or outliers.
+  - Regression: fit data into regression functions
+  - Clustering: detect and remove outliers
+  - Semi-supervised: detect suspicious values and check via human
+- Inconsistent: containing discrepancies in codes or names.
+- Intentional: disguising missing data (i.e. dates either being the first or the last of a given month, or every birthday is January 1).
 
 ### Integration
 
@@ -25,21 +40,70 @@ title: "Terminology"
 
 **Data is transformed and consolidated into forms appropriate for mining.**
 
+Some common transformation techniques are:
+
+- smoothing: remove noise from data
+- aggregation: summarization (i.e. daily $\rightarrow$ monthly)
+- generalizatoin: concept hierarchy climbing (i.e. street $\rightarrow$ city $\rightarrow$ state)
+- normalization: scale to fall within a range
+- attribute/feature construction
+- Discretization: process of converting continuous type data into discrete type data, which reduces the difficulty of data evaluation, management, and mining.
+
 ### Selection
 
 **Data relevant to the analysis task are retrieved.**
 
-## Data Mining
+### Data Mining
 
 **Process where intelligent methods are applied to extract patterns or construct models.**
 
-## Pattern/Model Evaluation
+### Pattern/Model Evaluation
 
 **Identify patterns or models representing knowledge based on interestingness measures.**
 
-## Knowledge Presentation
+### Knowledge Presentation
 
 **Using visualization and knowledge representation techniques to present mined knowledge.**
+
+## Data Reduction
+
+Data reduction is used to to reduce the size of the data (less storage, faster processing, etc.). The data is smaller in volume but can produce similary analytical results. This can be relevant for multiple steps in the data mining pipeline. Some method of data reduction are:
+
+- regression and log-linear models
+- histograms, clustering, sampling
+- data cube aggregation
+- data compression
+- Sampling
+
+### Parametric Data Reduction: Regression Analysis
+
+Regression analysis is a collective name for techniques involving modeling and analysis of numerical data consisting of values of a dependent variable (response variable) and one or more independent variables (predictors). Some common regression analysis techniques are:
+
+- linear regression
+- multiple linear regression
+- nonlinear regression
+- log-linear regression
+
+### Non-Parametric Data Reduction:
+
+- Data Cube Aggregation
+- Histogram Analysis
+- Clustering
+
+### Dimensionality Reduction
+
+**The curse of dimensionality**: data becomes increasingly sparse, density and distance between points becomes less meaningful (detrimental for clustering and outlier analysis), and the possible subspaces will grow exponentially.
+
+Dimensionality reduction is the process of reducing the number of random variables under consideration, via obtaining a set of principal variables.
+
+Not only do dimensionality reduction techniques help to avoid the curse of dimensionality, but also eliminate irrelevant features and reduce noise. Overall, this reduces the time and space complexity required for data mining and allows for easier visualization.
+
+**Methodologies**:
+
+- feature selection: find a subset o the original variables.
+- feature extraction: transform the data in the high-dimensional space to a space of fewer dimensions.
+
+A common technique is Principal Component Analysis (PCA). It's a statistical procedure that uses an orthogonal transformation to convert a set of observations of possibly correlated variables into a set of values of linearly uncorrelated variables called principal components. The original data are projected onto a much smaller space, resulting in dimensionality reduction.
 
 
 # Types of Data
@@ -54,13 +118,120 @@ title: "Terminology"
 ## Graphs & Networks
 
 - Transportation network
+- World Wide Web
+- Molecular Structures
+- Social Information Networks
 
 ## Ordered Data
+- Video Data (sequences of images)
+- Temporal Data (time series)
+- Sequential Data (i.e. Transaction Sequences)
+- Genetic Sequence Data
 
 ## Spatial, Image, & Multimedia Data
-
+- Spatial Data
+- Image Data
+- Video Data
 
 # Describing Data
+- Attribute: data field representing a characteristic or feature of a data object
+- Types
+  - Nominal: categories, think names/nomenclature, has no implicit order
+  - Binary: nominal attribute with only 2 states (0/1, True/False, etc.)
+    - Symmetric: both outcomes equally important (gender)
+    - Asymmetric: outcomes not equally important (medical test)
+  - Ordinal: meaningful order (ranking), but magnitude between successive values unknown (i.e. S, M, L)
+  - Numeric (Quantitative)
+    - Interval-Scaled: Interval scales lack a true zero point. For example, Celsius and Fahrenheit are interval-scaled numeric data types. Measured on a scale of equal-sized units, and still have order.
+    - Ratio-Scaled: Ratio scales have a true zero point. For example, Kelvin is ratio-scaled because 100 degrees K is twice as high as 50 degrees K. It implies a ratio. Values can be order of magnitude larger than the unit of measurement. Monetary quantities are another example.
+  - Discrete: Finite or countably infinite set of values.
+  - Continuous: Real numbers as attribute values. *Note: practically, real values can only be measured and represented using a finite number of digits and are thus represented as floating-point variables.*
+
+# Statistics of Data
+
+## Measures of Central Tendency
+- mean: also known as the average, and has some variations:
+    - standard mean: $\bar{x} = \frac{1}{n} \sum\limits_{i=1}^{n}x_i$
+    - weighted mean: $\bar{x} = \frac{\sum\limits_{i=1}^{n}x_i w_i}{\sum\limits_{i=1}^{n}w_i}$
+    - trimmed mean: removing outliers (extreme values) before calculating the mean
+- median: middle-most value of ordered set (exact middle if odd numbered set, average of the middle if even numbered set)
+- mode: most frequent value(s) in a set
+- midrange: $\frac{\text{minimum + maximum}}{2}$
+
+They each have their importance.
+
+The *mean* is one of the more common measures to describe a dataset. For a dataset which is symmetric, it is the center of the distribution. We use a *weighted mean* when each value has a relevant associated significance, importance, or occurence frequency. The *trimmed mean* is useful because even a small number of extreme occurences can corrupt the mean. We can remove small portions of the top and bottom of an ordered dataset, but should avoid removing too much as that can lead to unwanted information loss.
+
+Examples of when the *standard form of mean* is used is when comparing ages for a dataset or grades on an exam. A prime example for *weighted means* is calculating grade point average (GPA), where a grade might be a decimal, but is weighted by the number of credits it is worth.
+
+For skewed datasets, or if it's desired to retain outliers, the *median* is a better measure of the center of the data.
+
+Since *trimmed means* and *medians* are both good to combat the effect of skew and outliers, a decent example for both of these could be when calculating metrics from a dataset containing salaries. Image we have values with a *median* around $100,000, but there are just a few values upwards of $500,000. This could significantly alter the *standard form of average*, but if we trim off these high (and/or low) outliers, and then take the *trimmed mean* we might see it closer to the *median*.
+
+The *mode* is useful for both qualitative and quantitative attributes, and represents the highest frequency of an attribute. There can be multiple modes, in which case the data is multimodal (unimodal, bimodal, trimodal for 1, 2 and 3 modes). Or, if each value only occurs once, there is no mode! A good visual for representing mode can be a bar chart. Imagine you're trying to find the day of the week you have the most customers, the day the highest frequency of customers come in, which day has the tallest bar on the bar chart?
+
+**For a perfectly symmetric curve, the mean, median, and mode are all at the center of the distribution.**
+
+The *midrange* is actually another type of mean that can make for a quick statistic in a dataset. However, for asymmetric data, or data with extreme outliers, it's unreliable.
+
+## Measures of Dispersion
+
+- Range: the difference between the maximum and minimum values
+- Quartiles:
+    - $Q_1$: $25^{th}$ percentile of data (point at which 25% of the data lies to the left on the distribution)
+    - $Q_2$: $50^{th}$ percentile of data (also known as the median)
+    - $Q_3$: $75^{th}$ percentile of data
+- Variance & Standard Deviation: measure of how much the values deviate from the mean, or simply put, how spread apart the data is. The Standard Deviation is the square root of the Variance. They can be calculated in the following manner:
+    - Population Variance: $Var(X) = \frac{1}{N} \sum\limits_{i=1}^{N}(x_i - \mu)^2$
+    - Sample Variance: $Var(X) = \frac{1}{n-1} \sum\limits_{i=1}^{n}(x_i - \mu)^2$
+    - It can also be shown: $Var(X) = E[X^2] - E[X]^2$
+    - $SD(X) = \sqrt{Var(X)}$
+- Interquartile Range: the range covered by the middle half of the data, calculated by $IQR = Q_3 - Q_1$
+
+Range, Quartiles, Variance, Standard Deviation, and the Interquartile Range are known as the *five-number summary*, and together make up a clearer picture of the data. A rule of thumb about outliers is that a *suspected* outlier is anything at least $1.5 x IQR$ above $Q_3$ or below $Q_1$.
+
+Often times, it's helpful to consider all of these metrics together to start forming hypotheses about data. A good way to visualize the *five-number summary* is with a box plot.
+
+## Similarity and Dissimilarity
+
+- Dissimilarity Matrix: given a data matrix containing $n$ objects with $p$ attributes, a dissimilarity matrix stores a collection of proximities for all pairs of $n$ objects (usually an $nxn$ table)
+    - $d(i, j)$ is the distance between objects $i$ and $j$
+    - $d(i, i) = 0$
+    - $d(i, j) = d(j, i)$
+- If $d(i, j)$ is a measure of *dissimilarity*, then a measure of similarity is $sim(i, j) = 1 - d(i, j)$
+- Dissimilarity for *Nominal Attributes*: $d(i, j) = \frac{p-m}{p}$; $p$ is the total attributes and $m$ are the matches (weights can be assigned to $m$ as well. This also implies $sim(i, j) = 1 - d(i, j) = \frac{m}{p}$
+- Proximity Measures for *Binary Attributes*: notably the *Jaccard coefficient* is used for this. If we let:
+    - $q$ be the number of attributes that both objects have
+    - $r$ the number of attributes that object $i$ has but not object $j$
+    - $s$ the number of attributes that object $j$ has but not object $i$
+    - $t$ the number of attributes that neither object has, then...
+    - *Jaccard coefficient* $= sim(i, j) = \frac{q}{q+r+s} = 1 - d(i, j)$
+- Dissimilarity of Numeric Data: Minkowski Distance (Manhattan, Euclidean, etc.). The Minkowski distance generalizes the Manhattan, Euclidean and higher order distance measurements:
+    - Manhattan: $d(i, j) = \sum\limits_{n=1}^{p}|x_{in} - x_{jn}|$
+    - Euclidean: $d(i, j) = \sqrt{\sum\limits_{n=1}^{p} (x_{in} - x_{jn})^2}$
+    - Minknowski Generalization: $d(i, j) = (\sum\limits_{n=1}^{p} |x_{in} - x_{jn}|)^{\frac{1}{h}}$
+- There are a plethora of other variations as well... included dissimilarity functions for *Ordinal* and *Mixed* attributes, and even a measure of similarity between documetns which used frequency vectors to produce *Cosine Similarities*
+
+Perhaps the measure listed above most people are familiar with is the Euclidean Distance. This was likely learned in high school, and it's still a very common method to measure distances between points.
+
+For a single example, these methods can be useful in finding clusters. Suppose a dataset isn't showing any particular linear pattern. What happens if we set a maximum distance between points to be considered a certain family? Clusters may form.
+
+# Data Warehousing & OLAP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

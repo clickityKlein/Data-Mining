@@ -67,6 +67,8 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -148,10 +150,16 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#integration" id="toc-integration" class="nav-link" data-scroll-target="#integration">Integration</a></li>
   <li><a href="#transformations" id="toc-transformations" class="nav-link" data-scroll-target="#transformations">Transformations</a></li>
   <li><a href="#selection" id="toc-selection" class="nav-link" data-scroll-target="#selection">Selection</a></li>
-  </ul></li>
   <li><a href="#data-mining" id="toc-data-mining" class="nav-link" data-scroll-target="#data-mining">Data Mining</a></li>
   <li><a href="#patternmodel-evaluation" id="toc-patternmodel-evaluation" class="nav-link" data-scroll-target="#patternmodel-evaluation">Pattern/Model Evaluation</a></li>
   <li><a href="#knowledge-presentation" id="toc-knowledge-presentation" class="nav-link" data-scroll-target="#knowledge-presentation">Knowledge Presentation</a></li>
+  </ul></li>
+  <li><a href="#data-reduction" id="toc-data-reduction" class="nav-link" data-scroll-target="#data-reduction">Data Reduction</a>
+  <ul class="collapse">
+  <li><a href="#parametric-data-reduction-regression-analysis" id="toc-parametric-data-reduction-regression-analysis" class="nav-link" data-scroll-target="#parametric-data-reduction-regression-analysis">Parametric Data Reduction: Regression Analysis</a></li>
+  <li><a href="#non-parametric-data-reduction" id="toc-non-parametric-data-reduction" class="nav-link" data-scroll-target="#non-parametric-data-reduction">Non-Parametric Data Reduction:</a></li>
+  <li><a href="#dimensionality-reduction" id="toc-dimensionality-reduction" class="nav-link" data-scroll-target="#dimensionality-reduction">Dimensionality Reduction</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#types-of-data" id="toc-types-of-data" class="nav-link" data-scroll-target="#types-of-data">Types of Data</a>
   <ul class="collapse">
@@ -161,6 +169,13 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#spatial-image-multimedia-data" id="toc-spatial-image-multimedia-data" class="nav-link" data-scroll-target="#spatial-image-multimedia-data">Spatial, Image, &amp; Multimedia Data</a></li>
   </ul></li>
   <li><a href="#describing-data" id="toc-describing-data" class="nav-link" data-scroll-target="#describing-data">Describing Data</a></li>
+  <li><a href="#statistics-of-data" id="toc-statistics-of-data" class="nav-link" data-scroll-target="#statistics-of-data">Statistics of Data</a>
+  <ul class="collapse">
+  <li><a href="#measures-of-central-tendency" id="toc-measures-of-central-tendency" class="nav-link" data-scroll-target="#measures-of-central-tendency">Measures of Central Tendency</a></li>
+  <li><a href="#measures-of-dispersion" id="toc-measures-of-dispersion" class="nav-link" data-scroll-target="#measures-of-dispersion">Measures of Dispersion</a></li>
+  <li><a href="#similarity-and-dissimilarity" id="toc-similarity-and-dissimilarity" class="nav-link" data-scroll-target="#similarity-and-dissimilarity">Similarity and Dissimilarity</a></li>
+  </ul></li>
+  <li><a href="#data-warehousing-olap" id="toc-data-warehousing-olap" class="nav-link" data-scroll-target="#data-warehousing-olap">Data Warehousing &amp; OLAP</a></li>
   </ul>
 </nav>
     </div>
@@ -197,7 +212,26 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
 <section id="cleaning" class="level3">
 <h3 class="anchored" data-anchor-id="cleaning">Cleaning</h3>
-<p><strong>Removing noise and inconsistent data.</strong></p>
+<p><strong>Removing noisy and inconsistent data.</strong></p>
+<p>Data in the real world is messy, and comes with potential for incorrectness whether that comes from instrument failures, human error, or transmission issues. Some errors we’ll find are:</p>
+<ul>
+<li>Incomplete Data: lacking attribute values, lacking certain attributes of interest, or containing only aggregate data.
+<ul>
+<li>ignore the data</li>
+<li>delete the data (if not too much data loss occurs)</li>
+<li>fill in data manually</li>
+<li>fill in data automatically with methods like averages or modes (fill all, backwards fill, forwards fill, etc.)</li>
+<li>possible <em>smarter</em> technique is to use an inference-based approach (Bayesian)</li>
+</ul></li>
+<li>Noisy: containing noise, errors, or outliers.
+<ul>
+<li>Regression: fit data into regression functions</li>
+<li>Clustering: detect and remove outliers</li>
+<li>Semi-supervised: detect suspicious values and check via human</li>
+</ul></li>
+<li>Inconsistent: containing discrepancies in codes or names.</li>
+<li>Intentional: disguising missing data (i.e.&nbsp;dates either being the first or the last of a given month, or every birthday is January 1).</li>
+</ul>
 </section>
 <section id="integration" class="level3">
 <h3 class="anchored" data-anchor-id="integration">Integration</h3>
@@ -206,23 +240,73 @@ ul.task-list li input[type="checkbox"] {
 <section id="transformations" class="level3">
 <h3 class="anchored" data-anchor-id="transformations">Transformations</h3>
 <p><strong>Data is transformed and consolidated into forms appropriate for mining.</strong></p>
+<p>Some common transformation techniques are:</p>
+<ul>
+<li>smoothing: remove noise from data</li>
+<li>aggregation: summarization (i.e.&nbsp;daily <span class="math inline">\(\rightarrow\)</span> monthly)</li>
+<li>generalizatoin: concept hierarchy climbing (i.e.&nbsp;street <span class="math inline">\(\rightarrow\)</span> city <span class="math inline">\(\rightarrow\)</span> state)</li>
+<li>normalization: scale to fall within a range</li>
+<li>attribute/feature construction</li>
+<li>Discretization: process of converting continuous type data into discrete type data, which reduces the difficulty of data evaluation, management, and mining.</li>
+</ul>
 </section>
 <section id="selection" class="level3">
 <h3 class="anchored" data-anchor-id="selection">Selection</h3>
 <p><strong>Data relevant to the analysis task are retrieved.</strong></p>
 </section>
-</section>
-<section id="data-mining" class="level2">
-<h2 class="anchored" data-anchor-id="data-mining">Data Mining</h2>
+<section id="data-mining" class="level3">
+<h3 class="anchored" data-anchor-id="data-mining">Data Mining</h3>
 <p><strong>Process where intelligent methods are applied to extract patterns or construct models.</strong></p>
 </section>
-<section id="patternmodel-evaluation" class="level2">
-<h2 class="anchored" data-anchor-id="patternmodel-evaluation">Pattern/Model Evaluation</h2>
+<section id="patternmodel-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="patternmodel-evaluation">Pattern/Model Evaluation</h3>
 <p><strong>Identify patterns or models representing knowledge based on interestingness measures.</strong></p>
 </section>
-<section id="knowledge-presentation" class="level2">
-<h2 class="anchored" data-anchor-id="knowledge-presentation">Knowledge Presentation</h2>
+<section id="knowledge-presentation" class="level3">
+<h3 class="anchored" data-anchor-id="knowledge-presentation">Knowledge Presentation</h3>
 <p><strong>Using visualization and knowledge representation techniques to present mined knowledge.</strong></p>
+</section>
+</section>
+<section id="data-reduction" class="level2">
+<h2 class="anchored" data-anchor-id="data-reduction">Data Reduction</h2>
+<p>Data reduction is used to to reduce the size of the data (less storage, faster processing, etc.). The data is smaller in volume but can produce similary analytical results. This can be relevant for multiple steps in the data mining pipeline. Some method of data reduction are:</p>
+<ul>
+<li>regression and log-linear models</li>
+<li>histograms, clustering, sampling</li>
+<li>data cube aggregation</li>
+<li>data compression</li>
+<li>Sampling</li>
+</ul>
+<section id="parametric-data-reduction-regression-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="parametric-data-reduction-regression-analysis">Parametric Data Reduction: Regression Analysis</h3>
+<p>Regression analysis is a collective name for techniques involving modeling and analysis of numerical data consisting of values of a dependent variable (response variable) and one or more independent variables (predictors). Some common regression analysis techniques are:</p>
+<ul>
+<li>linear regression</li>
+<li>multiple linear regression</li>
+<li>nonlinear regression</li>
+<li>log-linear regression</li>
+</ul>
+</section>
+<section id="non-parametric-data-reduction" class="level3">
+<h3 class="anchored" data-anchor-id="non-parametric-data-reduction">Non-Parametric Data Reduction:</h3>
+<ul>
+<li>Data Cube Aggregation</li>
+<li>Histogram Analysis</li>
+<li>Clustering</li>
+</ul>
+</section>
+<section id="dimensionality-reduction" class="level3">
+<h3 class="anchored" data-anchor-id="dimensionality-reduction">Dimensionality Reduction</h3>
+<p><strong>The curse of dimensionality</strong>: data becomes increasingly sparse, density and distance between points becomes less meaningful (detrimental for clustering and outlier analysis), and the possible subspaces will grow exponentially.</p>
+<p>Dimensionality reduction is the process of reducing the number of random variables under consideration, via obtaining a set of principal variables.</p>
+<p>Not only do dimensionality reduction techniques help to avoid the curse of dimensionality, but also eliminate irrelevant features and reduce noise. Overall, this reduces the time and space complexity required for data mining and allows for easier visualization.</p>
+<p><strong>Methodologies</strong>:</p>
+<ul>
+<li>feature selection: find a subset o the original variables.</li>
+<li>feature extraction: transform the data in the high-dimensional space to a space of fewer dimensions.</li>
+</ul>
+<p>A common technique is Principal Component Analysis (PCA). It’s a statistical procedure that uses an orthogonal transformation to convert a set of observations of possibly correlated variables into a set of values of linearly uncorrelated variables called principal components. The original data are projected onto a much smaller space, resulting in dimensionality reduction.</p>
+</section>
 </section>
 </section>
 <section id="types-of-data" class="level1">
@@ -240,17 +324,131 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="graphs-networks">Graphs &amp; Networks</h2>
 <ul>
 <li>Transportation network</li>
+<li>World Wide Web</li>
+<li>Molecular Structures</li>
+<li>Social Information Networks</li>
 </ul>
 </section>
 <section id="ordered-data" class="level2">
 <h2 class="anchored" data-anchor-id="ordered-data">Ordered Data</h2>
+<ul>
+<li>Video Data (sequences of images)</li>
+<li>Temporal Data (time series)</li>
+<li>Sequential Data (i.e.&nbsp;Transaction Sequences)</li>
+<li>Genetic Sequence Data</li>
+</ul>
 </section>
 <section id="spatial-image-multimedia-data" class="level2">
 <h2 class="anchored" data-anchor-id="spatial-image-multimedia-data">Spatial, Image, &amp; Multimedia Data</h2>
+<ul>
+<li>Spatial Data</li>
+<li>Image Data</li>
+<li>Video Data</li>
+</ul>
 </section>
 </section>
 <section id="describing-data" class="level1">
 <h1>Describing Data</h1>
+<ul>
+<li>Attribute: data field representing a characteristic or feature of a data object</li>
+<li>Types
+<ul>
+<li>Nominal: categories, think names/nomenclature, has no implicit order</li>
+<li>Binary: nominal attribute with only 2 states (0/1, True/False, etc.)
+<ul>
+<li>Symmetric: both outcomes equally important (gender)</li>
+<li>Asymmetric: outcomes not equally important (medical test)</li>
+</ul></li>
+<li>Ordinal: meaningful order (ranking), but magnitude between successive values unknown (i.e.&nbsp;S, M, L)</li>
+<li>Numeric (Quantitative)
+<ul>
+<li>Interval-Scaled: Interval scales lack a true zero point. For example, Celsius and Fahrenheit are interval-scaled numeric data types. Measured on a scale of equal-sized units, and still have order.</li>
+<li>Ratio-Scaled: Ratio scales have a true zero point. For example, Kelvin is ratio-scaled because 100 degrees K is twice as high as 50 degrees K. It implies a ratio. Values can be order of magnitude larger than the unit of measurement. Monetary quantities are another example.</li>
+</ul></li>
+<li>Discrete: Finite or countably infinite set of values.</li>
+<li>Continuous: Real numbers as attribute values. <em>Note: practically, real values can only be measured and represented using a finite number of digits and are thus represented as floating-point variables.</em></li>
+</ul></li>
+</ul>
+</section>
+<section id="statistics-of-data" class="level1">
+<h1>Statistics of Data</h1>
+<section id="measures-of-central-tendency" class="level2">
+<h2 class="anchored" data-anchor-id="measures-of-central-tendency">Measures of Central Tendency</h2>
+<ul>
+<li>mean: also known as the average, and has some variations:
+<ul>
+<li>standard mean: <span class="math inline">\(\bar{x} = \frac{1}{n} \sum\limits_{i=1}^{n}x_i\)</span></li>
+<li>weighted mean: <span class="math inline">\(\bar{x} = \frac{\sum\limits_{i=1}^{n}x_i w_i}{\sum\limits_{i=1}^{n}w_i}\)</span></li>
+<li>trimmed mean: removing outliers (extreme values) before calculating the mean</li>
+</ul></li>
+<li>median: middle-most value of ordered set (exact middle if odd numbered set, average of the middle if even numbered set)</li>
+<li>mode: most frequent value(s) in a set</li>
+<li>midrange: <span class="math inline">\(\frac{\text{minimum + maximum}}{2}\)</span></li>
+</ul>
+<p>They each have their importance.</p>
+<p>The <em>mean</em> is one of the more common measures to describe a dataset. For a dataset which is symmetric, it is the center of the distribution. We use a <em>weighted mean</em> when each value has a relevant associated significance, importance, or occurence frequency. The <em>trimmed mean</em> is useful because even a small number of extreme occurences can corrupt the mean. We can remove small portions of the top and bottom of an ordered dataset, but should avoid removing too much as that can lead to unwanted information loss.</p>
+<p>Examples of when the <em>standard form of mean</em> is used is when comparing ages for a dataset or grades on an exam. A prime example for <em>weighted means</em> is calculating grade point average (GPA), where a grade might be a decimal, but is weighted by the number of credits it is worth.</p>
+<p>For skewed datasets, or if it’s desired to retain outliers, the <em>median</em> is a better measure of the center of the data.</p>
+<p>Since <em>trimmed means</em> and <em>medians</em> are both good to combat the effect of skew and outliers, a decent example for both of these could be when calculating metrics from a dataset containing salaries. Image we have values with a <em>median</em> around $100,000, but there are just a few values upwards of $500,000. This could significantly alter the <em>standard form of average</em>, but if we trim off these high (and/or low) outliers, and then take the <em>trimmed mean</em> we might see it closer to the <em>median</em>.</p>
+<p>The <em>mode</em> is useful for both qualitative and quantitative attributes, and represents the highest frequency of an attribute. There can be multiple modes, in which case the data is multimodal (unimodal, bimodal, trimodal for 1, 2 and 3 modes). Or, if each value only occurs once, there is no mode! A good visual for representing mode can be a bar chart. Imagine you’re trying to find the day of the week you have the most customers, the day the highest frequency of customers come in, which day has the tallest bar on the bar chart?</p>
+<p><strong>For a perfectly symmetric curve, the mean, median, and mode are all at the center of the distribution.</strong></p>
+<p>The <em>midrange</em> is actually another type of mean that can make for a quick statistic in a dataset. However, for asymmetric data, or data with extreme outliers, it’s unreliable.</p>
+</section>
+<section id="measures-of-dispersion" class="level2">
+<h2 class="anchored" data-anchor-id="measures-of-dispersion">Measures of Dispersion</h2>
+<ul>
+<li>Range: the difference between the maximum and minimum values</li>
+<li>Quartiles:
+<ul>
+<li><span class="math inline">\(Q_1\)</span>: <span class="math inline">\(25^{th}\)</span> percentile of data (point at which 25% of the data lies to the left on the distribution)</li>
+<li><span class="math inline">\(Q_2\)</span>: <span class="math inline">\(50^{th}\)</span> percentile of data (also known as the median)</li>
+<li><span class="math inline">\(Q_3\)</span>: <span class="math inline">\(75^{th}\)</span> percentile of data</li>
+</ul></li>
+<li>Variance &amp; Standard Deviation: measure of how much the values deviate from the mean, or simply put, how spread apart the data is. The Standard Deviation is the square root of the Variance. They can be calculated in the following manner:
+<ul>
+<li>Population Variance: <span class="math inline">\(Var(X) = \frac{1}{N} \sum\limits_{i=1}^{N}(x_i - \mu)^2\)</span></li>
+<li>Sample Variance: <span class="math inline">\(Var(X) = \frac{1}{n-1} \sum\limits_{i=1}^{n}(x_i - \mu)^2\)</span></li>
+<li>It can also be shown: <span class="math inline">\(Var(X) = E[X^2] - E[X]^2\)</span></li>
+<li><span class="math inline">\(SD(X) = \sqrt{Var(X)}\)</span></li>
+</ul></li>
+<li>Interquartile Range: the range covered by the middle half of the data, calculated by <span class="math inline">\(IQR = Q_3 - Q_1\)</span></li>
+</ul>
+<p>Range, Quartiles, Variance, Standard Deviation, and the Interquartile Range are known as the <em>five-number summary</em>, and together make up a clearer picture of the data. A rule of thumb about outliers is that a <em>suspected</em> outlier is anything at least <span class="math inline">\(1.5 x IQR\)</span> above <span class="math inline">\(Q_3\)</span> or below <span class="math inline">\(Q_1\)</span>.</p>
+<p>Often times, it’s helpful to consider all of these metrics together to start forming hypotheses about data. A good way to visualize the <em>five-number summary</em> is with a box plot.</p>
+</section>
+<section id="similarity-and-dissimilarity" class="level2">
+<h2 class="anchored" data-anchor-id="similarity-and-dissimilarity">Similarity and Dissimilarity</h2>
+<ul>
+<li>Dissimilarity Matrix: given a data matrix containing <span class="math inline">\(n\)</span> objects with <span class="math inline">\(p\)</span> attributes, a dissimilarity matrix stores a collection of proximities for all pairs of <span class="math inline">\(n\)</span> objects (usually an <span class="math inline">\(nxn\)</span> table)
+<ul>
+<li><span class="math inline">\(d(i, j)\)</span> is the distance between objects <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span></li>
+<li><span class="math inline">\(d(i, i) = 0\)</span></li>
+<li><span class="math inline">\(d(i, j) = d(j, i)\)</span></li>
+</ul></li>
+<li>If <span class="math inline">\(d(i, j)\)</span> is a measure of <em>dissimilarity</em>, then a measure of similarity is <span class="math inline">\(sim(i, j) = 1 - d(i, j)\)</span></li>
+<li>Dissimilarity for <em>Nominal Attributes</em>: <span class="math inline">\(d(i, j) = \frac{p-m}{p}\)</span>; <span class="math inline">\(p\)</span> is the total attributes and <span class="math inline">\(m\)</span> are the matches (weights can be assigned to <span class="math inline">\(m\)</span> as well. This also implies <span class="math inline">\(sim(i, j) = 1 - d(i, j) = \frac{m}{p}\)</span></li>
+<li>Proximity Measures for <em>Binary Attributes</em>: notably the <em>Jaccard coefficient</em> is used for this. If we let:
+<ul>
+<li><span class="math inline">\(q\)</span> be the number of attributes that both objects have</li>
+<li><span class="math inline">\(r\)</span> the number of attributes that object <span class="math inline">\(i\)</span> has but not object <span class="math inline">\(j\)</span></li>
+<li><span class="math inline">\(s\)</span> the number of attributes that object <span class="math inline">\(j\)</span> has but not object <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(t\)</span> the number of attributes that neither object has, then…</li>
+<li><em>Jaccard coefficient</em> <span class="math inline">\(= sim(i, j) = \frac{q}{q+r+s} = 1 - d(i, j)\)</span></li>
+</ul></li>
+<li>Dissimilarity of Numeric Data: Minkowski Distance (Manhattan, Euclidean, etc.). The Minkowski distance generalizes the Manhattan, Euclidean and higher order distance measurements:
+<ul>
+<li>Manhattan: <span class="math inline">\(d(i, j) = \sum\limits_{n=1}^{p}|x_{in} - x_{jn}|\)</span></li>
+<li>Euclidean: <span class="math inline">\(d(i, j) = \sqrt{\sum\limits_{n=1}^{p} (x_{in} - x_{jn})^2}\)</span></li>
+<li>Minknowski Generalization: <span class="math inline">\(d(i, j) = (\sum\limits_{n=1}^{p} |x_{in} - x_{jn}|)^{\frac{1}{h}}\)</span></li>
+</ul></li>
+<li>There are a plethora of other variations as well… included dissimilarity functions for <em>Ordinal</em> and <em>Mixed</em> attributes, and even a measure of similarity between documetns which used frequency vectors to produce <em>Cosine Similarities</em></li>
+</ul>
+<p>Perhaps the measure listed above most people are familiar with is the Euclidean Distance. This was likely learned in high school, and it’s still a very common method to measure distances between points.</p>
+<p>For a single example, these methods can be useful in finding clusters. Suppose a dataset isn’t showing any particular linear pattern. What happens if we set a maximum distance between points to be considered a certain family? Clusters may form.</p>
+</section>
+</section>
+<section id="data-warehousing-olap" class="level1">
+<h1>Data Warehousing &amp; OLAP</h1>
 
 
 </section>
