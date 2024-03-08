@@ -218,31 +218,96 @@ For a single example, these methods can be useful in finding clusters. Suppose a
 
 # Data Warehousing & OLAP
 
+## Data Warehouse
 
+A data warehouse is a decision support database maintained separately from an organization's operational database.
 
+Database warehouses support information processing by providing a solid platform of consolidated, historical data **for analysis**.
 
+"It is a subject-oriented, integrated, time-variant, and nonvolatile collection of data that support management's decision-making process." - *William H. Inmon*
 
+### Subject Oriented
 
+- Organized around major subjects
+- Focus on modeling and analyzing data **for decision making, not on daily operations or transaction processing**.
+- Excluding data that are not useful in decision support process provides a simple and concise view of a particular subject issue.
 
+### Integrated
 
+-  Integrate multiple, heterogeneous data sources (relational databases, flat files, online transaction records)
+- **Data cleaning and data integration techniques were applied**
+- Ensure consistency in naming, encoding, attribute measures, etc.
 
+### Time-Variant
 
+- Significantly longer time span
+  - operational database: current data or recent data
+  - data warehouse: historical perspective
+- Every key structure in a data warehouse
+  - contains time information, explicitly or implicitly
+  - key of operational data may not contain time information
 
+### Non-Volatile
 
+- A physically separate store of data transformed from operational environments
+- No operational update of data (no transaction processing, recovery, concurrency control)
+- Only two operations in data accessing
+  - **Initial Loading** of data
+  - **Access** of data
+  
+### How do Data Warehouses Differ from Operational DBMS
 
+- OLTP (online transaction processing)
+  - major task of traditional relational DBMS (3NF expected)
+  - day-to-day operations
+  - clerk, IT professionals, etc.
+  - usually thousands of users
+  - application oriented
+  - current, up-to-date, flat relational isolated
+  - smallish records accessed (GBs)
+- OLAP (online analytical processing)
+  - major task of the data warehouse system
+  - data analysis and decision making
+  - knowledge analysis
+  - usually hundreds of users
+  - subject oriented
+  - historical, summarized, multidimensional, integrated, consolidated
+  - millions of records accessed (TBs)
+  
+**However, we usually need them both!**
 
+## Data Cube
 
+A data cube allows for data to be modeled and viewed in multiple dimensions.
 
+## Conceptual Modeling
 
+### Star Schema
 
+A fact table, a set of dimension tables.
 
+### Snowflake Schema
 
+A fact table, a hierarchy of dimension tables.
 
+### Fact Constellations
 
+Multiple fact tables share dimension tables.
 
+### OLAP Operations
 
+The *data cube* allows for many operations, most notably:
 
+- drilling up (city $rightarrow$ state)
+- drilling down (state $rightarrow$ city)
+- slice: project with one dimension
+- dice: project with multiple dimensions (sub-cube)
+- pivot (rotate): visualization, 3D to 2D
 
+### Iceberg Cube
 
+**Analogy**: Only a small portion may be *above the water* in a sparse cube.
 
+We compute only the cuboid cells whose aggregate (i.e. count) is above a threshold (a minimum support).
 
+Avoid explosive growth of the cube.
