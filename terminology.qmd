@@ -311,3 +311,31 @@ The *data cube* allows for many operations, most notably:
 We compute only the cuboid cells whose aggregate (i.e. count) is above a threshold (a minimum support).
 
 Avoid explosive growth of the cube.
+
+# Frequent Patterns
+
+## The Basics
+
+> Pattern: A set of items, subsequences, or substructures that occur frequently together (or are strongly correlated) in a data set. Patterns represent intrinsic and important properties of datasets.
+
+**Pattern Discovery** is uncovering these structures from massive data sets, and is the foundation for many essential data mining tasks, such as:
+
+- association, correlation, and causality analysis
+- mining sequential structural patterns
+- classification: discriminative pattern-based analysis
+- cluster analysis: pattern-based subspace clustering
+
+And features broad applications, such as:
+
+- market basket analysis, cross-marketing, catalog design, sale campaign analysis, web log analysis, biological sequence analysis
+- many types of data: spatiotemporal, multimedia, time-series, and steam data
+
+*See the [Frequent Patterns](frequent_patterns.qmd) tab for more detailed information.*
+
+
+
+
+
+
+
+

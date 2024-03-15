@@ -67,6 +67,8 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -135,7 +137,21 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#association-rules" id="toc-association-rules" class="nav-link active" data-scroll-target="#association-rules">Association Rules</a>
+  <ul class="collapse">
+  <li><a href="#the-basics" id="toc-the-basics" class="nav-link" data-scroll-target="#the-basics">The Basics</a>
+  <ul class="collapse">
+  <li><a href="#support" id="toc-support" class="nav-link" data-scroll-target="#support">Support</a></li>
+  <li><a href="#confidence" id="toc-confidence" class="nav-link" data-scroll-target="#confidence">Confidence</a></li>
+  <li><a href="#lift" id="toc-lift" class="nav-link" data-scroll-target="#lift">Lift</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -159,9 +175,39 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This page has information about frequent patterns, the theoretical and applied side of them, and how to implement in python.</p>
+<section id="association-rules" class="level1">
+<h1>Association Rules</h1>
+<p>We’re trying to find <em>frequent itemsets</em> given a list of sets. Essentially, finding the subsets within these sets that are commonly together.</p>
+<p>Two prime examples of this are items purchased in transactions and movies watched in a library.</p>
+<section id="the-basics" class="level2">
+<h2 class="anchored" data-anchor-id="the-basics">The Basics</h2>
+<section id="support" class="level3">
+<h3 class="anchored" data-anchor-id="support">Support</h3>
+<p><strong>Support</strong> quantifies how often an itemset appears in a dataset (proportion).</p>
+<p>Let <span class="math inline">\(I\)</span> be an itemset, then:</p>
+<p><span class="math inline">\(Support(I) = \frac{\text{number of sets containing } I}{\text{total number of sets}}\)</span></p>
+<p>Suppose we have 100 customer’s movie watchlists, and we’re interested in making association rules surrounding movie <span class="math inline">\(M\)</span>.</p>
+<p>We know that movie (or movie set) <span class="math inline">\(M\)</span> is in 10 of the watchlists.</p>
+<p><span class="math inline">\(Support(M) = \frac{10}{100}\)</span></p>
+</section>
+<section id="confidence" class="level3">
+<h3 class="anchored" data-anchor-id="confidence">Confidence</h3>
+<p><strong>Confidence</strong> quantifies the likelihood an itemset’s consequent occurs given its antecent.</p>
+<p>Let <span class="math inline">\(C\)</span> be an itemset’s consequent and <span class="math inline">\(A\)</span> be an itemset’s antecent, then:</p>
+<p><span class="math inline">\(Confidence(C \rightarrow A) = \frac{\text{number of sets containing} C \text{ and } A{\text{number of sets containing} C}\)</span></p>
+<p>Suppose we want to recommend a movie (or movie set), <span class="math inline">\(M_2\)</span>, and we’re creating rules based on those who have watched the movie (or movie set) <span class="math inline">\(M_2\)</span>.</p>
+<p><span class="math inline">\(Confidence(M_1 \rightarrow M_2) = \frac{\text{watchlists containing} M_1 \text{ and } M_2 {\text{watchlists containing} M_1}\)</span></p>
+</section>
+<section id="lift" class="level3">
+<h3 class="anchored" data-anchor-id="lift">Lift</h3>
+<p><strong>Lift</strong> assesses the performance of an association rule by quantifying an improvement or degradation in the initial prediction, where the initial prediction would be the <strong>support</strong> of the antecent.</p>
+<p><span class="math inline">\(Lift(C \rightarrow A) = \frac{Confidence(C \rightarrow A)}{Support(A)}\)</span></p>
+<p><em>Note that the concept of lift is derived with the help of the concept of conditional probability.</em></p>
 
 
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

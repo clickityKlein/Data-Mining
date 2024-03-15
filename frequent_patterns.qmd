@@ -2,4 +2,44 @@
 title: "Frequent Patterns"
 ---
 
-This page has information about frequent patterns, the theoretical and applied side of them, and how to implement in python.
+# Association Rules
+
+We're trying to find *frequent itemsets* given a list of sets. Essentially, finding the subsets within these sets that are commonly together.
+
+Two prime examples of this are items purchased in transactions and movies watched in a library.
+
+## The Basics
+
+### Support
+
+**Support** quantifies how often an itemset appears in a dataset (proportion).
+
+Let $I$ be an itemset, then:
+
+$Support(I) = \frac{\text{number of sets containing } I}{\text{total number of sets}}$
+
+Suppose we have 100 customer's movie watchlists, and we're interested in making association rules surrounding movie $M$.
+
+We know that movie (or movie set) $M$ is in 10 of the watchlists.
+
+$Support(M) = \frac{10}{100}$
+
+### Confidence
+
+**Confidence** quantifies the likelihood an itemset's consequent occurs given its antecent.
+
+Let $C$ be an itemset's consequent and $A$ be an itemset's antecent, then:
+
+$Confidence(C \rightarrow A) = \frac{\text{number of sets containing} C \text{ and } A{\text{number of sets containing} C}$
+
+Suppose we want to recommend a movie (or movie set), $M_2$, and we're creating rules based on those who have watched the movie (or movie set) $M_2$.
+
+$Confidence(M_1 \rightarrow M_2) = \frac{\text{watchlists containing} M_1 \text{ and } M_2 {\text{watchlists containing} M_1}$
+
+### Lift
+
+**Lift** assesses the performance of an association rule by quantifying an improvement or degradation in the initial prediction, where the initial prediction would be the **support** of the antecent.
+
+$Lift(C \rightarrow A) = \frac{Confidence(C \rightarrow A)}{Support(A)}$
+
+*Note that the concept of lift is derived with the help of the concept of conditional probability.*
