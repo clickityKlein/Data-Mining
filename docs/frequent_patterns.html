@@ -148,8 +148,16 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#support" id="toc-support" class="nav-link" data-scroll-target="#support">Support</a></li>
   <li><a href="#confidence" id="toc-confidence" class="nav-link" data-scroll-target="#confidence">Confidence</a></li>
   <li><a href="#lift" id="toc-lift" class="nav-link" data-scroll-target="#lift">Lift</a></li>
+  <li><a href="#how-to-interpret-lift" id="toc-how-to-interpret-lift" class="nav-link" data-scroll-target="#how-to-interpret-lift">How to Interpret Lift</a></li>
+  <li><a href="#maximal-itemset" id="toc-maximal-itemset" class="nav-link" data-scroll-target="#maximal-itemset">Maximal Itemset</a></li>
+  <li><a href="#closed-itemset" id="toc-closed-itemset" class="nav-link" data-scroll-target="#closed-itemset">Closed Itemset</a></li>
+  <li><a href="#k-itemset" id="toc-k-itemset" class="nav-link" data-scroll-target="#k-itemset">k-itemset</a></li>
+  <li><a href="#apriori-property" id="toc-apriori-property" class="nav-link" data-scroll-target="#apriori-property">Apriori Property</a></li>
+  <li><a href="#antimonotonicity" id="toc-antimonotonicity" class="nav-link" data-scroll-target="#antimonotonicity">Antimonotonicity</a></li>
   </ul></li>
   </ul></li>
+  <li><a href="#the-apriori-algorithm" id="toc-the-apriori-algorithm" class="nav-link" data-scroll-target="#the-apriori-algorithm">The Apriori Algorithm</a></li>
+  <li><a href="#the-fp-growth-algorithm" id="toc-the-fp-growth-algorithm" class="nav-link" data-scroll-target="#the-fp-growth-algorithm">The FP-Growth Algorithm</a></li>
   </ul>
 </nav>
     </div>
@@ -189,24 +197,83 @@ ul.task-list li input[type="checkbox"] {
 <p>Suppose we have 100 customer’s movie watchlists, and we’re interested in making association rules surrounding movie <span class="math inline">\(M\)</span>.</p>
 <p>We know that movie (or movie set) <span class="math inline">\(M\)</span> is in 10 of the watchlists.</p>
 <p><span class="math inline">\(Support(M) = \frac{10}{100}\)</span></p>
+<p>Additionally, we could have <strong>support</strong> for an association rule (<span class="math inline">\(Support(A \rightarrow C)\)</span>), where <span class="math inline">\(A\)</span> is the antecendent and <span class="math inline">\(C\)</span> is the consequent (both are itemsets), which would look like:</p>
+<p><span class="math inline">\(Support(A \rightarrow C) = \frac{\text{number of sets containing } A \text{ and } C}{\text{total number of sets}}\)</span></p>
 </section>
 <section id="confidence" class="level3">
 <h3 class="anchored" data-anchor-id="confidence">Confidence</h3>
-<p><strong>Confidence</strong> quantifies the likelihood an itemset’s consequent occurs given its antecent.</p>
-<p>Let <span class="math inline">\(C\)</span> be an itemset’s consequent and <span class="math inline">\(A\)</span> be an itemset’s antecent, then:</p>
-<p><span class="math inline">\(Confidence(C \rightarrow A) = \frac{\text{number of sets containing} C \text{ and } A{\text{number of sets containing} C}\)</span></p>
+<p><strong>Confidence</strong> quantifies the likelihood an itemset’s consequent occurs given its antecent (i.e.&nbsp;the probability a consequent occurs given its antecent).</p>
+<p>Let <span class="math inline">\(A\)</span> be an itemset’s antecent and <span class="math inline">\(C\)</span> be an itemset’s consequent, then:</p>
+<p><span class="math inline">\(Confidence(A \rightarrow C) = \frac{\text{proportion of sets containing} A \text{ and } C }{\text{proportion of sets containing} A}\)</span></p>
+<p><em>Note that the concept of confidence is roughly derived with the help of the concept of conditional probability.</em></p>
+<blockquote class="blockquote">
+<p><span class="math inline">\(Confidence(A \rightarrow C) = P(C|A) = \frac{P(C, A)}{P(A)}\)</span></p>
+</blockquote>
+<p><em>A key difference is that the numerator is is not a true intersection of events, but it contains the every element in itemsets <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span>. It’s more clear to use the respective definitions of support here.</em></p>
+<p><span class="math inline">\(Confidence(A \rightarrow C) = \frac{Support(A \cup C)}{Support(A)}\)</span></p>
 <p>Suppose we want to recommend a movie (or movie set), <span class="math inline">\(M_2\)</span>, and we’re creating rules based on those who have watched the movie (or movie set) <span class="math inline">\(M_2\)</span>.</p>
-<p><span class="math inline">\(Confidence(M_1 \rightarrow M_2) = \frac{\text{watchlists containing} M_1 \text{ and } M_2 {\text{watchlists containing} M_1}\)</span></p>
+<p><span class="math inline">\(Confidence(M_1 \rightarrow M_2) = \frac{\text{proportion of watchlists containing} M_1 \text{ and } M_2} {\text{proportion of watchlists containing} M_1}\)</span></p>
+<p><span class="math inline">\(= \frac{Support(M_1 \cup M_2)}{Support(M_1)}\)</span></p>
 </section>
 <section id="lift" class="level3">
 <h3 class="anchored" data-anchor-id="lift">Lift</h3>
-<p><strong>Lift</strong> assesses the performance of an association rule by quantifying an improvement or degradation in the initial prediction, where the initial prediction would be the <strong>support</strong> of the antecent.</p>
-<p><span class="math inline">\(Lift(C \rightarrow A) = \frac{Confidence(C \rightarrow A)}{Support(A)}\)</span></p>
-<p><em>Note that the concept of lift is derived with the help of the concept of conditional probability.</em></p>
-
-
+<p><strong>Lift</strong> assesses the performance of an association rule by quantifying an improvement (or degradation) from the initial prediction, where the initial prediction would be the <strong>support</strong> of the antecent.</p>
+<p><span class="math inline">\(Lift(C \rightarrow A) = \frac{Confidence(A \rightarrow C)}{Support(C)}\)</span></p>
+<p><span class="math inline">\(= \frac{\frac{Support(A \cup C)}{Support(A)}}{Support(C)}\)</span></p>
+<p><span class="math inline">\(= \frac{Support(A \cup C)}{Support(A)Support(C)}\)</span></p>
+<p>Suppose we have a rule suggesting we recommend a movie (or movie set), <span class="math inline">\(M_2\)</span>, to those have seen movie(s) <span class="math inline">\(M_1\)</span> (i.e.&nbsp;<span class="math inline">\(M_1 \rightarrow M_2\)</span>).</p>
+<p>We gather the following measurements:</p>
+<ul>
+<li><span class="math inline">\(Support(M_1) = P(M_1) = 0.4\)</span></li>
+<li><span class="math inline">\(Support(M_2) = P(M_2) = 0.1\)</span></li>
+<li><span class="math inline">\(Confidence(M_1 \rightarrow M_2) = \frac{Support(M_1 \cup M_2)}{Support(M_1)} = 0.175\)</span></li>
+<li><span class="math inline">\(Lift(M_1 \rightarrow M_2) = \frac{Confidence(M_1 \rightarrow M_2)}{Support(M_2)} = 1.75\)</span></li>
+</ul>
+</section>
+<section id="how-to-interpret-lift" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-interpret-lift">How to Interpret Lift</h3>
+<p>Because <span class="math inline">\(lift((M_1 \rightarrow M_2)) &gt; 1\)</span>, this rule provides evidence that the suggesting <span class="math inline">\(M_2\)</span> to those who have have seen <span class="math inline">\(M_1\)</span> is better than just suggesting <span class="math inline">\(M_2\)</span>.</p>
+<p>In general, this yields the result that if <span class="math inline">\(lift &gt; 1\)</span>, the association rule improves our initial prediction.</p>
+</section>
+<section id="maximal-itemset" class="level3">
+<h3 class="anchored" data-anchor-id="maximal-itemset">Maximal Itemset</h3>
+<p><strong>Maximal Itemset</strong>: itemset in which none of its supersets are frequent.</p>
+</section>
+<section id="closed-itemset" class="level3">
+<h3 class="anchored" data-anchor-id="closed-itemset">Closed Itemset</h3>
+<p><strong>Closed Itemset</strong>: itemset in which none of its immediate supersets have the same support count as the itemset, itself.</p>
+</section>
+<section id="k-itemset" class="level3">
+<h3 class="anchored" data-anchor-id="k-itemset">k-itemset</h3>
+<p><strong>k-itemset</strong>: itemset which contains k items.</p>
+<blockquote class="blockquote">
+<p>When finding frequencies, can refer to each sized frequency set as <em>n-frequent</em>, where <em>n</em> is the number of items in an itemset (or subset).</p>
+</blockquote>
+</section>
+<section id="apriori-property" class="level3">
+<h3 class="anchored" data-anchor-id="apriori-property">Apriori Property</h3>
+<p><strong>Apriori Property</strong>: all non-empty subsets of frequent itemsets must be frequent.</p>
+<blockquote class="blockquote">
+<p>Given a frequent itemset, all non-empty subsets of the frequent itemset are frequent as well.</p>
+</blockquote>
+</section>
+<section id="antimonotonicity" class="level3">
+<h3 class="anchored" data-anchor-id="antimonotonicity">Antimonotonicity</h3>
+<p><strong>Antimonotonicity</strong>: If a set cannot pass a test, all its supersets will fail the test as well.</p>
+<p><em>Roughly the contrapositive of the Apriori Property for association rules</em>.</p>
+<blockquote class="blockquote">
+<p>If an itemset is infrequent, all its supersets will be infrequent as well.</p>
+</blockquote>
 </section>
 </section>
+</section>
+<section id="the-apriori-algorithm" class="level1">
+<h1>The Apriori Algorithm</h1>
+</section>
+<section id="the-fp-growth-algorithm" class="level1">
+<h1>The FP-Growth Algorithm</h1>
+
+
 </section>
 
 </main> <!-- /main -->
