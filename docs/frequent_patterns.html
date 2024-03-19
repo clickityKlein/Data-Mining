@@ -20,10 +20,44 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -66,6 +100,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -154,9 +191,18 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#k-itemset" id="toc-k-itemset" class="nav-link" data-scroll-target="#k-itemset">k-itemset</a></li>
   <li><a href="#apriori-property" id="toc-apriori-property" class="nav-link" data-scroll-target="#apriori-property">Apriori Property</a></li>
   <li><a href="#antimonotonicity" id="toc-antimonotonicity" class="nav-link" data-scroll-target="#antimonotonicity">Antimonotonicity</a></li>
+  <li><a href="#maximum-number-of-of-possible-frequent-itemsets-excluding-the-emptyset" id="toc-maximum-number-of-of-possible-frequent-itemsets-excluding-the-emptyset" class="nav-link" data-scroll-target="#maximum-number-of-of-possible-frequent-itemsets-excluding-the-emptyset">Maximum Number of of Possible Frequent itemsets (excluding the emptyset)</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#the-apriori-algorithm" id="toc-the-apriori-algorithm" class="nav-link" data-scroll-target="#the-apriori-algorithm">The Apriori Algorithm</a></li>
+  <li><a href="#the-apriori-algorithm" id="toc-the-apriori-algorithm" class="nav-link" data-scroll-target="#the-apriori-algorithm">The Apriori Algorithm</a>
+  <ul class="collapse">
+  <li><a href="#outline" id="toc-outline" class="nav-link" data-scroll-target="#outline">Outline</a></li>
+  <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation">Implementation</a>
+  <ul class="collapse">
+  <li><a href="#custom-example" id="toc-custom-example" class="nav-link" data-scroll-target="#custom-example">Custom Example</a></li>
+  <li><a href="#the-mlxtend-library" id="toc-the-mlxtend-library" class="nav-link" data-scroll-target="#the-mlxtend-library">The mlxtend Library</a></li>
+  </ul></li>
+  </ul></li>
   <li><a href="#the-fp-growth-algorithm" id="toc-the-fp-growth-algorithm" class="nav-link" data-scroll-target="#the-fp-growth-algorithm">The FP-Growth Algorithm</a></li>
   </ul>
 </nav>
@@ -265,10 +311,391 @@ ul.task-list li input[type="checkbox"] {
 <p>If an itemset is infrequent, all its supersets will be infrequent as well.</p>
 </blockquote>
 </section>
+<section id="maximum-number-of-of-possible-frequent-itemsets-excluding-the-emptyset" class="level3">
+<h3 class="anchored" data-anchor-id="maximum-number-of-of-possible-frequent-itemsets-excluding-the-emptyset">Maximum Number of of Possible Frequent itemsets (excluding the emptyset)</h3>
+<blockquote class="blockquote">
+<p><span class="math inline">\(2^n - 1\)</span>, where <span class="math inline">\(n\)</span> is the total number of items in the dataset. <em>This is actually problematic due to the factorial growth per element.</em></p>
+</blockquote>
+<p>For example, take a frequent itemset with just 100 elements. The total number of frequent itemsets that it contains is:</p>
+<p><span class="math inline">\(\sum\limits_{n = 1}^{1000}{100 \choose n} = 2^{100} - 1 \approx 1.27 x 10^{30}\)</span></p>
+</section>
 </section>
 </section>
 <section id="the-apriori-algorithm" class="level1">
 <h1>The Apriori Algorithm</h1>
+<p>Suppose we have a list of itemsets (i.e.&nbsp;transactions), and we would like a systematic method to find the <em>strong</em> association rules from this list (i.e.&nbsp;find all the rules constrained to a given a minimum support and confidence). The <strong>Apriori Algorithm</strong> uses the <em>Apriori pruning principal</em> to construct these level-wise subsets in a progressive manner.</p>
+<section id="outline" class="level2">
+<h2 class="anchored" data-anchor-id="outline">Outline</h2>
+<p>The key steps of the <strong>Apriori Algorithm</strong> follow this <em>computation process</em>: - initial iteration: count number of occurrences of each item to form <em>candidate 1-itemsets</em>, <span class="math inline">\(C_1\)</span> - initial minimum support check: compare <span class="math inline">\(C_1\)</span> with the minimum support, removing any occurrence which does not pass the minimum support test, to form <em>frequent 1-itemsets</em>, <span class="math inline">\(L_1\)</span> - future iterations: form <em>candidate k-itemsets</em>, <span class="math inline">\(C_k\)</span> where <span class="math inline">\(k &gt; 1\)</span> - join <span class="math inline">\(L_{k-1}\)</span> with itself such that all permutations are formed with length of <span class="math inline">\(k\)</span> - future iterations: form <em>frequent k-itemsets</em>, <span class="math inline">\(L_k\)</span> where <span class="math inline">\(k &gt; 1\)</span> - compare <span class="math inline">\(C_k\)</span> with the minimum support, removing any occurrence which does not pass the minimum support test - repeat until maximum transaction length from dataset or no candidate or frequent itemsets can be generated</p>
+<blockquote class="blockquote">
+<p>Note that by the Apriori pincipal that all non-empty subsets of the frequent itemset are frequent as well, we can report the final <span class="math inline">\((k+1)\)</span>-length frequent itemsets, as those contain the non-empty frequent itemsets.</p>
+</blockquote>
+</section>
+<section id="implementation" class="level2">
+<h2 class="anchored" data-anchor-id="implementation">Implementation</h2>
+<section id="custom-example" class="level3">
+<h3 class="anchored" data-anchor-id="custom-example">Custom Example</h3>
+<div id="d987a826" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> permutations</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> custom_apriori(transaction_dict, min_sup <span class="op">=</span> <span class="fl">0.5</span>):</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get all unique items in transactions</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    freq_items <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> transaction <span class="kw">in</span> transaction_dict:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        freq_items <span class="op">=</span> freq_items.union(transaction_dict[transaction])</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># begin with frequent k=1 itemsets</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># boolean initialized to true for meeting support, will exit when false</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># initialize frequency dictionary to store results</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    meets_support <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    k <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    frequency_dict <span class="op">=</span> {}</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> meets_support:</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="co"># create list for each permutation, initializing support count at 0</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        prev_perms <span class="op">=</span> []</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        candidate <span class="op">=</span> []</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> perm <span class="kw">in</span> permutations(freq_items, k):</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>            <span class="co"># prevent duplicates since order doesn't matter</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">set</span>(perm) <span class="kw">not</span> <span class="kw">in</span> prev_perms:</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                candidate.append([<span class="bu">set</span>(perm), <span class="dv">0</span>])</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>                prev_perms.append(<span class="bu">set</span>(perm))</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># loop through each permutation in candidate</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># if the intersection of the permutation with a transaction is the permutation</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># then that indicates it is an itemset within the transaction</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> itemset <span class="kw">in</span> candidate:</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> transaction <span class="kw">in</span> transaction_dict:</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> itemset[<span class="dv">0</span>].intersection(transaction_dict[transaction]) <span class="op">==</span> itemset[<span class="dv">0</span>]:</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>                    itemset[<span class="dv">1</span>] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># keep the permutations with support count at least at the minimum support</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>        frequency <span class="op">=</span> [itemset[<span class="dv">0</span>] <span class="cf">for</span> itemset <span class="kw">in</span> candidate <span class="cf">if</span> (itemset[<span class="dv">1</span>] <span class="op">/</span> <span class="bu">len</span>(transaction_dict)) <span class="op">&gt;=</span> min_sup]</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># if the frequency list is empty, there are no more permutations which can meet the minimum support threshold</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        <span class="co"># we can exit it at that case due to antimonotonicity</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(frequency) <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>            <span class="co"># add to frequency dictionary for each round</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>            frequency_dict[k] <span class="op">=</span> frequency</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>            <span class="co"># extract unique items from new frequency itemsets</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>            freq_items <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> itemset <span class="kw">in</span> frequency:</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>                freq_items <span class="op">=</span> freq_items.union(itemset)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>            k <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>            meets_support <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> frequency_dict</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Suppose we were given the example of</p>
+<div class="img-fluid quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/frequent_patterns_img1.png" class="img-fluid figure-img"></p>
+<figcaption>frequent_patterns_img1</figcaption>
+</figure>
+</div>
+<div id="e47b3b7f" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>transaction_dict <span class="op">=</span> {<span class="st">'t1'</span>: {<span class="st">'M'</span>, <span class="st">'N'</span>, <span class="st">'P'</span>, <span class="st">'X'</span>, <span class="st">'Z'</span>},</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'t2'</span>: {<span class="st">'M'</span>, <span class="st">'A'</span>, <span class="st">'P'</span>, <span class="st">'X'</span>, <span class="st">'O'</span>},</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'t3'</span>: {<span class="st">'D'</span>, <span class="st">'N'</span>, <span class="st">'P'</span>, <span class="st">'X'</span>, <span class="st">'Z'</span>},</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'t4'</span>: {<span class="st">'M'</span>, <span class="st">'O'</span>, <span class="st">'C'</span>, <span class="st">'P'</span>, <span class="st">'Z'</span>},</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                    <span class="st">'t5'</span>: {<span class="st">'M'</span>, <span class="st">'K'</span>, <span class="st">'I'</span>, <span class="st">'Z'</span>, <span class="st">'O'</span>}}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><em>A quick aside on the number of datasets</em>:</p>
+<p><span class="math inline">\(2^n - 1 = 2^{11} - 1 = 2047\)</span> possible frequent itemsets.</p>
+<p>The results of the <strong>Custom Apriori Algorithm</strong> will produce:</p>
+<div id="1c3def0d" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>custom_apriori(transaction_dict)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>{1: [{'O'}, {'Z'}, {'P'}, {'X'}, {'M'}],
+ 2: [{'P', 'X'}, {'M', 'O'}, {'M', 'Z'}, {'P', 'Z'}, {'M', 'P'}]}</code></pre>
+</div>
+</div>
+<p><em>Note that we’re not giving the interim support counts or the final support counts,</em> how about we take a look at a widely used and accepted module.</p>
+</section>
+<section id="the-mlxtend-library" class="level3">
+<h3 class="anchored" data-anchor-id="the-mlxtend-library">The mlxtend Library</h3>
+<p>Import the following from <code>mlxtend</code>:</p>
+<div id="d67fe485" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># libraries</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mlxtend.preprocessing <span class="im">import</span> TransactionEncoder</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mlxtend.frequent_patterns <span class="im">import</span> apriori <span class="im">as</span> ml_apriori</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mlxtend.frequent_patterns <span class="im">import</span> association_rules <span class="im">as</span> ml_association</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>For the <code>TransactionEncoder</code>, we’re going to want the transactions in a list of lists:</p>
+<div id="a6d417ca" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># turn transactions into list of lists</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>transactions <span class="op">=</span> [<span class="bu">list</span>(transaction_dict[transaction]) <span class="cf">for</span> transaction <span class="kw">in</span>  transaction_dict]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Encode the transactions list:</p>
+<div id="b40f3b84" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># put the transactions' lists in a boolean dataframe format</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>con <span class="op">=</span> TransactionEncoder()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>con_arr <span class="op">=</span> con.fit(transactions).transform(transactions)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df_transformed <span class="op">=</span> pd.DataFrame(con_arr, columns <span class="op">=</span> con.columns_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Run the algorithm:</p>
+<div id="cbf6970b" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mlxtend apriori function</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dataset_apriori <span class="op">=</span> ml_apriori(df_transformed, use_colnames <span class="op">=</span> <span class="va">True</span>, min_support <span class="op">=</span> <span class="fl">0.5</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>dataset_apriori</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">support</th>
+<th data-quarto-table-cell-role="th">itemsets</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0.8</td>
+<td>(M)</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0.6</td>
+<td>(O)</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>0.8</td>
+<td>(P)</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>0.6</td>
+<td>(X)</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>0.8</td>
+<td>(Z)</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>0.6</td>
+<td>(O, M)</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>0.6</td>
+<td>(P, M)</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>0.6</td>
+<td>(Z, M)</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>0.6</td>
+<td>(X, P)</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>0.6</td>
+<td>(Z, P)</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>And then extending past the frequent itemset results, we can run a function which will return association rules:</p>
+<div id="ebbbca75" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mlxtend association rules to display the rules with a 50% minimum threshold on the frequent itemsets (dataset_apriori)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>rules <span class="op">=</span> ml_association(dataset_apriori, metric <span class="op">=</span> <span class="st">'confidence'</span>, min_threshold <span class="op">=</span> <span class="fl">0.50</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>rules</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">antecedents</th>
+<th data-quarto-table-cell-role="th">consequents</th>
+<th data-quarto-table-cell-role="th">antecedent support</th>
+<th data-quarto-table-cell-role="th">consequent support</th>
+<th data-quarto-table-cell-role="th">support</th>
+<th data-quarto-table-cell-role="th">confidence</th>
+<th data-quarto-table-cell-role="th">lift</th>
+<th data-quarto-table-cell-role="th">leverage</th>
+<th data-quarto-table-cell-role="th">conviction</th>
+<th data-quarto-table-cell-role="th">zhangs_metric</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>(O)</td>
+<td>(M)</td>
+<td>0.6</td>
+<td>0.8</td>
+<td>0.6</td>
+<td>1.00</td>
+<td>1.2500</td>
+<td>0.12</td>
+<td>inf</td>
+<td>0.50</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>(M)</td>
+<td>(O)</td>
+<td>0.8</td>
+<td>0.6</td>
+<td>0.6</td>
+<td>0.75</td>
+<td>1.2500</td>
+<td>0.12</td>
+<td>1.6</td>
+<td>1.00</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>(P)</td>
+<td>(M)</td>
+<td>0.8</td>
+<td>0.8</td>
+<td>0.6</td>
+<td>0.75</td>
+<td>0.9375</td>
+<td>-0.04</td>
+<td>0.8</td>
+<td>-0.25</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>(M)</td>
+<td>(P)</td>
+<td>0.8</td>
+<td>0.8</td>
+<td>0.6</td>
+<td>0.75</td>
+<td>0.9375</td>
+<td>-0.04</td>
+<td>0.8</td>
+<td>-0.25</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>(Z)</td>
+<td>(M)</td>
+<td>0.8</td>
+<td>0.8</td>
+<td>0.6</td>
+<td>0.75</td>
+<td>0.9375</td>
+<td>-0.04</td>
+<td>0.8</td>
+<td>-0.25</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>(M)</td>
+<td>(Z)</td>
+<td>0.8</td>
+<td>0.8</td>
+<td>0.6</td>
+<td>0.75</td>
+<td>0.9375</td>
+<td>-0.04</td>
+<td>0.8</td>
+<td>-0.25</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>(X)</td>
+<td>(P)</td>
+<td>0.6</td>
+<td>0.8</td>
+<td>0.6</td>
+<td>1.00</td>
+<td>1.2500</td>
+<td>0.12</td>
+<td>inf</td>
+<td>0.50</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>(P)</td>
+<td>(X)</td>
+<td>0.8</td>
+<td>0.6</td>
+<td>0.6</td>
+<td>0.75</td>
+<td>1.2500</td>
+<td>0.12</td>
+<td>1.6</td>
+<td>1.00</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>(Z)</td>
+<td>(P)</td>
+<td>0.8</td>
+<td>0.8</td>
+<td>0.6</td>
+<td>0.75</td>
+<td>0.9375</td>
+<td>-0.04</td>
+<td>0.8</td>
+<td>-0.25</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>(P)</td>
+<td>(Z)</td>
+<td>0.8</td>
+<td>0.8</td>
+<td>0.6</td>
+<td>0.75</td>
+<td>0.9375</td>
+<td>-0.04</td>
+<td>0.8</td>
+<td>-0.25</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+</section>
 </section>
 <section id="the-fp-growth-algorithm" class="level1">
 <h1>The FP-Growth Algorithm</h1>

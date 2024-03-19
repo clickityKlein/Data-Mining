@@ -103,6 +103,156 @@ In general, this yields the result that if $lift > 1$, the association rule impr
 
 > If an itemset is infrequent, all its supersets will be infrequent as well.
 
+### Maximum Number of of Possible Frequent itemsets (excluding the emptyset)
+
+> $2^n - 1$, where $n$ is the total number of items in the dataset. *This is actually problematic due to the factorial growth per element.*
+
+For example, take a frequent itemset with just 100 elements. The total number of frequent itemsets that it contains is:
+
+$\sum\limits_{n = 1}^{1000}{100 \choose n} = 2^{100} - 1 \approx 1.27 x 10^{30}$
+
 # The Apriori Algorithm
 
+Suppose we have a list of itemsets (i.e. transactions), and we would like a systematic method to find the *strong* association rules from this list (i.e. find all the rules constrained to a given a minimum support and confidence). The **Apriori Algorithm** uses the *Apriori pruning principal* to construct these level-wise subsets in a progressive manner.
+
+## Outline
+
+The key steps of the **Apriori Algorithm** follow this *computation process*:
+- initial iteration: count number of occurrences of each item to form *candidate 1-itemsets*, $C_1$
+- initial minimum support check: compare $C_1$ with the minimum support, removing any occurrence which does not pass the minimum support test, to form *frequent 1-itemsets*, $L_1$
+- future iterations: form *candidate k-itemsets*, $C_k$ where $k > 1$
+    - join $L_{k-1}$ with itself such that all permutations are formed with length of $k$
+- future iterations: form *frequent k-itemsets*, $L_k$ where $k > 1$
+    - compare $C_k$ with the minimum support, removing any occurrence which does not pass the minimum support test
+- repeat until maximum transaction length from dataset or no candidate or frequent itemsets can be generated
+
+> Note that by the Apriori pincipal that all non-empty subsets of the frequent itemset are frequent as well, we can report the final $(k+1)$-length frequent itemsets, as those contain the non-empty frequent itemsets.
+
+## Implementation
+
+### Custom Example
+
+```{python}
+from itertools import permutations
+def custom_apriori(transaction_dict, min_sup = 0.5):
+    # get all unique items in transactions
+    freq_items = set()
+    for transaction in transaction_dict:
+        freq_items = freq_items.union(transaction_dict[transaction])
+        
+    # begin with frequent k=1 itemsets
+    # boolean initialized to true for meeting support, will exit when false
+    # initialize frequency dictionary to store results
+    meets_support = True
+    k = 1
+    frequency_dict = {}
+    
+    while meets_support:
+        # create list for each permutation, initializing support count at 0
+        prev_perms = []
+        candidate = []
+        for perm in permutations(freq_items, k):
+            # prevent duplicates since order doesn't matter
+            if set(perm) not in prev_perms:
+                candidate.append([set(perm), 0])
+                prev_perms.append(set(perm))
+
+        # loop through each permutation in candidate
+        # if the intersection of the permutation with a transaction is the permutation
+        # then that indicates it is an itemset within the transaction
+        for itemset in candidate:
+            for transaction in transaction_dict:
+                if itemset[0].intersection(transaction_dict[transaction]) == itemset[0]:
+                    itemset[1] += 1
+        # keep the permutations with support count at least at the minimum support
+        frequency = [itemset[0] for itemset in candidate if (itemset[1] / len(transaction_dict)) >= min_sup]
+        # if the frequency list is empty, there are no more permutations which can meet the minimum support threshold
+        # we can exit it at that case due to antimonotonicity
+        if len(frequency) != 0:
+            # add to frequency dictionary for each round
+            frequency_dict[k] = frequency
+            # extract unique items from new frequency itemsets
+            freq_items = set()
+            for itemset in frequency:
+                freq_items = freq_items.union(itemset)
+            k += 1
+            
+        else:
+            meets_support = False
+            
+    return frequency_dict
+```
+
+Suppose we were given the example of
+
+![frequent_patterns_img1](images/frequent_patterns_img1.png)
+
+```{python}
+transaction_dict = {'t1': {'M', 'N', 'P', 'X', 'Z'},
+                    't2': {'M', 'A', 'P', 'X', 'O'},
+                    't3': {'D', 'N', 'P', 'X', 'Z'},
+                    't4': {'M', 'O', 'C', 'P', 'Z'},
+                    't5': {'M', 'K', 'I', 'Z', 'O'}}
+```
+
+*A quick aside on the number of datasets*:
+
+$2^n - 1 = 2^{11} - 1 = 2047$ possible frequent itemsets.
+
+The results of the **Custom Apriori Algorithm** will produce:
+
+```{python}
+custom_apriori(transaction_dict)
+```
+
+*Note that we're not giving the interim support counts or the final support counts,* how about we take a look at a widely used and accepted module.
+
+### The mlxtend Library
+
+Import the following from `mlxtend`:
+
+```{python}
+# libraries
+import numpy as np
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori as ml_apriori
+from mlxtend.frequent_patterns import association_rules as ml_association
+```
+
+For the `TransactionEncoder`, we're going to want the transactions in a list of lists:
+
+```{python}
+# turn transactions into list of lists
+transactions = [list(transaction_dict[transaction]) for transaction in  transaction_dict]
+```
+
+Encode the transactions list:
+
+```{python}
+# put the transactions' lists in a boolean dataframe format
+con = TransactionEncoder()
+con_arr = con.fit(transactions).transform(transactions)
+df_transformed = pd.DataFrame(con_arr, columns = con.columns_)
+```
+
+Run the algorithm:
+
+```{python}
+# mlxtend apriori function
+dataset_apriori = ml_apriori(df_transformed, use_colnames = True, min_support = 0.5)
+dataset_apriori
+```
+
+And then extending past the frequent itemset results, we can run a function which will return association rules:
+
+```{python}
+# mlxtend association rules to display the rules with a 50% minimum threshold on the frequent itemsets (dataset_apriori)
+rules = ml_association(dataset_apriori, metric = 'confidence', min_threshold = 0.50)
+rules
+```
+
 # The FP-Growth Algorithm
+
+
+
