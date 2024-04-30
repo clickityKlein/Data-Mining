@@ -254,5 +254,110 @@ rules
 
 # The FP-Growth Algorithm
 
+## Partitioning
+
+- A frequent itemset must be frequent in at least one partition
+- If an itemset is not frequent in all partitions, we can ignore it
+- Using this, we can divide and conquer by addressing the following:
+  - What is the size of each partition?
+  - What is the number of partitions?
+  
+The partitioning method takes two data scans.
+
+![frequent_patterns_img2](images/frequent_patterns_img2.png)
+
+## Implementation
+
+FP-Growth uses hash-trees to find frequent itemsets with candidate generation as mining long patterns needs many scans and generates a lot of candidates. It helps avoid common bottlenecks such as candidate generation and candidate tests.
+
+**FP Tree Construction**
+
+1. Scan and find frequent 1-itemset (given a minimum support)
+2. Sort the frequent 1-itemset in descending order
+3. Scan and construct the FP-tree
+4. Find conditional pattern base
+
+![frequent_patterns_img3](images/frequent_patterns_img3.png)
+
+::: columns
+::: {.column width="45%"}
+
+![frequent_patterns_img4](images/frequent_patterns_img4.png)
+:::
+
+::: {.column width="10%"}
+:::
+
+::: {.column width="45%"}
+![frequent_patterns_img5](images/frequent_patterns_img5.png)
+:::
+:::
+
+## The mlxtend Library
+
+**Import New Library for FP-Growth.**
+
+```{python}
+# libraries
+import numpy as np
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori as ml_apriori
+from mlxtend.frequent_patterns import association_rules as ml_association
+# new function for fp-growth
+from mlxtend.frequent_patterns import fpgrowth as ml_fpgrowth
+```
+
+**We use the same initialization process as above.**
+
+```{python}
+transactions
+```
+
+```{python}
+con = TransactionEncoder()
+con_arr = con.fit(transactions).transform(transactions)
+df_transformed = pd.DataFrame(con_arr, columns = con.columns_)
+df_transformed
+```
+
+**Frequent Itemsets through Apriori**
+
+```{python}
+# frequent itemsets through apriori
+dataset_apriori = ml_apriori(df_transformed, use_colnames = True, min_support = 0.5)
+dataset_apriori
+```
+
+**Frequent Itemsets through FP-Growth**
+
+```{python}
+# frequent itemsets through fp-growth
+dataset_fpgrowth = ml_fpgrowth(df_transformed, use_colnames = True, min_support = 0.5)
+dataset_fpgrowth
+```
+
+**Association Rules through Apriori**
+
+```{python}
+rules = ml_association(dataset_apriori, metric = 'confidence', min_threshold = 0.50)
+rules
+```
+
+**Association Rules through FP-Growth**
+
+```{python}
+rules = ml_association(dataset_fpgrowth, metric = 'confidence', min_threshold = 0.50)
+rules
+```
+
+Aside from some minor differences in the output, if we were to sort these results, they would be be very similar (if not identical).
+
+
+
+
+
+
+
 
 
