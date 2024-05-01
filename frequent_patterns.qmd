@@ -352,12 +352,3 @@ rules
 ```
 
 Aside from some minor differences in the output, if we were to sort these results, they would be be very similar (if not identical).
-
-
-
-
-
-
-
-
-

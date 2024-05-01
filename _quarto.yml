@@ -23,6 +23,12 @@ website:
         text: "Data Visualization"
       - href: frequent_patterns.qmd
         text: "Frequent Patterns"
+      - href: classification_regression.qmd
+        text: "Classification and Regression"
+      - href: cluster_analysis.qmd
+        text: "Cluster Analysis"
+      - href: neural_networks.qmd
+        text: "Neural Networks"
     right:
       - icon: github
         menu:

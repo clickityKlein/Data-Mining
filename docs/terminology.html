@@ -106,6 +106,18 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="./frequent_patterns.html"> 
 <span class="menu-text">Frequent Patterns</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./classification_regression.html"> 
+<span class="menu-text">Classification and Regression</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./cluster_analysis.html"> 
+<span class="menu-text">Cluster Analysis</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./neural_networks.html"> 
+<span class="menu-text">Neural Networks</span></a>
+  </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item dropdown ">
@@ -198,6 +210,26 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#frequent-patterns" id="toc-frequent-patterns" class="nav-link" data-scroll-target="#frequent-patterns">Frequent Patterns</a>
   <ul class="collapse">
   <li><a href="#the-basics" id="toc-the-basics" class="nav-link" data-scroll-target="#the-basics">The Basics</a></li>
+  </ul></li>
+  <li><a href="#classification-and-regression" id="toc-classification-and-regression" class="nav-link" data-scroll-target="#classification-and-regression">Classification and Regression</a>
+  <ul class="collapse">
+  <li><a href="#supervised-vs.-unsupervised" id="toc-supervised-vs.-unsupervised" class="nav-link" data-scroll-target="#supervised-vs.-unsupervised">Supervised vs.&nbsp;Unsupervised</a></li>
+  <li><a href="#model-validation-and-testing" id="toc-model-validation-and-testing" class="nav-link" data-scroll-target="#model-validation-and-testing">Model Validation and Testing</a></li>
+  <li><a href="#extended-evaluation-and-selection" id="toc-extended-evaluation-and-selection" class="nav-link" data-scroll-target="#extended-evaluation-and-selection">Extended Evaluation and Selection</a></li>
+  <li><a href="#sensitivity-recall-and-precision-tradeoff" id="toc-sensitivity-recall-and-precision-tradeoff" class="nav-link" data-scroll-target="#sensitivity-recall-and-precision-tradeoff">Sensitivity (Recall) and Precision Tradeoff</a></li>
+  <li><a href="#roc-curve" id="toc-roc-curve" class="nav-link" data-scroll-target="#roc-curve">ROC Curve</a></li>
+  <li><a href="#full-metrics-example" id="toc-full-metrics-example" class="nav-link" data-scroll-target="#full-metrics-example">Full Metrics Example</a></li>
+  <li><a href="#greedy-algorithms-vs.-dynamic-programming" id="toc-greedy-algorithms-vs.-dynamic-programming" class="nav-link" data-scroll-target="#greedy-algorithms-vs.-dynamic-programming">Greedy Algorithms vs.&nbsp;Dynamic Programming</a></li>
+  <li><a href="#lazy-vs.-eager-learning" id="toc-lazy-vs.-eager-learning" class="nav-link" data-scroll-target="#lazy-vs.-eager-learning">Lazy vs.&nbsp;Eager Learning</a></li>
+  </ul></li>
+  <li><a href="#cluster-analysis" id="toc-cluster-analysis" class="nav-link" data-scroll-target="#cluster-analysis">Cluster Analysis</a></li>
+  <li><a href="#neural-networks" id="toc-neural-networks" class="nav-link" data-scroll-target="#neural-networks">Neural Networks</a>
+  <ul class="collapse">
+  <li><a href="#perceptron" id="toc-perceptron" class="nav-link" data-scroll-target="#perceptron">Perceptron</a></li>
+  <li><a href="#neuron" id="toc-neuron" class="nav-link" data-scroll-target="#neuron">Neuron</a></li>
+  <li><a href="#neural-network" id="toc-neural-network" class="nav-link" data-scroll-target="#neural-network">Neural Network</a></li>
+  <li><a href="#network-topology" id="toc-network-topology" class="nav-link" data-scroll-target="#network-topology">Network Topology</a></li>
+  <li><a href="#backpropagation" id="toc-backpropagation" class="nav-link" data-scroll-target="#backpropagation">Backpropagation</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -604,6 +636,201 @@ ul.task-list li input[type="checkbox"] {
 <li>many types of data: spatiotemporal, multimedia, time-series, and steam data</li>
 </ul>
 <p><em>See the <a href="./frequent_patterns.html">Frequent Patterns</a> tab for more detailed information.</em></p>
+</section>
+</section>
+<section id="classification-and-regression" class="level1">
+<h1>Classification and Regression</h1>
+<p>Classification determines categorical class labels, while regression models continuous-valued functions.</p>
+<p>The normal modeling process consists of partitioning the dataset into a <em>training</em> and a <em>testing</em> set.</p>
+<section id="supervised-vs.-unsupervised" class="level2">
+<h2 class="anchored" data-anchor-id="supervised-vs.-unsupervised">Supervised vs.&nbsp;Unsupervised</h2>
+<ul>
+<li>Supervised Learning: Usually used in most classification and regression models. Model built on training data accompanied by <em>known</em> class labels, and new data (testing model/what model is built for) is classified on.</li>
+<li>Unsupervised Learning: Usually used in clustering algorithms, where class labels are <em>unknown</em>. Aims to establish the existence of classes or clusters in the data.</li>
+</ul>
+<p><em>A model can be represented as decision trees, rules, mathematical formulas, or other forms.</em></p>
+</section>
+<section id="model-validation-and-testing" class="level2">
+<h2 class="anchored" data-anchor-id="model-validation-and-testing">Model Validation and Testing</h2>
+<p><strong>Test</strong>: Using a testing set independent of the training set, we can estimate different model performance metrics (accuracy is the most well known).</p>
+<p><strong>Validation</strong>: If the test set is used to select or refine models, it known as a validation (or development) set.</p>
+<p><strong>Deployment</strong>: If the accuracy (or other validation metric(s)) is acceptable, use the model to classify new data.</p>
+<p><strong>Evaluation Criteria</strong>:</p>
+<ul>
+<li>Accuracy: classifcation vs.&nbsp;prediction</li>
+<li>Speed: time to construct/use the model</li>
+<li>Robustness: handling noise and missing values</li>
+<li>Scalability: extension to large amounts of data</li>
+<li>Interpretability: understanding and insight</li>
+<li>Goodness of Rules: decision tree size, compactness of classification rules</li>
+</ul>
+<p><strong>Common Metrics</strong>:</p>
+<ul>
+<li>Accuracy: the ratio of correct predictions to all predictions</li>
+<li>Precision: the ratio of true positives to the total number of positives (a measure of <strong>exactness</strong>), accuracy of the predicted positive</li>
+<li>Recall (<em>sensitivity</em>): the ratio of true positives to the number of total correct predictions (a measure of <strong>completeness</strong>), true positive recognition</li>
+<li>Specificity: the ratio of true negatives to the number of total number of negatives (true negative recognition rate), accuracy of the actual negative</li>
+<li>F1-Score: the harmonic mean between precision and recall (a balanced combination, or equal weight, of both precision and recall)</li>
+</ul>
+</section>
+<section id="extended-evaluation-and-selection" class="level2">
+<h2 class="anchored" data-anchor-id="extended-evaluation-and-selection">Extended Evaluation and Selection</h2>
+<p><strong>Accuracy</strong></p>
+<ul>
+<li>holdout method</li>
+<li>cross-validation</li>
+<li>bootstrap</li>
+</ul>
+<p><strong>Comparing Classifiers</strong></p>
+<ul>
+<li>ROC Curves</li>
+<li>Confusion Matrix: shows how the classification model is confused when it makes predictions</li>
+</ul>
+<p><img src="images/confusion_matrix.png" class="img-fluid"></p>
+<p><strong>Metrics in Formula Form</strong></p>
+<ul>
+<li><span class="math inline">\(Accuracy = \frac{TP + TN}{P + N} = sensitivty \frac{P}{P+N} + specificity \frac{N}{P+N}\)</span></li>
+<li><span class="math inline">\(Error Rate = \frac{FP + FN}{P + N}\)</span></li>
+<li><span class="math inline">\(Precision = \frac{TP}{TP + FP}\)</span></li>
+<li><span class="math inline">\(Specificity = \frac{TN}{N}\)</span></li>
+<li><span class="math inline">\(Recall = Sensitivity = \frac{TP}{P} = \frac{TP}{TP+ FN}\)</span></li>
+<li><span class="math inline">\(F = \frac{2*precision*recall}{precision+recall}\)</span></li>
+<li><span class="math inline">\(F_{\beta} = \frac{(1+\beta^2)*precision*recall}{\beta^2*precision+recall}\)</span></li>
+</ul>
+<p>This is where <strong>F1-Score</strong> comes from, by letting <span class="math inline">\(\beta=1\)</span></p>
+<p><span class="math inline">\(F_{1} = \frac{(1+1^2)*precision*recall}{1^2*precision+recall} = F\)</span></p>
+</section>
+<section id="sensitivity-recall-and-precision-tradeoff" class="level2">
+<h2 class="anchored" data-anchor-id="sensitivity-recall-and-precision-tradeoff">Sensitivity (Recall) and Precision Tradeoff</h2>
+<p><img src="images/sensitivity_precision_tradeoff.png" class="img-fluid"></p>
+</section>
+<section id="roc-curve" class="level2">
+<h2 class="anchored" data-anchor-id="roc-curve">ROC Curve</h2>
+<p>Known as the <strong>receiver operating characteristics curve (ROC curve)</strong>, and compares true positive rates with false positive rates.</p>
+<ul>
+<li>threshold for classifying positive cases</li>
+<li>higher the threshold <span class="math inline">\(\rightarrow\)</span> lower the false positive rate, and lower the true positive rate</li>
+<li>lower the threshold <span class="math inline">\(\rightarrow\)</span> higher the false positive rate, and higher the true positive rate</li>
+<li>when we move the threshold from low to high, this gives a curve of FPR and TPR</li>
+</ul>
+<p><img src="images/roc_curve.png" class="img-fluid"></p>
+<p><strong>Area under the curve (AUC)</strong>:</p>
+<ul>
+<li>Perfect: <span class="math inline">\(AUC = 1\)</span></li>
+<li>Worst: <span class="math inline">\(AUC = 0\)</span></li>
+<li>Random: <span class="math inline">\(AUC = 0.5\)</span></li>
+</ul>
+</section>
+<section id="full-metrics-example" class="level2">
+<h2 class="anchored" data-anchor-id="full-metrics-example">Full Metrics Example</h2>
+<p><img src="images/full_metrics_example.png" class="img-fluid"></p>
+</section>
+<section id="greedy-algorithms-vs.-dynamic-programming" class="level2">
+<h2 class="anchored" data-anchor-id="greedy-algorithms-vs.-dynamic-programming">Greedy Algorithms vs.&nbsp;Dynamic Programming</h2>
+<p>Greedy Algorithm:</p>
+<ul>
+<li>makes <strong>locally optimal choices</strong> at each step with the hope of finding a <strong>global optimum</strong></li>
+<li>does not necessarily consider the future consequences of the current choice</li>
+<li>generally faster and simpler than dynamic programming</li>
+</ul>
+<p>In other words, greedy algorithms make a series of localized decisions without considering the bigger picture to find a global solution.</p>
+<p>Dynamic Programming:</p>
+<ul>
+<li>solves subproblems recursively, guarantees optimal solution</li>
+<li>slower and more complex than greedy algorithms</li>
+</ul>
+<p>In other words, dynamic programming take a hosistic approach, breaks a problem down into smaller, overlapping subproblems and stores their solutions for future reference. Ensures the overall solution is optimal.</p>
+</section>
+<section id="lazy-vs.-eager-learning" class="level2">
+<h2 class="anchored" data-anchor-id="lazy-vs.-eager-learning">Lazy vs.&nbsp;Eager Learning</h2>
+<ul>
+<li>Lazy: instance based learning, simply stores the training data and waits until it is given a test tuple
+<ul>
+<li>less time in training but more time in predicting</li>
+<li>effectively uses a richer hypothesis space since it uses many local linear functions to form an implicit global approximation to the target function</li>
+<li>instance-based: stores training examples and delays the processing (i.e.&nbsp;lazy)</li>
+<li>typical approaches:
+<ul>
+<li>k-nearest neighbor: instances represented as points in a Euclidean space</li>
+<li>locally weighted regression: constructs local approximation</li>
+<li>case-based reasoning: uses symbolic representations and knowledge-based inference</li>
+</ul></li>
+</ul></li>
+<li>Eager: given a set of training tuples, constructs a classification model before receiving new data to classify
+<ul>
+<li>more time in training but less time in predicting</li>
+<li>must commit to a single hypothesis that covers the entire instance space</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="cluster-analysis" class="level1">
+<h1>Cluster Analysis</h1>
+</section>
+<section id="neural-networks" class="level1">
+<h1>Neural Networks</h1>
+<section id="perceptron" class="level2">
+<h2 class="anchored" data-anchor-id="perceptron">Perceptron</h2>
+<ul>
+<li>An algorithm that learns weights from features.</li>
+<li>If we consider learning weights as separating a space into two halves by a straight line, the perceptron can be seen as explicitly finding a good linear decision boundary.</li>
+<li>Inspired by neurons, the weights are converted to a signal called activation.</li>
+<li>The activation determines the outcome.</li>
+<li>Classic learning algorithm for the neural model of learning.</li>
+<li>Credibly simple and works well.</li>
+<li>Advantages:
+<ul>
+<li>Online: rather than considering the entire dataset at once, it only ever looks at one example.</li>
+<li>Error-driven: as long as it is doing well, it doesn’t update.</li>
+</ul></li>
+<li>The algorithm:
+<ul>
+<li>Learns one example from another</li>
+<li>If it makes a good guess, it continues. Otherwise, it updates the parameter and continues</li>
+<li>The <strong>learning rate</strong> determines how much to update</li>
+<li>Looping for several iterations
+<ul>
+<li><code>MaxIter</code> defiens how many iterations at most</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="neuron" class="level2">
+<h2 class="anchored" data-anchor-id="neuron">Neuron</h2>
+<p><strong>A hidden/output layer unit.</strong></p>
+<p><img src="images/nnet_img1.png" class="img-fluid"></p>
+</section>
+<section id="neural-network" class="level2">
+<h2 class="anchored" data-anchor-id="neural-network">Neural Network</h2>
+<ul>
+<li>Connected input/output units</li>
+<li>Weighted connections</li>
+<li>Muli-layer</li>
+<li>Feed-forward</li>
+<li>Fully connected</li>
+<li>Backpropagation</li>
+<li>Adjust weights</li>
+</ul>
+<p><img src="images/nnet_img2.png" class="img-fluid"></p>
+</section>
+<section id="network-topology" class="level2">
+<h2 class="anchored" data-anchor-id="network-topology">Network Topology</h2>
+<ul>
+<li>Hidden layers as parameter</li>
+<li>Units per hidden layers as a parameter</li>
+<li>Output: 1 unit per class if more than two classes</li>
+<li>Trial-and-error: different topology, different initial weights</li>
+</ul>
+<p><em>See the <a href="./classification_regression.html">Classification</a> tab for more detailed information.</em></p>
+</section>
+<section id="backpropagation" class="level2">
+<h2 class="anchored" data-anchor-id="backpropagation">Backpropagation</h2>
+<ul>
+<li>Initialize weights biases: small random numbers</li>
+<li>Propagate the inputs forward</li>
+<li>Backpropagate the error</li>
+<li>Terminating condition</li>
+</ul>
 
 
 </section>

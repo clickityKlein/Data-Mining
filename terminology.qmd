@@ -333,9 +333,181 @@ And features broad applications, such as:
 *See the [Frequent Patterns](frequent_patterns.qmd) tab for more detailed information.*
 
 
+# Classification and Regression
 
+Classification determines categorical class labels, while regression models continuous-valued functions.
 
+The normal modeling process consists of partitioning the dataset into a *training* and a *testing* set.
 
+## Supervised vs. Unsupervised
 
+- Supervised Learning: Usually used in most classification and regression models. Model built on training data accompanied by *known* class labels, and new data (testing model/what model is built for) is classified on.
+- Unsupervised Learning: Usually used in clustering algorithms, where class labels are *unknown*. Aims to establish the existence of classes or clusters in the data.
 
+*A model can be represented as decision trees, rules, mathematical formulas, or other forms.*
 
+## Model Validation and Testing
+
+**Test**: Using a testing set independent of the training set, we can estimate different model performance metrics (accuracy is the most well known).
+
+**Validation**: If the test set is used to select or refine models, it known as a validation (or development) set.
+
+**Deployment**: If the accuracy (or other validation metric(s)) is acceptable, use the model to classify new data.
+
+**Evaluation Criteria**:
+
+- Accuracy: classifcation vs. prediction
+- Speed: time to construct/use the model
+- Robustness: handling noise and missing values
+- Scalability: extension to large amounts of data
+- Interpretability: understanding and insight
+- Goodness of Rules: decision tree size, compactness of classification rules
+
+**Common Metrics**:
+
+- Accuracy: the ratio of correct predictions to all predictions
+- Precision: the ratio of true positives to the total number of positives (a measure of **exactness**), accuracy of the predicted positive
+- Recall (*sensitivity*): the ratio of true positives to the number of total correct predictions (a measure of **completeness**), true positive recognition
+- Specificity: the ratio of true negatives to the number of total number of negatives (true negative recognition rate), accuracy of the actual negative
+- F1-Score: the harmonic mean between precision and recall (a balanced combination, or equal weight, of both precision and recall)
+
+## Extended Evaluation and Selection
+
+**Accuracy**
+
+- holdout method
+- cross-validation
+- bootstrap
+
+**Comparing Classifiers**
+
+- ROC Curves
+- Confusion Matrix: shows how the classification model is confused when it makes predictions
+
+![](images/confusion_matrix.png)
+
+**Metrics in Formula Form**
+
+- $Accuracy = \frac{TP + TN}{P + N} = sensitivty \frac{P}{P+N} + specificity \frac{N}{P+N}$
+- $Error Rate = \frac{FP + FN}{P + N}$
+- $Precision = \frac{TP}{TP + FP}$
+- $Specificity = \frac{TN}{N}$
+- $Recall = Sensitivity = \frac{TP}{P} = \frac{TP}{TP+ FN}$
+- $F = \frac{2*precision*recall}{precision+recall}$
+- $F_{\beta} = \frac{(1+\beta^2)*precision*recall}{\beta^2*precision+recall}$
+
+This is where **F1-Score** comes from, by letting $\beta=1$
+
+$F_{1} = \frac{(1+1^2)*precision*recall}{1^2*precision+recall} = F$
+
+## Sensitivity (Recall) and Precision Tradeoff
+
+![](images/sensitivity_precision_tradeoff.png)
+
+## ROC Curve
+
+Known as the **receiver operating characteristics curve (ROC curve)**, and compares true positive rates with false positive rates.
+
+- threshold for classifying positive cases
+- higher the threshold $\rightarrow$ lower the false positive rate, and lower the true positive rate
+- lower the threshold $\rightarrow$ higher the false positive rate, and higher the true positive rate
+- when we move the threshold from low to high, this gives a curve of FPR and TPR
+
+![](images/roc_curve.png)
+
+**Area under the curve (AUC)**:
+
+- Perfect: $AUC = 1$
+- Worst: $AUC = 0$
+- Random: $AUC = 0.5$
+
+## Full Metrics Example
+
+![](images/full_metrics_example.png)
+
+## Greedy Algorithms vs. Dynamic Programming
+
+Greedy Algorithm:
+
+- makes **locally optimal choices** at each step with the hope of finding a **global optimum**
+- does not necessarily consider the future consequences of the current choice
+- generally faster and simpler than dynamic programming
+
+In other words, greedy algorithms make a series of localized decisions without considering the bigger picture to find a global solution.
+
+Dynamic Programming:
+
+- solves subproblems recursively, guarantees optimal solution
+- slower and more complex than greedy algorithms
+
+In other words, dynamic programming take a hosistic approach, breaks a problem down into smaller, overlapping subproblems and stores their solutions for future reference. Ensures the overall solution is optimal.
+
+## Lazy vs. Eager Learning
+
+- Lazy: instance based learning, simply stores the training data and waits until it is given a test tuple
+  - less time in training but more time in predicting
+  - effectively uses a richer hypothesis space since it uses many local linear functions to form an implicit global approximation to the target function
+  - instance-based: stores training examples and delays the processing (i.e. lazy)
+  - typical approaches:
+    - k-nearest neighbor: instances represented as points in a Euclidean space
+    - locally weighted regression: constructs local approximation
+    - case-based reasoning: uses symbolic representations and knowledge-based inference
+- Eager: given a set of training tuples, constructs a classification model before receiving new data to classify
+  - more time in training but less time in predicting
+  - must commit to a single hypothesis that covers the entire instance space
+  
+# Cluster Analysis
+  
+# Neural Networks
+
+## Perceptron
+
+- An algorithm that learns weights from features.
+- If we consider learning weights as separating a space into two halves by a straight line, the perceptron can be seen as explicitly finding a good linear decision boundary.
+- Inspired by neurons, the weights are converted to a signal called activation.
+- The activation determines the outcome.
+- Classic learning algorithm for the neural model of learning.
+- Credibly simple and works well.
+- Advantages:
+  - Online: rather than considering the entire dataset at once, it only ever looks at one example.
+  - Error-driven: as long as it is doing well, it doesn't update.
+- The algorithm:
+  - Learns one example from another
+  - If it makes a good guess, it continues. Otherwise, it updates the parameter and continues
+  - The **learning rate** determines how much to update
+  - Looping for several iterations
+    - `MaxIter` defiens how many iterations at most
+
+## Neuron
+
+**A hidden/output layer unit.**
+
+![](images/nnet_img1.png)
+
+## Neural Network
+
+- Connected input/output units
+- Weighted connections
+- Muli-layer
+- Feed-forward
+- Fully connected
+- Backpropagation
+- Adjust weights
+
+![](images/nnet_img2.png)
+
+## Network Topology
+
+- Hidden layers as parameter
+- Units per hidden layers as a parameter
+- Output: 1 unit per class if more than two classes
+- Trial-and-error: different topology, different initial weights
+
+*See the [Classification](classification_regression.qmd) tab for more detailed information.*
+
+## Backpropagation
+
+- Initialize weights biases: small random numbers
+- Propagate the inputs forward
+- Backpropagate the error
+- Terminating condition

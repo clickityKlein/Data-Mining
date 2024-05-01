@@ -143,6 +143,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link active" href="./frequent_patterns.html" aria-current="page"> 
 <span class="menu-text">Frequent Patterns</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./classification_regression.html"> 
+<span class="menu-text">Classification and Regression</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./cluster_analysis.html"> 
+<span class="menu-text">Cluster Analysis</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./neural_networks.html"> 
+<span class="menu-text">Neural Networks</span></a>
+  </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item dropdown ">
@@ -340,7 +352,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="implementation">Implementation</h2>
 <section id="custom-example" class="level3">
 <h3 class="anchored" data-anchor-id="custom-example">Custom Example</h3>
-<div id="2049acaf" class="cell" data-execution_count="1">
+<div id="20ea5976" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> permutations</span>
@@ -400,7 +412,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>frequent_patterns_img1</figcaption>
 </figure>
 </div>
-<div id="98da2697" class="cell" data-execution_count="2">
+<div id="a3ff5d1d" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>transaction_dict <span class="op">=</span> {<span class="st">'t1'</span>: {<span class="st">'M'</span>, <span class="st">'N'</span>, <span class="st">'P'</span>, <span class="st">'X'</span>, <span class="st">'Z'</span>},</span>
@@ -413,14 +425,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><em>A quick aside on the number of datasets</em>:</p>
 <p><span class="math inline">\(2^n - 1 = 2^{11} - 1 = 2047\)</span> possible frequent itemsets.</p>
 <p>The results of the <strong>Custom Apriori Algorithm</strong> will produce:</p>
-<div id="508a2e57" class="cell" data-execution_count="3">
+<div id="754ab3ea" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>custom_apriori(transaction_dict)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="3">
-<pre><code>{1: [{'M'}, {'X'}, {'P'}, {'Z'}, {'O'}],
- 2: [{'M', 'P'}, {'M', 'Z'}, {'M', 'O'}, {'P', 'Z'}, {'P', 'X'}]}</code></pre>
+<pre><code>{1: [{'Z'}, {'O'}, {'P'}, {'X'}, {'M'}],
+ 2: [{'M', 'Z'}, {'P', 'Z'}, {'P', 'X'}, {'M', 'O'}, {'M', 'P'}]}</code></pre>
 </div>
 </div>
 <p><em>Note that we’re not giving the interim support counts or the final support counts,</em> how about we take a look at a widely used and accepted module.</p>
@@ -428,7 +440,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-mlxtend-library" class="level3">
 <h3 class="anchored" data-anchor-id="the-mlxtend-library">The mlxtend Library</h3>
 <p>Import the following from <code>mlxtend</code>:</p>
-<div id="722d3484" class="cell" data-execution_count="4">
+<div id="bd654d03" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># libraries</span></span>
@@ -440,7 +452,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p>For the <code>TransactionEncoder</code>, we’re going to want the transactions in a list of lists:</p>
-<div id="314f5629" class="cell" data-execution_count="5">
+<div id="d6c16106" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># turn transactions into list of lists</span></span>
@@ -448,7 +460,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p>Encode the transactions list:</p>
-<div id="712eb3ae" class="cell" data-execution_count="6">
+<div id="61c30880" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># put the transactions' lists in a boolean dataframe format</span></span>
@@ -458,7 +470,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p>Run the algorithm:</p>
-<div id="975c619d" class="cell" data-execution_count="7">
+<div id="f84c10ca" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mlxtend apriori function</span></span>
@@ -506,17 +518,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td data-quarto-table-cell-role="th">5</td>
 <td>0.6</td>
-<td>(M, O)</td>
+<td>(O, M)</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">6</td>
 <td>0.6</td>
-<td>(M, P)</td>
+<td>(P, M)</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">7</td>
 <td>0.6</td>
-<td>(M, Z)</td>
+<td>(Z, M)</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">8</td>
@@ -526,7 +538,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td data-quarto-table-cell-role="th">9</td>
 <td>0.6</td>
-<td>(P, Z)</td>
+<td>(Z, P)</td>
 </tr>
 </tbody>
 </table>
@@ -535,7 +547,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>And then extending past the frequent itemset results, we can run a function which will return association rules:</p>
-<div id="79c9f616" class="cell" data-execution_count="8">
+<div id="b2065517" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mlxtend association rules to display the rules with a 50% minimum threshold on the frequent itemsets (dataset_apriori)</span></span>
@@ -565,19 +577,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
-<td>(M)</td>
-<td>(O)</td>
-<td>0.8</td>
-<td>0.6</td>
-<td>0.6</td>
-<td>0.75</td>
-<td>1.2500</td>
-<td>0.12</td>
-<td>1.6</td>
-<td>1.00</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
 <td>(O)</td>
 <td>(M)</td>
 <td>0.6</td>
@@ -589,10 +588,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>inf</td>
 <td>0.50</td>
 </tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>(M)</td>
+<td>(O)</td>
+<td>0.8</td>
+<td>0.6</td>
+<td>0.6</td>
+<td>0.75</td>
+<td>1.2500</td>
+<td>0.12</td>
+<td>1.6</td>
+<td>1.00</td>
+</tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
-<td>(M)</td>
 <td>(P)</td>
+<td>(M)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -604,8 +616,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
-<td>(P)</td>
 <td>(M)</td>
+<td>(P)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -617,8 +629,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
-<td>(M)</td>
 <td>(Z)</td>
+<td>(M)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -630,8 +642,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">5</td>
-<td>(Z)</td>
 <td>(M)</td>
+<td>(Z)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -669,8 +681,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">8</td>
-<td>(P)</td>
 <td>(Z)</td>
+<td>(P)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -682,8 +694,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">9</td>
-<td>(Z)</td>
 <td>(P)</td>
+<td>(Z)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -762,7 +774,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-mlxtend-library-1" class="level2">
 <h2 class="anchored" data-anchor-id="the-mlxtend-library-1">The mlxtend Library</h2>
 <p><strong>Import New Library for FP-Growth.</strong></p>
-<div id="e09301aa" class="cell" data-execution_count="9">
+<div id="a8975bf8" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># libraries</span></span>
@@ -776,20 +788,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p><strong>We use the same initialization process as above.</strong></p>
-<div id="b6e2279e" class="cell" data-execution_count="10">
+<div id="36a79272" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>transactions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="10">
-<pre><code>[['M', 'P', 'Z', 'X', 'N'],
- ['M', 'P', 'O', 'X', 'A'],
- ['P', 'Z', 'D', 'X', 'N'],
- ['M', 'C', 'P', 'Z', 'O'],
- ['M', 'Z', 'O', 'K', 'I']]</code></pre>
+<pre><code>[['Z', 'X', 'M', 'P', 'N'],
+ ['X', 'M', 'O', 'P', 'A'],
+ ['D', 'Z', 'X', 'P', 'N'],
+ ['Z', 'M', 'C', 'O', 'P'],
+ ['Z', 'I', 'M', 'K', 'O']]</code></pre>
 </div>
 </div>
-<div id="baa91525" class="cell" data-execution_count="11">
+<div id="f76d4547" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>con <span class="op">=</span> TransactionEncoder()</span>
@@ -896,7 +908,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p><strong>Frequent Itemsets through Apriori</strong></p>
-<div id="f3f3e98b" class="cell" data-execution_count="12">
+<div id="9a45c783" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># frequent itemsets through apriori</span></span>
@@ -944,17 +956,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td data-quarto-table-cell-role="th">5</td>
 <td>0.6</td>
-<td>(M, O)</td>
+<td>(O, M)</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">6</td>
 <td>0.6</td>
-<td>(M, P)</td>
+<td>(P, M)</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">7</td>
 <td>0.6</td>
-<td>(M, Z)</td>
+<td>(Z, M)</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">8</td>
@@ -964,7 +976,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td data-quarto-table-cell-role="th">9</td>
 <td>0.6</td>
-<td>(P, Z)</td>
+<td>(Z, P)</td>
 </tr>
 </tbody>
 </table>
@@ -973,7 +985,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p><strong>Frequent Itemsets through FP-Growth</strong></p>
-<div id="5f559a75" class="cell" data-execution_count="13">
+<div id="d50d1690" class="cell" data-execution_count="13">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># frequent itemsets through fp-growth</span></span>
@@ -1021,17 +1033,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td data-quarto-table-cell-role="th">5</td>
 <td>0.6</td>
-<td>(P, Z)</td>
+<td>(Z, P)</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">6</td>
 <td>0.6</td>
-<td>(M, P)</td>
+<td>(P, M)</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">7</td>
 <td>0.6</td>
-<td>(M, Z)</td>
+<td>(Z, M)</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">8</td>
@@ -1041,7 +1053,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td data-quarto-table-cell-role="th">9</td>
 <td>0.6</td>
-<td>(M, O)</td>
+<td>(O, M)</td>
 </tr>
 </tbody>
 </table>
@@ -1050,7 +1062,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p><strong>Association Rules through Apriori</strong></p>
-<div id="4b8e78e3" class="cell" data-execution_count="14">
+<div id="69c196fb" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>rules <span class="op">=</span> ml_association(dataset_apriori, metric <span class="op">=</span> <span class="st">'confidence'</span>, min_threshold <span class="op">=</span> <span class="fl">0.50</span>)</span>
@@ -1079,19 +1091,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
-<td>(M)</td>
-<td>(O)</td>
-<td>0.8</td>
-<td>0.6</td>
-<td>0.6</td>
-<td>0.75</td>
-<td>1.2500</td>
-<td>0.12</td>
-<td>1.6</td>
-<td>1.00</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
 <td>(O)</td>
 <td>(M)</td>
 <td>0.6</td>
@@ -1103,10 +1102,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>inf</td>
 <td>0.50</td>
 </tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>(M)</td>
+<td>(O)</td>
+<td>0.8</td>
+<td>0.6</td>
+<td>0.6</td>
+<td>0.75</td>
+<td>1.2500</td>
+<td>0.12</td>
+<td>1.6</td>
+<td>1.00</td>
+</tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
-<td>(M)</td>
 <td>(P)</td>
+<td>(M)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -1118,8 +1130,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
-<td>(P)</td>
 <td>(M)</td>
+<td>(P)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -1131,8 +1143,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
-<td>(M)</td>
 <td>(Z)</td>
+<td>(M)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -1144,8 +1156,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">5</td>
-<td>(Z)</td>
 <td>(M)</td>
+<td>(Z)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -1183,8 +1195,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">8</td>
-<td>(P)</td>
 <td>(Z)</td>
+<td>(P)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -1196,8 +1208,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">9</td>
-<td>(Z)</td>
 <td>(P)</td>
+<td>(Z)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -1214,7 +1226,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p><strong>Association Rules through FP-Growth</strong></p>
-<div id="538108fa" class="cell" data-execution_count="15">
+<div id="8157b962" class="cell" data-execution_count="15">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>rules <span class="op">=</span> ml_association(dataset_fpgrowth, metric <span class="op">=</span> <span class="st">'confidence'</span>, min_threshold <span class="op">=</span> <span class="fl">0.50</span>)</span>
@@ -1243,8 +1255,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
-<td>(P)</td>
 <td>(Z)</td>
+<td>(P)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -1256,8 +1268,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
-<td>(Z)</td>
 <td>(P)</td>
+<td>(Z)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -1269,8 +1281,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
-<td>(M)</td>
 <td>(P)</td>
+<td>(M)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -1282,8 +1294,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
-<td>(P)</td>
 <td>(M)</td>
+<td>(P)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -1295,8 +1307,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
-<td>(M)</td>
 <td>(Z)</td>
+<td>(M)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -1308,8 +1320,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">5</td>
-<td>(Z)</td>
 <td>(M)</td>
+<td>(Z)</td>
 <td>0.8</td>
 <td>0.8</td>
 <td>0.6</td>
@@ -1347,19 +1359,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">8</td>
-<td>(M)</td>
-<td>(O)</td>
-<td>0.8</td>
-<td>0.6</td>
-<td>0.6</td>
-<td>0.75</td>
-<td>1.2500</td>
-<td>0.12</td>
-<td>1.6</td>
-<td>1.00</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">9</td>
 <td>(O)</td>
 <td>(M)</td>
 <td>0.6</td>
@@ -1370,6 +1369,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>0.12</td>
 <td>inf</td>
 <td>0.50</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>(M)</td>
+<td>(O)</td>
+<td>0.8</td>
+<td>0.6</td>
+<td>0.6</td>
+<td>0.75</td>
+<td>1.2500</td>
+<td>0.12</td>
+<td>1.6</td>
+<td>1.00</td>
 </tr>
 </tbody>
 </table>
