@@ -113,6 +113,14 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Cluster Analysis</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./pca.html"> 
+<span class="menu-text">Principal Component Analysis (PCA)</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./outliers.html"> 
+<span class="menu-text">Outliers</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link active" href="./neural_networks.html" aria-current="page"> 
 <span class="menu-text">Neural Networks</span></a>
   </li>  
@@ -147,7 +155,26 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#use-case" id="toc-use-case" class="nav-link active" data-scroll-target="#use-case">Use Case</a></li>
+  <li><a href="#the-system" id="toc-the-system" class="nav-link" data-scroll-target="#the-system">The System</a>
+  <ul class="collapse">
+  <li><a href="#elements" id="toc-elements" class="nav-link" data-scroll-target="#elements">Elements</a></li>
+  <li><a href="#how-do-they-learn" id="toc-how-do-they-learn" class="nav-link" data-scroll-target="#how-do-they-learn">How do They Learn?</a></li>
+  <li><a href="#how-are-the-weights-updated" id="toc-how-are-the-weights-updated" class="nav-link" data-scroll-target="#how-are-the-weights-updated">How are the Weights Updated?</a></li>
+  <li><a href="#multi-class-neural-networks" id="toc-multi-class-neural-networks" class="nav-link" data-scroll-target="#multi-class-neural-networks">Multi-Class Neural Networks</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  </ul></li>
+  <li><a href="#hyperparameters" id="toc-hyperparameters" class="nav-link" data-scroll-target="#hyperparameters">Hyperparameters</a>
+  <ul class="collapse">
+  <li><a href="#choosing-hidden-layers" id="toc-choosing-hidden-layers" class="nav-link" data-scroll-target="#choosing-hidden-layers">Choosing (hidden) Layers</a></li>
+  <li><a href="#topology" id="toc-topology" class="nav-link" data-scroll-target="#topology">Topology</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -171,8 +198,122 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>Designed from how our own neurons work, i.e.&nbsp;the human brain!</p>
+<p><em>See the <a href="./terminology.html">Terminology</a> tab for detailed basics.</em></p>
+<section id="use-case" class="level1">
+<h1>Use Case</h1>
+<p>Suppose we were building a model which had highly volatile contextual features.</p>
+<ul>
+<li>static model is based on linear regression (tradition)</li>
+<li>model became obsolete rapidly because of context change</li>
+<li>model did not learn from other projects’ experience / performance</li>
+</ul>
+</section>
+<section id="the-system" class="level1">
+<h1>The System</h1>
+<ul>
+<li>in essence, neural networks are weighted voting systems</li>
+<li>each neuron in the hidden layer aggregates the weighted votes from the nodes in the input layer</li>
+<li>the output neuron aggregates the weighted votes from the nodes in the hidden layer</li>
+</ul>
+<section id="elements" class="level2">
+<h2 class="anchored" data-anchor-id="elements">Elements</h2>
+<ul>
+<li>hidden layers</li>
+<li>units</li>
+<li>activation function</li>
+<li>objective function</li>
+<li>weights</li>
+</ul>
+</section>
+<section id="how-do-they-learn" class="level2">
+<h2 class="anchored" data-anchor-id="how-do-they-learn">How do They Learn?</h2>
+<ul>
+<li>forward propagation
+<ul>
+<li>weights are initialized or updated</li>
+<li>computation flows from the input layer to the output layer through hidden layers</li>
+</ul></li>
+</ul>
+</section>
+<section id="how-are-the-weights-updated" class="level2">
+<h2 class="anchored" data-anchor-id="how-are-the-weights-updated">How are the Weights Updated?</h2>
+<ul>
+<li>stochastic gradient descent</li>
+<li>computing the gradient of the loss function with respect to each weight through the chain rule</li>
+<li>computing the gradient one layer at a time and iterating backward from the output layer to the input layer</li>
+</ul>
+</section>
+<section id="multi-class-neural-networks" class="level2">
+<h2 class="anchored" data-anchor-id="multi-class-neural-networks">Multi-Class Neural Networks</h2>
+<p><strong>Softmax</strong></p>
+<ul>
+<li>logistic regression produces:
+<ul>
+<li>probability between 0 and 1</li>
+<li>the probability represents the likelihood of the input belong to the class (Y/N)</li>
+</ul></li>
+<li>softmax extends this idea into a multi-class world</li>
+<li>softmax produces:
+<ul>
+<li>a set of probabilities between 0 and 1</li>
+<li>each probability represents the likelihood of the input belonging to a particular class</li>
+</ul></li>
+</ul>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<ul>
+<li>neural networks are nets of layers and nodes
+<ul>
+<li>nodes at each layer sum up the weighted inputs and activate it to the next layer</li>
+<li>provides a way of learning features</li>
+<li>highly nonlinear prediction functions</li>
+</ul></li>
+<li><strong>backpropagation</strong> is a special case of <strong>reverse-mode Automatic Differentiation (AD)</strong> and provides an efficient way to compute gradients</li>
+<li>hyperparameters are a new way of learning</li>
+</ul>
+</section>
+</section>
+<section id="hyperparameters" class="level1">
+<h1>Hyperparameters</h1>
+<ul>
+<li>number of hidden layers (depth)</li>
+<li>number of units per hidden layer (width)</li>
+<li>type of activation functions</li>
+<li>form of the objective function</li>
+<li>weights initialization</li>
+</ul>
+<section id="choosing-hidden-layers" class="level2">
+<h2 class="anchored" data-anchor-id="choosing-hidden-layers">Choosing (hidden) Layers</h2>
+<ul>
+<li>0 layers: can only represent linear separable functions or decisions</li>
+<li>1 layer: universal function approximator</li>
+<li>2 layers: can represent an arbitrary decision boundary</li>
+</ul>
+</section>
+<section id="topology" class="level2">
+<h2 class="anchored" data-anchor-id="topology">Topology</h2>
+<p>The topology of a neural network describes:</p>
+<ul>
+<li>Hidden layers as parameter</li>
+<li>Units per hidden layers as a parameter</li>
+<li>Output: 1 unit per class if more than two classes</li>
+<li>Trial-and-error: different topology, different initial weights</li>
+</ul>
+<p><strong>Example: design-build project</strong></p>
+<ul>
+<li>five networks</li>
+<li>three layers</li>
+<li>three nodes for the input layer</li>
+<li>two nodes for the hidden layer</li>
+<li>one node for the output layer</li>
+</ul>
+<p><img src="images/nnet_img3.png" class="img-fluid"></p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

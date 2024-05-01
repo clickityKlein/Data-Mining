@@ -1,0 +1,34 @@
+---
+title: "Principal Component Analysis (PCA)"
+---
+
+# Concept
+
+Principal Component Analysis uses the following ideas:
+
+- extracts variance structure from high dimensional datasets
+- orthogonal projection or transformation of the data into a (possibly lower dimensional) subspace to maximize the variance (*thought experiment: how would a 2D being capture a human*)
+- retains as much information as possible with as little loss as possible
+- helps to deduce whether or not features are independent
+- *can make features less interpretable*
+- each dimension in the dataset results in a principal component (eigenvector)
+
+![](images/pca_img1.png)
+
+# The PCA Process
+
+1. Nomralize to remove the influence of scales.
+2. Compute the covariance matrix.
+3. Compute the Eigenvectors and Eigenvalues from the covariance matrix.
+4. Sort the features by percentage of explained variance.
+5. Drop or Keep the features based on thresholds (how many features you want, how much variance you need, etc.)
+
+# PCA vs. Linear Regression
+
+*Note that we are not trying to find a straight line that best fits our data.*
+
+![](images/pca_img2.png)
+
+# sklearn
+
+

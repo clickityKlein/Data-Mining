@@ -3,3 +3,13 @@ title: "About"
 ---
 
 This website contains knowledge, techniques, and examples on the topic of data mining.
+
+- [Terminology](terminology.qmd)
+- [Web Scraping](web_scraping.qmd)
+- [Data Visualization](data_visualization.qmd)
+- [Frequent Patterns](frequent_patterns.qmd)
+- [Classification and Regression](classification_regression.qmd)
+- [Cluster Analysis](cluster_analysis.qmd)
+- [Principal Component Analysis (PCA)](pca.qmd)
+- [Outliers](outliers.qmd)
+- [Basics of Neural Networks](neural_networks.qmd)

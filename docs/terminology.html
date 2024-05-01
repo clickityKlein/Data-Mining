@@ -115,6 +115,14 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Cluster Analysis</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./pca.html"> 
+<span class="menu-text">Principal Component Analysis (PCA)</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./outliers.html"> 
+<span class="menu-text">Outliers</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./neural_networks.html"> 
 <span class="menu-text">Neural Networks</span></a>
   </li>  
@@ -223,6 +231,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#lazy-vs.-eager-learning" id="toc-lazy-vs.-eager-learning" class="nav-link" data-scroll-target="#lazy-vs.-eager-learning">Lazy vs.&nbsp;Eager Learning</a></li>
   </ul></li>
   <li><a href="#cluster-analysis" id="toc-cluster-analysis" class="nav-link" data-scroll-target="#cluster-analysis">Cluster Analysis</a></li>
+  <li><a href="#dimension-reduction" id="toc-dimension-reduction" class="nav-link" data-scroll-target="#dimension-reduction">Dimension Reduction</a>
+  <ul class="collapse">
+  <li><a href="#techniques" id="toc-techniques" class="nav-link" data-scroll-target="#techniques">Techniques</a></li>
+  </ul></li>
+  <li><a href="#principal-component-analysis" id="toc-principal-component-analysis" class="nav-link" data-scroll-target="#principal-component-analysis">Principal Component Analysis</a></li>
+  <li><a href="#outliers" id="toc-outliers" class="nav-link" data-scroll-target="#outliers">Outliers</a></li>
   <li><a href="#neural-networks" id="toc-neural-networks" class="nav-link" data-scroll-target="#neural-networks">Neural Networks</a>
   <ul class="collapse">
   <li><a href="#perceptron" id="toc-perceptron" class="nav-link" data-scroll-target="#perceptron">Perceptron</a></li>
@@ -230,6 +244,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#neural-network" id="toc-neural-network" class="nav-link" data-scroll-target="#neural-network">Neural Network</a></li>
   <li><a href="#network-topology" id="toc-network-topology" class="nav-link" data-scroll-target="#network-topology">Network Topology</a></li>
   <li><a href="#backpropagation" id="toc-backpropagation" class="nav-link" data-scroll-target="#backpropagation">Backpropagation</a></li>
+  <li><a href="#survivorship-bias" id="toc-survivorship-bias" class="nav-link" data-scroll-target="#survivorship-bias">Survivorship Bias</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -762,10 +777,138 @@ ul.task-list li input[type="checkbox"] {
 <li>must commit to a single hypothesis that covers the entire instance space</li>
 </ul></li>
 </ul>
+<p><em>See the <a href="./classification_regression.html">Classification</a> tab for more detailed information.</em></p>
 </section>
 </section>
 <section id="cluster-analysis" class="level1">
 <h1>Cluster Analysis</h1>
+<ul>
+<li>Cluster: a collection of data object
+<ul>
+<li><em>similar</em> to one another <em>within</em> a cluster</li>
+<li><em>dissimilar</em> to objects in <em>other</em> clusters</li>
+</ul></li>
+<li>Cluster Analysis:
+<ul>
+<li>group simialr data objects into clusters</li>
+<li>similarity measure &amp; clustering algorithm</li>
+<li><em>unsupervised</em> learning (no predefined classes)</li>
+</ul></li>
+</ul>
+<p><em>See the <a href="./cluster_analysis.html">Cluster Analysis</a> tab for more detailed information.</em></p>
+</section>
+<section id="dimension-reduction" class="level1">
+<h1>Dimension Reduction</h1>
+<p><strong>THE CURSE OF DIMENSIONALITY</strong></p>
+<blockquote class="blockquote">
+<p>High Dimensions <span class="math inline">\(\rightarrow\)</span> Lots of Features</p>
+</blockquote>
+<p><strong>Examples</strong></p>
+<ul>
+<li>document classification: thousands of words</li>
+<li>image classification: millions of pixels</li>
+<li>survey: exponential combination of choice
+<ul>
+<li>60 applicants surveyed about 10 topics with a 1-5 scale: <span class="math inline">\((10*5)^{60} = 8.7*10^{101}\)</span></li>
+<li>480,189 users data across 17,770 movies rated on a 1-5 scale: <span class="math inline">\((17770*5)^{480189} \approx \infty\)</span></li>
+</ul></li>
+</ul>
+<p><strong>Information</strong></p>
+<ul>
+<li>we like more <em>information</em> on data</li>
+<li>we create <em>more</em> features to better understand (and <em>learn</em>) data
+<ul>
+<li>polynomial regression</li>
+<li>convert multi-class to binary class</li>
+</ul></li>
+</ul>
+<p><strong>Question</strong>: Can we use fewer features to represent the data?</p>
+<p><strong>Benefits of Lower Dimensions</strong></p>
+<ul>
+<li>Visualization</li>
+<li>Efficiency</li>
+<li>Statistically: <em>fewer dimensions means better generalization</em></li>
+<li>Noise Removal</li>
+<li>Better Algorithm Processing</li>
+</ul>
+<section id="techniques" class="level2">
+<h2 class="anchored" data-anchor-id="techniques">Techniques</h2>
+<ul>
+<li>Feature Elimination
+<ul>
+<li>reduce the feature space by eliminating certain features</li>
+<li>drop features (lost forever)</li>
+<li>do not modify existing features</li>
+</ul></li>
+<li>Feature Extraction
+<ul>
+<li>combine features into new independent features and have them sorted by importance
+<ul>
+<li>measurement: how much variance new feature can explain the old feature</li>
+</ul></li>
+<li>eliminate the least important feature</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="principal-component-analysis" class="level1">
+<h1>Principal Component Analysis</h1>
+<p>Family of unsupervised learning techniques for extracting hidden (potentially lower dimensional) structures from high-dimensional datasets.</p>
+<ul>
+<li>Principal Component Analysis (PCA)</li>
+<li>Kernel PCA</li>
+<li>Independent Component Analysis (ICA)</li>
+</ul>
+<p><em>See the <a href="./pca.html">Principal Component Analysis</a> tab for more detailed information.</em></p>
+</section>
+<section id="outliers" class="level1">
+<h1>Outliers</h1>
+<p><strong>Outlier</strong>: data object that deviates significantly from the rest of the objects, as if it were generated by a different mechanism. <strong>Key takeaway: They are suspected of not being generated by the same mechanism as the rest of the data.</strong></p>
+<ul>
+<li><strong>Clustering</strong>
+<ul>
+<li>finds the majority patterns in a dataset and organizes the data accordingly</li>
+<li>typically unsupervised in nature</li>
+</ul></li>
+<li><strong>Outlier Detection</strong>
+<ul>
+<li>tries to capture those exceptional cases that deviate substantially from the majority patterns</li>
+<li>might also use supervision during the detection process</li>
+<li>important to justify why the detected outliers are generated by other mechanisms
+<ul>
+<li>example: make various assumptions on the rest of the data and show that the detected outliers violate those assumptions significantly</li>
+</ul></li>
+</ul></li>
+<li><strong>Noise</strong>
+<ul>
+<li>random error or variance in a measured variable (not too interesting in data analysis)
+<ul>
+<li>example: a bigger lunch one day or a one more cup of coffee than usual</li>
+</ul></li>
+</ul></li>
+</ul>
+<p><strong>Types of Outliers</strong></p>
+<ul>
+<li>Global Outliers (point anomaly): deviates significantly from the rest of the dataset
+<ul>
+<li>simplest type of outliers</li>
+<li>most outlier detection methods are aimed at finding these</li>
+</ul></li>
+<li>Local Outliers: density significantly devaites from the local area where it occurs</li>
+<li>Contextual (or conditional) Outliers: deviates significantly with respect to a specific context of the object
+<ul>
+<li>context must be specified as part of the problem definition</li>
+<li>example: 86 degrees is normal in summer but exceptional (thus an outlier) in winter</li>
+<li>a generalization of local outliers</li>
+</ul></li>
+<li>Collective Outliers: a subset of data objects forms a collective outlier if the objects as a whole deviate significantly from the entire data set, while importantly the individual data objects may not be outliers
+<ul>
+<li>example: a single student out sick may not be considered outlying, but if 10% of students are sick on a single day, this may be a collective outlier case</li>
+<li>we must consider not only the behavior of the individual objects, but also that of groups</li>
+<li>to detect, we need background knowledge of the relationship among data objects, such as distance or similarity measurements between objects</li>
+</ul></li>
+</ul>
+<p><em>See the <a href="./outliers.html">Outliers</a> tab for more detailed information.</em></p>
 </section>
 <section id="neural-networks" class="level1">
 <h1>Neural Networks</h1>
@@ -821,7 +964,6 @@ ul.task-list li input[type="checkbox"] {
 <li>Output: 1 unit per class if more than two classes</li>
 <li>Trial-and-error: different topology, different initial weights</li>
 </ul>
-<p><em>See the <a href="./classification_regression.html">Classification</a> tab for more detailed information.</em></p>
 </section>
 <section id="backpropagation" class="level2">
 <h2 class="anchored" data-anchor-id="backpropagation">Backpropagation</h2>
@@ -831,6 +973,11 @@ ul.task-list li input[type="checkbox"] {
 <li>Backpropagate the error</li>
 <li>Terminating condition</li>
 </ul>
+</section>
+<section id="survivorship-bias" class="level2">
+<h2 class="anchored" data-anchor-id="survivorship-bias">Survivorship Bias</h2>
+<p>Selection bias that focuses on the <em>survivors</em> in evaluating an event or outcome.</p>
+<p><em>See the <a href="./neural_networks.html">Neural Networks</a> tab for more detailed information.</em></p>
 
 
 </section>

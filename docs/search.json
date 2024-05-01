@@ -7,6 +7,69 @@
     "text": "This page has information about web scraping."
   },
   {
+    "objectID": "pca.html",
+    "href": "pca.html",
+    "title": "Principal Component Analysis (PCA)",
+    "section": "",
+    "text": "Concept\nPrincipal Component Analysis uses the following ideas:\n\nextracts variance structure from high dimensional datasets\northogonal projection or transformation of the data into a (possibly lower dimensional) subspace to maximize the variance (thought experiment: how would a 2D being capture a human)\nretains as much information as possible with as little loss as possible\nhelps to deduce whether or not features are independent\ncan make features less interpretable\neach dimension in the dataset results in a principal component (eigenvector)\n\n\n\n\nThe PCA Process\n\nNomralize to remove the influence of scales.\nCompute the covariance matrix.\nCompute the Eigenvectors and Eigenvalues from the covariance matrix.\nSort the features by percentage of explained variance.\nDrop or Keep the features based on thresholds (how many features you want, how much variance you need, etc.)\n\n\n\nPCA vs. Linear Regression\nNote that we are not trying to find a straight line that best fits our data.\n\n\n\nsklearn"
+  },
+  {
+    "objectID": "neural_networks.html",
+    "href": "neural_networks.html",
+    "title": "Neural Networks",
+    "section": "",
+    "text": "Designed from how our own neurons work, i.e. the human brain!\nSee the Terminology tab for detailed basics."
+  },
+  {
+    "objectID": "neural_networks.html#elements",
+    "href": "neural_networks.html#elements",
+    "title": "Neural Networks",
+    "section": "Elements",
+    "text": "Elements\n\nhidden layers\nunits\nactivation function\nobjective function\nweights"
+  },
+  {
+    "objectID": "neural_networks.html#how-do-they-learn",
+    "href": "neural_networks.html#how-do-they-learn",
+    "title": "Neural Networks",
+    "section": "How do They Learn?",
+    "text": "How do They Learn?\n\nforward propagation\n\nweights are initialized or updated\ncomputation flows from the input layer to the output layer through hidden layers"
+  },
+  {
+    "objectID": "neural_networks.html#how-are-the-weights-updated",
+    "href": "neural_networks.html#how-are-the-weights-updated",
+    "title": "Neural Networks",
+    "section": "How are the Weights Updated?",
+    "text": "How are the Weights Updated?\n\nstochastic gradient descent\ncomputing the gradient of the loss function with respect to each weight through the chain rule\ncomputing the gradient one layer at a time and iterating backward from the output layer to the input layer"
+  },
+  {
+    "objectID": "neural_networks.html#multi-class-neural-networks",
+    "href": "neural_networks.html#multi-class-neural-networks",
+    "title": "Neural Networks",
+    "section": "Multi-Class Neural Networks",
+    "text": "Multi-Class Neural Networks\nSoftmax\n\nlogistic regression produces:\n\nprobability between 0 and 1\nthe probability represents the likelihood of the input belong to the class (Y/N)\n\nsoftmax extends this idea into a multi-class world\nsoftmax produces:\n\na set of probabilities between 0 and 1\neach probability represents the likelihood of the input belonging to a particular class"
+  },
+  {
+    "objectID": "neural_networks.html#summary",
+    "href": "neural_networks.html#summary",
+    "title": "Neural Networks",
+    "section": "Summary",
+    "text": "Summary\n\nneural networks are nets of layers and nodes\n\nnodes at each layer sum up the weighted inputs and activate it to the next layer\nprovides a way of learning features\nhighly nonlinear prediction functions\n\nbackpropagation is a special case of reverse-mode Automatic Differentiation (AD) and provides an efficient way to compute gradients\nhyperparameters are a new way of learning"
+  },
+  {
+    "objectID": "neural_networks.html#choosing-hidden-layers",
+    "href": "neural_networks.html#choosing-hidden-layers",
+    "title": "Neural Networks",
+    "section": "Choosing (hidden) Layers",
+    "text": "Choosing (hidden) Layers\n\n0 layers: can only represent linear separable functions or decisions\n1 layer: universal function approximator\n2 layers: can represent an arbitrary decision boundary"
+  },
+  {
+    "objectID": "neural_networks.html#topology",
+    "href": "neural_networks.html#topology",
+    "title": "Neural Networks",
+    "section": "Topology",
+    "text": "Topology\nThe topology of a neural network describes:\n\nHidden layers as parameter\nUnits per hidden layers as a parameter\nOutput: 1 unit per class if more than two classes\nTrial-and-error: different topology, different initial weights\n\nExample: design-build project\n\nfive networks\nthree layers\nthree nodes for the input layer\ntwo nodes for the hidden layer\none node for the output layer"
+  },
+  {
     "objectID": "frequent_patterns.html",
     "href": "frequent_patterns.html",
     "title": "Frequent Patterns",
@@ -32,7 +95,7 @@
     "href": "frequent_patterns.html#implementation",
     "title": "Frequent Patterns",
     "section": "Implementation",
-    "text": "Implementation\n\nCustom Example\n\n\nCode\nfrom itertools import permutations\ndef custom_apriori(transaction_dict, min_sup = 0.5):\n    # get all unique items in transactions\n    freq_items = set()\n    for transaction in transaction_dict:\n        freq_items = freq_items.union(transaction_dict[transaction])\n        \n    # begin with frequent k=1 itemsets\n    # boolean initialized to true for meeting support, will exit when false\n    # initialize frequency dictionary to store results\n    meets_support = True\n    k = 1\n    frequency_dict = {}\n    \n    while meets_support:\n        # create list for each permutation, initializing support count at 0\n        prev_perms = []\n        candidate = []\n        for perm in permutations(freq_items, k):\n            # prevent duplicates since order doesn't matter\n            if set(perm) not in prev_perms:\n                candidate.append([set(perm), 0])\n                prev_perms.append(set(perm))\n\n        # loop through each permutation in candidate\n        # if the intersection of the permutation with a transaction is the permutation\n        # then that indicates it is an itemset within the transaction\n        for itemset in candidate:\n            for transaction in transaction_dict:\n                if itemset[0].intersection(transaction_dict[transaction]) == itemset[0]:\n                    itemset[1] += 1\n        # keep the permutations with support count at least at the minimum support\n        frequency = [itemset[0] for itemset in candidate if (itemset[1] / len(transaction_dict)) &gt;= min_sup]\n        # if the frequency list is empty, there are no more permutations which can meet the minimum support threshold\n        # we can exit it at that case due to antimonotonicity\n        if len(frequency) != 0:\n            # add to frequency dictionary for each round\n            frequency_dict[k] = frequency\n            # extract unique items from new frequency itemsets\n            freq_items = set()\n            for itemset in frequency:\n                freq_items = freq_items.union(itemset)\n            k += 1\n            \n        else:\n            meets_support = False\n            \n    return frequency_dict\n\n\nSuppose we were given the example of\n\n\n\nfrequent_patterns_img1\n\n\n\n\nCode\ntransaction_dict = {'t1': {'M', 'N', 'P', 'X', 'Z'},\n                    't2': {'M', 'A', 'P', 'X', 'O'},\n                    't3': {'D', 'N', 'P', 'X', 'Z'},\n                    't4': {'M', 'O', 'C', 'P', 'Z'},\n                    't5': {'M', 'K', 'I', 'Z', 'O'}}\n\n\nA quick aside on the number of datasets:\n\\(2^n - 1 = 2^{11} - 1 = 2047\\) possible frequent itemsets.\nThe results of the Custom Apriori Algorithm will produce:\n\n\nCode\ncustom_apriori(transaction_dict)\n\n\n{1: [{'Z'}, {'O'}, {'P'}, {'X'}, {'M'}],\n 2: [{'M', 'Z'}, {'P', 'Z'}, {'P', 'X'}, {'M', 'O'}, {'M', 'P'}]}\n\n\nNote that we’re not giving the interim support counts or the final support counts, how about we take a look at a widely used and accepted module.\n\n\nThe mlxtend Library\nImport the following from mlxtend:\n\n\nCode\n# libraries\nimport numpy as np\nimport pandas as pd\nfrom mlxtend.preprocessing import TransactionEncoder\nfrom mlxtend.frequent_patterns import apriori as ml_apriori\nfrom mlxtend.frequent_patterns import association_rules as ml_association\n\n\nFor the TransactionEncoder, we’re going to want the transactions in a list of lists:\n\n\nCode\n# turn transactions into list of lists\ntransactions = [list(transaction_dict[transaction]) for transaction in  transaction_dict]\n\n\nEncode the transactions list:\n\n\nCode\n# put the transactions' lists in a boolean dataframe format\ncon = TransactionEncoder()\ncon_arr = con.fit(transactions).transform(transactions)\ndf_transformed = pd.DataFrame(con_arr, columns = con.columns_)\n\n\nRun the algorithm:\n\n\nCode\n# mlxtend apriori function\ndataset_apriori = ml_apriori(df_transformed, use_colnames = True, min_support = 0.5)\ndataset_apriori\n\n\n\n\n\n\n\n\n\nsupport\nitemsets\n\n\n\n\n0\n0.8\n(M)\n\n\n1\n0.6\n(O)\n\n\n2\n0.8\n(P)\n\n\n3\n0.6\n(X)\n\n\n4\n0.8\n(Z)\n\n\n5\n0.6\n(O, M)\n\n\n6\n0.6\n(P, M)\n\n\n7\n0.6\n(Z, M)\n\n\n8\n0.6\n(X, P)\n\n\n9\n0.6\n(Z, P)\n\n\n\n\n\n\n\nAnd then extending past the frequent itemset results, we can run a function which will return association rules:\n\n\nCode\n# mlxtend association rules to display the rules with a 50% minimum threshold on the frequent itemsets (dataset_apriori)\nrules = ml_association(dataset_apriori, metric = 'confidence', min_threshold = 0.50)\nrules\n\n\n\n\n\n\n\n\n\nantecedents\nconsequents\nantecedent support\nconsequent support\nsupport\nconfidence\nlift\nleverage\nconviction\nzhangs_metric\n\n\n\n\n0\n(O)\n(M)\n0.6\n0.8\n0.6\n1.00\n1.2500\n0.12\ninf\n0.50\n\n\n1\n(M)\n(O)\n0.8\n0.6\n0.6\n0.75\n1.2500\n0.12\n1.6\n1.00\n\n\n2\n(P)\n(M)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n3\n(M)\n(P)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n4\n(Z)\n(M)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n5\n(M)\n(Z)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n6\n(X)\n(P)\n0.6\n0.8\n0.6\n1.00\n1.2500\n0.12\ninf\n0.50\n\n\n7\n(P)\n(X)\n0.8\n0.6\n0.6\n0.75\n1.2500\n0.12\n1.6\n1.00\n\n\n8\n(Z)\n(P)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n9\n(P)\n(Z)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25"
+    "text": "Implementation\n\nCustom Example\n\n\nCode\nfrom itertools import permutations\ndef custom_apriori(transaction_dict, min_sup = 0.5):\n    # get all unique items in transactions\n    freq_items = set()\n    for transaction in transaction_dict:\n        freq_items = freq_items.union(transaction_dict[transaction])\n        \n    # begin with frequent k=1 itemsets\n    # boolean initialized to true for meeting support, will exit when false\n    # initialize frequency dictionary to store results\n    meets_support = True\n    k = 1\n    frequency_dict = {}\n    \n    while meets_support:\n        # create list for each permutation, initializing support count at 0\n        prev_perms = []\n        candidate = []\n        for perm in permutations(freq_items, k):\n            # prevent duplicates since order doesn't matter\n            if set(perm) not in prev_perms:\n                candidate.append([set(perm), 0])\n                prev_perms.append(set(perm))\n\n        # loop through each permutation in candidate\n        # if the intersection of the permutation with a transaction is the permutation\n        # then that indicates it is an itemset within the transaction\n        for itemset in candidate:\n            for transaction in transaction_dict:\n                if itemset[0].intersection(transaction_dict[transaction]) == itemset[0]:\n                    itemset[1] += 1\n        # keep the permutations with support count at least at the minimum support\n        frequency = [itemset[0] for itemset in candidate if (itemset[1] / len(transaction_dict)) &gt;= min_sup]\n        # if the frequency list is empty, there are no more permutations which can meet the minimum support threshold\n        # we can exit it at that case due to antimonotonicity\n        if len(frequency) != 0:\n            # add to frequency dictionary for each round\n            frequency_dict[k] = frequency\n            # extract unique items from new frequency itemsets\n            freq_items = set()\n            for itemset in frequency:\n                freq_items = freq_items.union(itemset)\n            k += 1\n            \n        else:\n            meets_support = False\n            \n    return frequency_dict\n\n\nSuppose we were given the example of\n\n\n\nfrequent_patterns_img1\n\n\n\n\nCode\ntransaction_dict = {'t1': {'M', 'N', 'P', 'X', 'Z'},\n                    't2': {'M', 'A', 'P', 'X', 'O'},\n                    't3': {'D', 'N', 'P', 'X', 'Z'},\n                    't4': {'M', 'O', 'C', 'P', 'Z'},\n                    't5': {'M', 'K', 'I', 'Z', 'O'}}\n\n\nA quick aside on the number of datasets:\n\\(2^n - 1 = 2^{11} - 1 = 2047\\) possible frequent itemsets.\nThe results of the Custom Apriori Algorithm will produce:\n\n\nCode\ncustom_apriori(transaction_dict)\n\n\n{1: [{'P'}, {'M'}, {'X'}, {'Z'}, {'O'}],\n 2: [{'P', 'X'}, {'P', 'Z'}, {'M', 'P'}, {'M', 'Z'}, {'M', 'O'}]}\n\n\nNote that we’re not giving the interim support counts or the final support counts, how about we take a look at a widely used and accepted module.\n\n\nThe mlxtend Library\nImport the following from mlxtend:\n\n\nCode\n# libraries\nimport numpy as np\nimport pandas as pd\nfrom mlxtend.preprocessing import TransactionEncoder\nfrom mlxtend.frequent_patterns import apriori as ml_apriori\nfrom mlxtend.frequent_patterns import association_rules as ml_association\n\n\nFor the TransactionEncoder, we’re going to want the transactions in a list of lists:\n\n\nCode\n# turn transactions into list of lists\ntransactions = [list(transaction_dict[transaction]) for transaction in  transaction_dict]\n\n\nEncode the transactions list:\n\n\nCode\n# put the transactions' lists in a boolean dataframe format\ncon = TransactionEncoder()\ncon_arr = con.fit(transactions).transform(transactions)\ndf_transformed = pd.DataFrame(con_arr, columns = con.columns_)\n\n\nRun the algorithm:\n\n\nCode\n# mlxtend apriori function\ndataset_apriori = ml_apriori(df_transformed, use_colnames = True, min_support = 0.5)\ndataset_apriori\n\n\n\n\n\n\n\n\n\nsupport\nitemsets\n\n\n\n\n0\n0.8\n(M)\n\n\n1\n0.6\n(O)\n\n\n2\n0.8\n(P)\n\n\n3\n0.6\n(X)\n\n\n4\n0.8\n(Z)\n\n\n5\n0.6\n(M, O)\n\n\n6\n0.6\n(P, M)\n\n\n7\n0.6\n(Z, M)\n\n\n8\n0.6\n(X, P)\n\n\n9\n0.6\n(P, Z)\n\n\n\n\n\n\n\nAnd then extending past the frequent itemset results, we can run a function which will return association rules:\n\n\nCode\n# mlxtend association rules to display the rules with a 50% minimum threshold on the frequent itemsets (dataset_apriori)\nrules = ml_association(dataset_apriori, metric = 'confidence', min_threshold = 0.50)\nrules\n\n\n\n\n\n\n\n\n\nantecedents\nconsequents\nantecedent support\nconsequent support\nsupport\nconfidence\nlift\nleverage\nconviction\nzhangs_metric\n\n\n\n\n0\n(M)\n(O)\n0.8\n0.6\n0.6\n0.75\n1.2500\n0.12\n1.6\n1.00\n\n\n1\n(O)\n(M)\n0.6\n0.8\n0.6\n1.00\n1.2500\n0.12\ninf\n0.50\n\n\n2\n(P)\n(M)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n3\n(M)\n(P)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n4\n(Z)\n(M)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n5\n(M)\n(Z)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n6\n(X)\n(P)\n0.6\n0.8\n0.6\n1.00\n1.2500\n0.12\ninf\n0.50\n\n\n7\n(P)\n(X)\n0.8\n0.6\n0.6\n0.75\n1.2500\n0.12\n1.6\n1.00\n\n\n8\n(P)\n(Z)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n9\n(Z)\n(P)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25"
   },
   {
     "objectID": "frequent_patterns.html#partitioning",
@@ -53,7 +116,63 @@
     "href": "frequent_patterns.html#the-mlxtend-library-1",
     "title": "Frequent Patterns",
     "section": "The mlxtend Library",
-    "text": "The mlxtend Library\nImport New Library for FP-Growth.\n\n\nCode\n# libraries\nimport numpy as np\nimport pandas as pd\nfrom mlxtend.preprocessing import TransactionEncoder\nfrom mlxtend.frequent_patterns import apriori as ml_apriori\nfrom mlxtend.frequent_patterns import association_rules as ml_association\n# new function for fp-growth\nfrom mlxtend.frequent_patterns import fpgrowth as ml_fpgrowth\n\n\nWe use the same initialization process as above.\n\n\nCode\ntransactions\n\n\n[['Z', 'X', 'M', 'P', 'N'],\n ['X', 'M', 'O', 'P', 'A'],\n ['D', 'Z', 'X', 'P', 'N'],\n ['Z', 'M', 'C', 'O', 'P'],\n ['Z', 'I', 'M', 'K', 'O']]\n\n\n\n\nCode\ncon = TransactionEncoder()\ncon_arr = con.fit(transactions).transform(transactions)\ndf_transformed = pd.DataFrame(con_arr, columns = con.columns_)\ndf_transformed\n\n\n\n\n\n\n\n\n\nA\nC\nD\nI\nK\nM\nN\nO\nP\nX\nZ\n\n\n\n\n0\nFalse\nFalse\nFalse\nFalse\nFalse\nTrue\nTrue\nFalse\nTrue\nTrue\nTrue\n\n\n1\nTrue\nFalse\nFalse\nFalse\nFalse\nTrue\nFalse\nTrue\nTrue\nTrue\nFalse\n\n\n2\nFalse\nFalse\nTrue\nFalse\nFalse\nFalse\nTrue\nFalse\nTrue\nTrue\nTrue\n\n\n3\nFalse\nTrue\nFalse\nFalse\nFalse\nTrue\nFalse\nTrue\nTrue\nFalse\nTrue\n\n\n4\nFalse\nFalse\nFalse\nTrue\nTrue\nTrue\nFalse\nTrue\nFalse\nFalse\nTrue\n\n\n\n\n\n\n\nFrequent Itemsets through Apriori\n\n\nCode\n# frequent itemsets through apriori\ndataset_apriori = ml_apriori(df_transformed, use_colnames = True, min_support = 0.5)\ndataset_apriori\n\n\n\n\n\n\n\n\n\nsupport\nitemsets\n\n\n\n\n0\n0.8\n(M)\n\n\n1\n0.6\n(O)\n\n\n2\n0.8\n(P)\n\n\n3\n0.6\n(X)\n\n\n4\n0.8\n(Z)\n\n\n5\n0.6\n(O, M)\n\n\n6\n0.6\n(P, M)\n\n\n7\n0.6\n(Z, M)\n\n\n8\n0.6\n(X, P)\n\n\n9\n0.6\n(Z, P)\n\n\n\n\n\n\n\nFrequent Itemsets through FP-Growth\n\n\nCode\n# frequent itemsets through fp-growth\ndataset_fpgrowth = ml_fpgrowth(df_transformed, use_colnames = True, min_support = 0.5)\ndataset_fpgrowth\n\n\n\n\n\n\n\n\n\nsupport\nitemsets\n\n\n\n\n0\n0.8\n(Z)\n\n\n1\n0.8\n(P)\n\n\n2\n0.8\n(M)\n\n\n3\n0.6\n(X)\n\n\n4\n0.6\n(O)\n\n\n5\n0.6\n(Z, P)\n\n\n6\n0.6\n(P, M)\n\n\n7\n0.6\n(Z, M)\n\n\n8\n0.6\n(X, P)\n\n\n9\n0.6\n(O, M)\n\n\n\n\n\n\n\nAssociation Rules through Apriori\n\n\nCode\nrules = ml_association(dataset_apriori, metric = 'confidence', min_threshold = 0.50)\nrules\n\n\n\n\n\n\n\n\n\nantecedents\nconsequents\nantecedent support\nconsequent support\nsupport\nconfidence\nlift\nleverage\nconviction\nzhangs_metric\n\n\n\n\n0\n(O)\n(M)\n0.6\n0.8\n0.6\n1.00\n1.2500\n0.12\ninf\n0.50\n\n\n1\n(M)\n(O)\n0.8\n0.6\n0.6\n0.75\n1.2500\n0.12\n1.6\n1.00\n\n\n2\n(P)\n(M)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n3\n(M)\n(P)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n4\n(Z)\n(M)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n5\n(M)\n(Z)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n6\n(X)\n(P)\n0.6\n0.8\n0.6\n1.00\n1.2500\n0.12\ninf\n0.50\n\n\n7\n(P)\n(X)\n0.8\n0.6\n0.6\n0.75\n1.2500\n0.12\n1.6\n1.00\n\n\n8\n(Z)\n(P)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n9\n(P)\n(Z)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n\n\n\n\n\nAssociation Rules through FP-Growth\n\n\nCode\nrules = ml_association(dataset_fpgrowth, metric = 'confidence', min_threshold = 0.50)\nrules\n\n\n\n\n\n\n\n\n\nantecedents\nconsequents\nantecedent support\nconsequent support\nsupport\nconfidence\nlift\nleverage\nconviction\nzhangs_metric\n\n\n\n\n0\n(Z)\n(P)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n1\n(P)\n(Z)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n2\n(P)\n(M)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n3\n(M)\n(P)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n4\n(Z)\n(M)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n5\n(M)\n(Z)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n6\n(X)\n(P)\n0.6\n0.8\n0.6\n1.00\n1.2500\n0.12\ninf\n0.50\n\n\n7\n(P)\n(X)\n0.8\n0.6\n0.6\n0.75\n1.2500\n0.12\n1.6\n1.00\n\n\n8\n(O)\n(M)\n0.6\n0.8\n0.6\n1.00\n1.2500\n0.12\ninf\n0.50\n\n\n9\n(M)\n(O)\n0.8\n0.6\n0.6\n0.75\n1.2500\n0.12\n1.6\n1.00\n\n\n\n\n\n\n\nAside from some minor differences in the output, if we were to sort these results, they would be be very similar (if not identical)."
+    "text": "The mlxtend Library\nImport New Library for FP-Growth.\n\n\nCode\n# libraries\nimport numpy as np\nimport pandas as pd\nfrom mlxtend.preprocessing import TransactionEncoder\nfrom mlxtend.frequent_patterns import apriori as ml_apriori\nfrom mlxtend.frequent_patterns import association_rules as ml_association\n# new function for fp-growth\nfrom mlxtend.frequent_patterns import fpgrowth as ml_fpgrowth\n\n\nWe use the same initialization process as above.\n\n\nCode\ntransactions\n\n\n[['P', 'N', 'X', 'Z', 'M'],\n ['P', 'A', 'X', 'M', 'O'],\n ['P', 'D', 'N', 'X', 'Z'],\n ['P', 'C', 'Z', 'M', 'O'],\n ['Z', 'M', 'O', 'K', 'I']]\n\n\n\n\nCode\ncon = TransactionEncoder()\ncon_arr = con.fit(transactions).transform(transactions)\ndf_transformed = pd.DataFrame(con_arr, columns = con.columns_)\ndf_transformed\n\n\n\n\n\n\n\n\n\nA\nC\nD\nI\nK\nM\nN\nO\nP\nX\nZ\n\n\n\n\n0\nFalse\nFalse\nFalse\nFalse\nFalse\nTrue\nTrue\nFalse\nTrue\nTrue\nTrue\n\n\n1\nTrue\nFalse\nFalse\nFalse\nFalse\nTrue\nFalse\nTrue\nTrue\nTrue\nFalse\n\n\n2\nFalse\nFalse\nTrue\nFalse\nFalse\nFalse\nTrue\nFalse\nTrue\nTrue\nTrue\n\n\n3\nFalse\nTrue\nFalse\nFalse\nFalse\nTrue\nFalse\nTrue\nTrue\nFalse\nTrue\n\n\n4\nFalse\nFalse\nFalse\nTrue\nTrue\nTrue\nFalse\nTrue\nFalse\nFalse\nTrue\n\n\n\n\n\n\n\nFrequent Itemsets through Apriori\n\n\nCode\n# frequent itemsets through apriori\ndataset_apriori = ml_apriori(df_transformed, use_colnames = True, min_support = 0.5)\ndataset_apriori\n\n\n\n\n\n\n\n\n\nsupport\nitemsets\n\n\n\n\n0\n0.8\n(M)\n\n\n1\n0.6\n(O)\n\n\n2\n0.8\n(P)\n\n\n3\n0.6\n(X)\n\n\n4\n0.8\n(Z)\n\n\n5\n0.6\n(M, O)\n\n\n6\n0.6\n(P, M)\n\n\n7\n0.6\n(Z, M)\n\n\n8\n0.6\n(X, P)\n\n\n9\n0.6\n(P, Z)\n\n\n\n\n\n\n\nFrequent Itemsets through FP-Growth\n\n\nCode\n# frequent itemsets through fp-growth\ndataset_fpgrowth = ml_fpgrowth(df_transformed, use_colnames = True, min_support = 0.5)\ndataset_fpgrowth\n\n\n\n\n\n\n\n\n\nsupport\nitemsets\n\n\n\n\n0\n0.8\n(Z)\n\n\n1\n0.8\n(P)\n\n\n2\n0.8\n(M)\n\n\n3\n0.6\n(X)\n\n\n4\n0.6\n(O)\n\n\n5\n0.6\n(P, Z)\n\n\n6\n0.6\n(P, M)\n\n\n7\n0.6\n(Z, M)\n\n\n8\n0.6\n(X, P)\n\n\n9\n0.6\n(M, O)\n\n\n\n\n\n\n\nAssociation Rules through Apriori\n\n\nCode\nrules = ml_association(dataset_apriori, metric = 'confidence', min_threshold = 0.50)\nrules\n\n\n\n\n\n\n\n\n\nantecedents\nconsequents\nantecedent support\nconsequent support\nsupport\nconfidence\nlift\nleverage\nconviction\nzhangs_metric\n\n\n\n\n0\n(M)\n(O)\n0.8\n0.6\n0.6\n0.75\n1.2500\n0.12\n1.6\n1.00\n\n\n1\n(O)\n(M)\n0.6\n0.8\n0.6\n1.00\n1.2500\n0.12\ninf\n0.50\n\n\n2\n(P)\n(M)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n3\n(M)\n(P)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n4\n(Z)\n(M)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n5\n(M)\n(Z)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n6\n(X)\n(P)\n0.6\n0.8\n0.6\n1.00\n1.2500\n0.12\ninf\n0.50\n\n\n7\n(P)\n(X)\n0.8\n0.6\n0.6\n0.75\n1.2500\n0.12\n1.6\n1.00\n\n\n8\n(P)\n(Z)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n9\n(Z)\n(P)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n\n\n\n\n\nAssociation Rules through FP-Growth\n\n\nCode\nrules = ml_association(dataset_fpgrowth, metric = 'confidence', min_threshold = 0.50)\nrules\n\n\n\n\n\n\n\n\n\nantecedents\nconsequents\nantecedent support\nconsequent support\nsupport\nconfidence\nlift\nleverage\nconviction\nzhangs_metric\n\n\n\n\n0\n(P)\n(Z)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n1\n(Z)\n(P)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n2\n(P)\n(M)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n3\n(M)\n(P)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n4\n(Z)\n(M)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n5\n(M)\n(Z)\n0.8\n0.8\n0.6\n0.75\n0.9375\n-0.04\n0.8\n-0.25\n\n\n6\n(X)\n(P)\n0.6\n0.8\n0.6\n1.00\n1.2500\n0.12\ninf\n0.50\n\n\n7\n(P)\n(X)\n0.8\n0.6\n0.6\n0.75\n1.2500\n0.12\n1.6\n1.00\n\n\n8\n(M)\n(O)\n0.8\n0.6\n0.6\n0.75\n1.2500\n0.12\n1.6\n1.00\n\n\n9\n(O)\n(M)\n0.6\n0.8\n0.6\n1.00\n1.2500\n0.12\ninf\n0.50\n\n\n\n\n\n\n\nAside from some minor differences in the output, if we were to sort these results, they would be be very similar (if not identical)."
+  },
+  {
+    "objectID": "cluster_analysis.html",
+    "href": "cluster_analysis.html",
+    "title": "Cluster Analysis",
+    "section": "",
+    "text": "Partitioning Criteria:\n\nsingle level\nhierarchical partitioning\noften, multi-level hierarchical partitioning is desirable, i.e. grouping topical terms\n\nSeparation of Clusters:\n\nExclusive: one customer belongs to only one region\nNon-Exclusive: one document may belong to more than one clas\n\nSimilarity Measure:\n\nDistance-Based: Euclidean, road network, vector\nConnectivity-Based: density or contiguity\n\nClustering Space:\n\nFull Space: often when low dimensional\nSubspaces: often in high dimensional clustering"
+  },
+  {
+    "objectID": "cluster_analysis.html#algorithm",
+    "href": "cluster_analysis.html#algorithm",
+    "title": "Cluster Analysis",
+    "section": "Algorithm",
+    "text": "Algorithm\n\nPartition objects into k nonempty clusters\nCompute the mean (centroid) of each cluster\nAssign each object to the closest centroid\n\nclosest depends on the distance measurement used (i.e. Euclidean, Manhattan, etc.)\n\nRepeat until there are no more assignment changes"
+  },
+  {
+    "objectID": "cluster_analysis.html#discussion",
+    "href": "cluster_analysis.html#discussion",
+    "title": "Cluster Analysis",
+    "section": "Discussion",
+    "text": "Discussion\n\nEfficiency: \\(O(tKn)\\)\n\nn: number of objects\nK: number of clusters\nt: number of iterations\nnormally, \\(K, t &lt;&lt; n\\)\n\nK-means clustering often terminates at a local optimum (initialization can be important to find high-quality clusters)\nNeed to specify K, the number of clusters, in advance\n\nthere are method to automatically determine the “best” K\nin practice, we often run a range of values and select the “best” K value\n\nSensitive to Noisy Data and Outliers\n\nK-medians, K-medoids, etc. can be better equipped to handle outliers\n\nK-means applies only to objects in a continuous n-dimensional space\n\nusing the K-modes for categorical data\n\nNot suitable to discover clusters with non-convex shapes\n\nmore suitable methods are using density-based clustering, kernel K-means, etc.\n\nFurther Variations of K-Means\n\nChoosing better initial centroid estimates\n\nK-means++, Intelligent K-Means, Genetic K-Means\n\nChoosing different representative prototypes for clusters\n\nK-Medoids, K-Medians, K-Modes\n\nApplying feature transformation techniques\n\nWeighted K-Means, Kernel K-Means"
+  },
+  {
+    "objectID": "cluster_analysis.html#discussion-1",
+    "href": "cluster_analysis.html#discussion-1",
+    "title": "Cluster Analysis",
+    "section": "Discussion",
+    "text": "Discussion\n\nK-Medoids Clustering: find representative objects (medoids) in clusters\nPAM\n\nstarts from an initital set of medoids\niteratively replaces one of the medoids by one of the non-medoids if it improves the total sum of squared errors (SSE) of the resulting clustering\nPAM works effectively for small data sets but does not scale well for large data sets (due to the computational complexity)\n\nEfficiency Improvements on PAM:\n\nCLARA: PAM on samples\nCLARANS: randomized re-sampling, ensuring efficiency & quality"
+  },
+  {
+    "objectID": "cluster_analysis.html#dendrogram-how-clusters-are-merged",
+    "href": "cluster_analysis.html#dendrogram-how-clusters-are-merged",
+    "title": "Cluster Analysis",
+    "section": "Dendrogram: How Clusters are Merged",
+    "text": "Dendrogram: How Clusters are Merged\n\nDendrogram: decompose a set of data objects into a tree of clusters by multi-level nested partitioning\nA clustering of the data objects is obtained by cutting the dendrogram at the desired level, then each connected components forms a cluster"
+  },
+  {
+    "objectID": "cluster_analysis.html#agglomerative-clustering-algorithm",
+    "href": "cluster_analysis.html#agglomerative-clustering-algorithm",
+    "title": "Cluster Analysis",
+    "section": "Agglomerative Clustering Algorithm",
+    "text": "Agglomerative Clustering Algorithm\n\nAGNES (AGglomerative NESting)\n\nuse single-link method and the dissimilarity matrix\ncontinuously merge nodes that have the least dissimilarity\neventually all nodes belong to the same cluster\n\nAgglomerative clustering varies on different similarity measures among clusters\n\nsingle link (nearest neighbor)\ncomplete link (diameter)\naverage link (group average)\ncentroid link (centroid similarity)"
+  },
+  {
+    "objectID": "cluster_analysis.html#single-link-vs.-complete-link-in-hierarhcical-clustering",
+    "href": "cluster_analysis.html#single-link-vs.-complete-link-in-hierarhcical-clustering",
+    "title": "Cluster Analysis",
+    "section": "Single Link vs. Complete Link in Hierarhcical Clustering",
+    "text": "Single Link vs. Complete Link in Hierarhcical Clustering\nSingle Link (nearest neighbor)\n\nsimilarity between two clusters is the similarity between their most similar (nearest neighbor) members\nlocal similarity-based: emphasizing more on close regions, ignoring the overall structure of the cluster\ncapable of clustering non-elliptical shaped group of objects\nsensitive to noise and outliers\n\n\nComplete Link (diameter)\n\nsimilarity between two clusters is the similarity between their most dissimilar members\nmerge two clusters to form one with the smallest diameter\nnonlocal in behavior, obtaining compact shaped cluster\nsensitive to outliers"
+  },
+  {
+    "objectID": "cluster_analysis.html#agglomerative",
+    "href": "cluster_analysis.html#agglomerative",
+    "title": "Cluster Analysis",
+    "section": "Agglomerative",
+    "text": "Agglomerative\n\neach observation starts in its own cluster\nclusteres are successively merged together\nlinkage criteria determines merge strategy\n\nward: minimize the sum of squared differences within clusters\nmax/complete: minimize the max distance within clusters\naverage: minimize the average distance within clusters\nsingle: minimize the minimal distance within clusters\n\n\n\n\nFeature Agglomerative\n\nFeature Agglomerative uses agglomerative clustering to group together features that look very similar, thus decreasing the number of features\ndimensionality reduction tool"
   },
   {
     "objectID": "about.html",
@@ -67,7 +186,7 @@
     "href": "classification_regression.html",
     "title": "Classification and Regression",
     "section": "",
-    "text": "Mostly used in classification, i.e. decision tree classification, and is known as a greedy algorithm.\nA flowchart-like tree structure, where each:\n\nRoot Node: the topmost node in a tree\nInternal Node: denotes a test on an attribute\nBranch: represents an outcome of the test\nLeaf Node (terminal node): holds a class label\n\nIn splitting attributes:\n\nDiscrete Values: directly\nContinuous Values: split_point\nDiscrete Values:\n\nbinary tree\nsplitting_subset\n\n\nAttributes are selected at each node based on a heuristic or statistical measure. An attribute selection measure (splitting rules) is a heuristic (enabling someone to discover or learn something for themselves) for selecting the splitting criterion that “best” separates a given data partition of class-labeled training uples into individual classes.\nSome common selection measures:\n\ninformation gain - Iterative Dichotomiser 3 (ID3): multi-valued attributes\ngain ratio (C4.5): unbalanced splits\nGini impurity: multi-valued, equal-sized & pure partitions, not great when the number of classes is large\n\n\n\nThe purer the dataset:\n\nthe less information we need to remember\nthe easier we can make predictions\n\nEntropy is to measure the impurity of a dataset.\nWe call \\(p_i = \\frac{C_{i,D}}{D}\\) the probability that a tuple belong to class \\(C_i\\), \\(m\\) that number of classes, and \\(v\\) are partitions or subsets.\n\\(Info(D) = - \\sum\\limits_{i=1}^{m} p_i log_2(p_i)\\) (entropy)\n\\(Info_A(D) = \\sum\\limits_{j=1}^{v} \\frac{|D_j|}{|D|} Info(D_j)\\)\n\\(Gain(A) = Info(D) - Info_A(D)\\)\nHere’s what this process looks like by hand:\n\n\n\n\n\n\n\nInformation gain is biased towards tests with many outcomes, to overcome this, gain ratio applied a kind of normalization to information gain.\n\\(SplitInfo_A(D) = - \\sum\\limits_{j=1}^{v} \\frac{|D_j|}{|D|} log_2(\\frac{|D_j|}{|D|})\\)\n\\(GainRatio(A) = \\frac{Gain(A)}{SplitInfo_A(D)}\\)\n\n\n\n\\(Gini(D) = 1 - \\sum\\limits_{i=1}^m p_i^2\\)\nand given \\(v\\) partitions (\\(v=2\\) would indicate binary),\n\\(Gini_A(D) = \\sum\\limits_{j=1}^v \\frac{D_j}{D} Gini(D_j)\\)\n\\(\\Delta Gini(A) = Gini(D) - Gini_A(D)\\)"
+    "text": "Mostly used in classification, i.e. decision tree classification, and is known as a greedy algorithm.\nA flowchart-like tree structure, where each:\n\nRoot Node: the topmost node in a tree\nInternal Node: denotes a test on an attribute\nBranch: represents an outcome of the test\nLeaf Node (terminal node): holds a class label\n\nIn splitting attributes:\n\nDiscrete Values: directly\nContinuous Values: split_point\nDiscrete Values:\n\nbinary tree\nsplitting_subset\n\n\nAttributes are selected at each node based on a heuristic or statistical measure. An attribute selection measure (splitting rules) is a heuristic (enabling someone to discover or learn something for themselves) for selecting the splitting criterion that “best” separates a given data partition of class-labeled training uples into individual classes.\nSome common selection measures:\n\ninformation gain - Iterative Dichotomiser 3 (ID3): multi-valued attributes\ngain ratio (C4.5): unbalanced splits\nGini impurity: multi-valued, equal-sized & pure partitions, not great when the number of classes is large\n\n\n\nThe purer the dataset:\n\nthe less information we need to remember\nthe easier we can make predictions\n\nEntropy is to measure the impurity of a dataset.\nWe call \\(p_i = \\frac{C_{i,D}}{D}\\) the probability that a tuple belong to class \\(C_i\\), \\(m\\) that number of classes, and \\(v\\) are partitions or subsets.\n\\(Info(D) = - \\sum\\limits_{i=1}^{m} p_i log_2(p_i)\\) (entropy)\n\\(Info_A(D) = \\sum\\limits_{j=1}^{v} \\frac{|D_j|}{|D|} Info(D_j)\\)\n\\(Gain(A) = Info(D) - Info_A(D)\\)\nHere’s what this process looks like by hand:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInformation gain is biased towards tests with many outcomes, to overcome this, gain ratio applied a kind of normalization to information gain.\n\\(SplitInfo_A(D) = - \\sum\\limits_{j=1}^{v} \\frac{|D_j|}{|D|} log_2(\\frac{|D_j|}{|D|})\\)\n\\(GainRatio(A) = \\frac{Gain(A)}{SplitInfo_A(D)}\\)\n\n\n\n\\(Gini(D) = 1 - \\sum\\limits_{i=1}^m p_i^2\\)\nand given \\(v\\) partitions (\\(v=2\\) would indicate binary),\n\\(Gini_A(D) = \\sum\\limits_{j=1}^v \\frac{D_j}{D} Gini(D_j)\\)\n\\(\\Delta Gini(A) = Gini(D) - Gini_A(D)\\)"
   },
   {
     "objectID": "classification_regression.html#information-gain",
@@ -165,14 +284,77 @@
     "href": "data_visualization.html",
     "title": "Data Visualization",
     "section": "",
-    "text": "This page has information about data visualization, containing types of plots, use cases, and how to implement using various python libraries.\nLecture 5"
+    "text": "This page has information about data visualization, containing types of plots, use cases, and how to implement using various python libraries."
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "About",
     "section": "",
-    "text": "This website contains knowledge, techniques, and examples on the topic of data mining."
+    "text": "This website contains knowledge, techniques, and examples on the topic of data mining.\n\nTerminology\nWeb Scraping\nData Visualization\nFrequent Patterns\nClassification and Regression\nCluster Analysis\nPrincipal Component Analysis (PCA)\nOutliers\nBasics of Neural Networks"
+  },
+  {
+    "objectID": "outliers.html",
+    "href": "outliers.html",
+    "title": "Outliers",
+    "section": "",
+    "text": "An outlier is a data object that deviates significantly from the rest of the objects, suspected of being generated by a different mechanism."
+  },
+  {
+    "objectID": "outliers.html#detecting-global-outliers",
+    "href": "outliers.html#detecting-global-outliers",
+    "title": "Outliers",
+    "section": "Detecting Global Outliers",
+    "text": "Detecting Global Outliers\n\nfind an appropriate measurement of deviation with respect to the application in question\nimportant in many applications\n\nintrusion detection in computer networks\ntrading transaction auditing systems"
+  },
+  {
+    "objectID": "outliers.html#contextual-vs.-behavioral-attributes",
+    "href": "outliers.html#contextual-vs.-behavioral-attributes",
+    "title": "Outliers",
+    "section": "Contextual vs. Behavioral Attributes",
+    "text": "Contextual vs. Behavioral Attributes\n\nin contextual outlier detection, the attributes of the data objects in question are divided into two groups\n\ncontextual attributes\nbehavioral attribues\n\nthe contextual attributes of a data object define the object’s context\n\nexample: temperature contextual attributes may be date and location\n\nthe behavioral attributes define the object’s characteristics, and are used to evaluate whether the object is an outlier in the context to which it belongs\n\nexample: temperature behavioral attributes may be temperature, humidity, and pressure\n\nWhether a data object is a contextual outlier depends on not only the behavioral attributes but also the contextual attributes"
+  },
+  {
+    "objectID": "outliers.html#contextual-global-and-local-outliers",
+    "href": "outliers.html#contextual-global-and-local-outliers",
+    "title": "Outliers",
+    "section": "Contextual, Global, and Local Outliers",
+    "text": "Contextual, Global, and Local Outliers\n\nglobal outlier detection can be regarded as a special case of contextual outlier detection, where the set of contextual attributes is empty - global outlier detection uses the whole dataset as the context.\ncontextual outlier analysis provideds flexibility to users in that one can examine outliers in different contexts, which can be highly desirable in many applications\nthe quality of contextual outlier detection in an application depends on the meaningfulness of the contextual attributes, in addition to the measurement of the deviation of an object to the majority in the space of behavior attributes\napplications of collective outliers:\n\nintrusion detection, if several computers are sending denial-of-service packages to each other, this could indicate an attack\na large set of transactions of the same stock between a small number of parties in a short period could indicate market manipulation"
+  },
+  {
+    "objectID": "outliers.html#comparison-between-multiple-types-of-outliers",
+    "href": "outliers.html#comparison-between-multiple-types-of-outliers",
+    "title": "Outliers",
+    "section": "Comparison Between Multiple Types of Outliers",
+    "text": "Comparison Between Multiple Types of Outliers\n\na dataset can have many types of outliers\nan object may belong to multiple types of outliers\ndifferent applications or purposes could require detection of different types of outliers\nglobal outlier detection is the simplest\ncontext outlier detection requires background information\ncollective outlier detection requires background information to model the relationship among objects to find groups of outliers"
+  },
+  {
+    "objectID": "outliers.html#challenges-of-outlier-detection",
+    "href": "outliers.html#challenges-of-outlier-detection",
+    "title": "Outliers",
+    "section": "Challenges of Outlier Detection",
+    "text": "Challenges of Outlier Detection\n\nmodeling normal objects and outliers effectively\n\nthe border between data normality and abnormality (outliers) is often not clear-cut\n\napplication-specific outlier detection\n\nthe relationship among objects highly depends on applications\n\nhandling noise in outlier detection\n\nnoise often unavoidably exists in data collected in many applications\nlow data quality and the presence of noise bring a huge challenge to outlier detection\n\ninterpretability\n\ndetection and understanding of outliers"
+  },
+  {
+    "objectID": "outliers.html#supervised-semi-supervised-and-unsupervised-methods",
+    "href": "outliers.html#supervised-semi-supervised-and-unsupervised-methods",
+    "title": "Outliers",
+    "section": "Supervised, Semi-Supervised, and Unsupervised Methods",
+    "text": "Supervised, Semi-Supervised, and Unsupervised Methods\n\nsupervised methods model data normality and abnormality\n\nimbalanced datasets\navoid many false positives in outlier detection\n\nunsupervised methods make an implicit assumption\n\nnormal objects are somewhat clustered\n\nsemi-supervised methods\n\nalthough obtaining some labeled examples is feasible, the number of such labeled examples is often small"
+  },
+  {
+    "objectID": "outliers.html#statistical-methods-proximity-based-methods-and-reconstruction-based-methods",
+    "href": "outliers.html#statistical-methods-proximity-based-methods-and-reconstruction-based-methods",
+    "title": "Outliers",
+    "section": "Statistical Methods, Proximity-based Methods, and Reconstruction-based Methods",
+    "text": "Statistical Methods, Proximity-based Methods, and Reconstruction-based Methods\n\nStatistical methods (also known as model-based methods) make assumptions of data normality\n\nExample: detecting outliers using a statistical (Gaussian) model\n\nProximity-based methods assume that an object is an outlier if the nearest neighbors of the object are far away in feature space, that is, the proximity of the object to its neighbors significantly deviates from the proximity of most of the other objects to their neighbors in the same data set\nReconstruction-based methods: matrix-factorization based methods and pattern-based compression methods\n\nnormal data samples often share certain similarities, can often be represented in a more succinct way, compared with their original representation\nwith the succinct representation, we can reconstruct the original representation of the normal samples well\nfor the samples that cannot be reconstructed well by the succinct representation, we flag them as outliers\n\n\nThe overall idea behind statistical methods for outlier detection is to learn a generative model fitting the given dataset, and then identify those objects in low-probability regions of the model as outliers.\nA parametric method assumes that the normal data objects are generated by a parametric distribution with a finite number of parameters \\(\\Theta\\).\n\nthe probability density function of the parametric distribution \\(f(x, \\Theta)\\) gives the probability that object \\(x\\) is generated by the distribution\nthe smaller this value, the more likely \\(x\\) is an outlier\n\nA nonparametric method tries to determine the model from the input data."
+  },
+  {
+    "objectID": "outliers.html#detection-of-univariate-outliers-based-on-normal-distribution",
+    "href": "outliers.html#detection-of-univariate-outliers-based-on-normal-distribution",
+    "title": "Outliers",
+    "section": "Detection of Univariate Outliers Based on Normal Distribution",
+    "text": "Detection of Univariate Outliers Based on Normal Distribution\n\nassumption: data are generated from a normal distribution\nlearn the parameters of the normal (Gaussian) distribution from the input data, and identify the points with low probability as outliers\nexample: suppose we have a city’s average temperature values for a single month in the last 10 years:\n\n24.0, 28.9, 28.9, 29.0, 29.1, 29.1, 29.2, 29.2, 29.3, and 29.4\n\na normal distribution is determined by two parameters\n\nthe mean \\(\\mu\\)\nthe standard deviation \\(\\sigma\\)\n\nuse the maximum likelihood method to estimate the parameters \\(\\mu\\) and \\(\\sigma\\):"
   },
   {
     "objectID": "terminology.html",
@@ -326,7 +508,14 @@
     "href": "terminology.html#lazy-vs.-eager-learning",
     "title": "Terminology",
     "section": "Lazy vs. Eager Learning",
-    "text": "Lazy vs. Eager Learning\n\nLazy: instance based learning, simply stores the training data and waits until it is given a test tuple\n\nless time in training but more time in predicting\neffectively uses a richer hypothesis space since it uses many local linear functions to form an implicit global approximation to the target function\ninstance-based: stores training examples and delays the processing (i.e. lazy)\ntypical approaches:\n\nk-nearest neighbor: instances represented as points in a Euclidean space\nlocally weighted regression: constructs local approximation\ncase-based reasoning: uses symbolic representations and knowledge-based inference\n\n\nEager: given a set of training tuples, constructs a classification model before receiving new data to classify\n\nmore time in training but less time in predicting\nmust commit to a single hypothesis that covers the entire instance space"
+    "text": "Lazy vs. Eager Learning\n\nLazy: instance based learning, simply stores the training data and waits until it is given a test tuple\n\nless time in training but more time in predicting\neffectively uses a richer hypothesis space since it uses many local linear functions to form an implicit global approximation to the target function\ninstance-based: stores training examples and delays the processing (i.e. lazy)\ntypical approaches:\n\nk-nearest neighbor: instances represented as points in a Euclidean space\nlocally weighted regression: constructs local approximation\ncase-based reasoning: uses symbolic representations and knowledge-based inference\n\n\nEager: given a set of training tuples, constructs a classification model before receiving new data to classify\n\nmore time in training but less time in predicting\nmust commit to a single hypothesis that covers the entire instance space\n\n\nSee the Classification tab for more detailed information."
+  },
+  {
+    "objectID": "terminology.html#techniques",
+    "href": "terminology.html#techniques",
+    "title": "Terminology",
+    "section": "Techniques",
+    "text": "Techniques\n\nFeature Elimination\n\nreduce the feature space by eliminating certain features\ndrop features (lost forever)\ndo not modify existing features\n\nFeature Extraction\n\ncombine features into new independent features and have them sorted by importance\n\nmeasurement: how much variance new feature can explain the old feature\n\neliminate the least important feature"
   },
   {
     "objectID": "terminology.html#perceptron",
@@ -354,7 +543,7 @@
     "href": "terminology.html#network-topology",
     "title": "Terminology",
     "section": "Network Topology",
-    "text": "Network Topology\n\nHidden layers as parameter\nUnits per hidden layers as a parameter\nOutput: 1 unit per class if more than two classes\nTrial-and-error: different topology, different initial weights\n\nSee the Classification tab for more detailed information."
+    "text": "Network Topology\n\nHidden layers as parameter\nUnits per hidden layers as a parameter\nOutput: 1 unit per class if more than two classes\nTrial-and-error: different topology, different initial weights"
   },
   {
     "objectID": "terminology.html#backpropagation",
@@ -362,5 +551,12 @@
     "title": "Terminology",
     "section": "Backpropagation",
     "text": "Backpropagation\n\nInitialize weights biases: small random numbers\nPropagate the inputs forward\nBackpropagate the error\nTerminating condition"
+  },
+  {
+    "objectID": "terminology.html#survivorship-bias",
+    "href": "terminology.html#survivorship-bias",
+    "title": "Terminology",
+    "section": "Survivorship Bias",
+    "text": "Survivorship Bias\nSelection bias that focuses on the survivors in evaluating an event or outcome.\nSee the Neural Networks tab for more detailed information."
   }
 ]

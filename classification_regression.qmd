@@ -48,13 +48,34 @@ $Gain(A) = Info(D) - Info_A(D)$
 
 Here's what this process looks like by hand:
 
-![](images/decision_tree_img1.jpg)
+::: columns
+::: {.column width="45%"}
 
+![](images/decision_tree_img1.jpg)
+:::
+
+::: {.column width="10%"}
+:::
+
+::: {.column width="45%"}
 ![](images/decision_tree_img2.jpg)
+:::
+:::
+
+::: columns
+::: {.column width="45%"}
 
 ![](images/decision_tree_img3.jpg)
+:::
 
+::: {.column width="10%"}
+:::
+
+::: {.column width="45%"}
 ![](images/decision_tree_img4.jpg)
+:::
+:::
+
 
 ## Gain Ratio
 

@@ -27,6 +27,10 @@ website:
         text: "Classification and Regression"
       - href: cluster_analysis.qmd
         text: "Cluster Analysis"
+      - href: pca.qmd
+        text: "Principal Component Analysis (PCA)"
+      - href: outliers.qmd
+        text: "Outliers"
       - href: neural_networks.qmd
         text: "Neural Networks"
     right:
