@@ -2,4 +2,204 @@
 title: "Web Scraping"
 ---
 
-This page has information about web scraping.
+An example of webscraping using `BeautifulSoup`.
+
+```{python}
+# import libaries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+import requests
+from bs4 import BeautifulSoup
+import re
+```
+
+My goal is to collect information on the Colorado 14ers, which are peaks in Colorado over 14,000 feet. There are 53 *ranked* 14ers, which means they have at least 300 feet of prominence, and an additional 5 *unranked* peaks.
+
+The website I'll be scraping from is [here](https://www.14ers.com/), and plan to extract the following information:
+
+**Peaks**
+- Peak Name
+- Link to Peak's Page
+- Number of Routes
+- Elevatoin
+- Rank
+- Mountain Range
+- National Park
+- Forest
+- Latitude/Longitude
+- County
+- Towns
+- Member Ascents
+- Winter Ascents
+- Ski Ascents
+- *From a Peak's Standard Route*:
+    - Class
+    - Altitude Gained
+    - Distance Traveled
+        
+**Members**
+
+As a note, there is a member database containing personal statistics of individuals on the 14ers. This could be interesting to come back to.
+
+```{python}
+# main 14er list: contains a table with high level information
+url = 'https://www.14ers.com/14ers'
+page = requests.get(url)
+soup = BeautifulSoup(page.text, 'lxml')
+
+# extract name, link, and number of routes
+main_table = soup.find('table')
+table_rows_html = main_table.find_all('tr')[1:]
+url_start = 'https://www.14ers.com'
+peak_names = [row.find('a').text.replace('\xa0','') for row in table_rows_html]
+peak_links = [f'{url_start}{row.find("a").get("href")}' for row in table_rows_html]
+num_routes = [int(row.find_all('td')[-3].text) for row in table_rows_html]
+
+basics = {'peak': peak_names, 'links': peak_links, 'routes': num_routes,
+             'elevation': [], 'rank': [], 'mountain_range': [], 'nat_park': [],
+             'forest': [], 'lat_long': [], 'county': [], 'towns': [],
+             'member_ascents': [], 'winter_ascents': [], 'ski_descents': []}
+```
+
+```{python}
+# function to return key stats not listed on the main 14er list page, only on the specialized peaks' pages
+def get_peak_stats(url):
+    # create return dictionary
+    peak_stats = {'elevation': None, 'rank': None, 'mountain_range': None,
+                  'nat_park': None, 'forest': None, 'lat_long': None,
+                  'county': None, 'towns': None, 'member_ascents': None,
+                  'winter_ascents': None, 'ski_descents': None}
+    
+    # go to page
+    page = requests.get(url)
+    soup = BeautifulSoup(page.text, 'lxml')
+    
+    # main stats
+    stats_html = soup.find('div', class_='sidebar_content')
+    all_stats_html = stats_html.find_all('div', class_='stat')
+
+    # elevation
+    elevation = int(re.search(r'\d{2},\d{3}', all_stats_html[0].text).group().replace(',',''))
+    peak_stats['elevation'] = elevation
+
+    # rank
+    rank = all_stats_html[2].text.replace('CO 14er Rank', '')
+    peak_stats['rank'] = rank
+ 
+    # range
+    mountain_range = all_stats_html[3].text.replace('Range', '')
+    peak_stats['mountain_range'] = mountain_range
+    
+    '''
+    Nat Park and Forest(s) may or may not be present, and most of the next entries have
+    potential to be plural or singular.
+    
+    Inconsistencies after Range necessitate conditionals.
+        - Nat Park (if any)
+        - Forest vs Forests (if any)
+        - Lat/Long
+        - County vs Counties
+        - Town vs. Towns (should always be "Towns", but just in case)
+    '''
+    for stat in all_stats_html:
+        # Nat Park
+        stat_text = stat.text
+        if 'Nat Park' in stat_text:
+            nat_park = stat_text.replace('Nat Park', '')
+            peak_stats['nat_park'] = nat_park
+        # Forest(s)
+        elif 'Forest' in stat_text:
+            forest_text = stat_text
+            if 'Forests' in forest_text:
+                forest_html = stat.find_all('a')
+                forest = [forest.text for forest in forest_html]
+            else:
+                forest = [forest_text.replace('Forest', '')]
+            peak_stats['forest'] = forest
+        # Lat/Long
+        elif 'Lat/Lon' in stat_text:
+            lat_long = [float(loc) for loc in stat_text.replace('Lat/Lon', '').split(', ')]
+            peak_stats['lat_long'] = lat_long
+        # County or Counties
+        elif 'Count' in stat_text:
+            if 'County' in stat_text:
+                county = [stat_text.replace('County', '')]
+            else:
+                county = str(stat.find('span', class_='value'))
+                county = county.replace('<span class="value">', '')
+                county = county.replace('</span>', '').split('<br/>')
+            peak_stats['county'] = county
+        # Town(s)
+        elif 'Town' in stat_text:
+            if 'Towns' in stat_text:
+                towns = stat_text.replace('Towns', '').split(', ')
+            else:
+                towns = [stat_text.replace('Towns', '')]
+            peak_stats['towns'] = towns
+
+    # the checklists secion contains ascent and descent data
+    checklists_html = soup.find('ul', class_='bulleted')
+    all_checklists_html = checklists_html.find_all('li')
+
+    # member ascents
+    member_ascents = int(re.search(r'(.*)( Member Ascents)', all_checklists_html[0].text).groups()[0].replace(',', ''))
+    peak_stats['member_ascents'] = member_ascents
+    
+    # winter ascents
+    winter_ascents = int(re.search(r'(.*)( Member Winter Ascents)', all_checklists_html[1].text).groups()[0].replace(',', ''))
+    peak_stats['winter_ascents'] = winter_ascents
+
+    # ski descents
+    ski_descents = int(re.search(r'(.*)( Member Ski Descents)', all_checklists_html[2].text).groups()[0].replace(',', ''))
+    peak_stats['ski_descents'] = ski_descents
+
+    return peak_stats
+```
+
+```{python}
+# run function for all peaks
+for link in peak_links:
+    stats = get_peak_stats(link)
+    for stat in stats:
+        basics[stat].append(stats[stat])
+
+# turn the basics into a dataframe
+df_basics = pd.DataFrame(basics)
+
+df_basics.head()
+```
+
+Note that the *forest*, *lat_long*, *county*, and *towns* attributes are list variables. The number of entries within the lists could be an attribute of interest themselves, but would like be most useful if unpacked.
+
+```{python}
+# Note that most peaks have multiple routes (in *routes* attribute), this links to information about the "standard" routes
+url = 'https://www.14ers.com/routes_bydifficulty.php'
+page = requests.get(url)
+soup = BeautifulSoup(page.text, 'lxml')
+
+# return the html for all rows in the standard route tables
+row_html = soup.find_all('tr')
+
+fields = {'peak': [], 'class': [], 'altitude': [], 'distance': []}
+for row in row_html:
+    search = row.find_all('td')
+    if len(search) == 1 and len(search[0].text) > 0:
+        current_class = search[0].text
+    elif len(search) > 1:
+        fields['peak'].append(re.search(r'(<td>)(.*)(<div)', str(search[1])).groups()[1])
+        fields['class'].append(current_class)
+        fields['altitude'].append(int(search[3].text.replace("\'", '')))
+        fields['distance'].append(float(search[4].text.replace(' mi', '')))
+
+# turn standard route information into a dataframe
+df_difficulty = pd.DataFrame(fields)
+
+# lambda function to turn 'Mt.' into 'Mount' for consistency in our two dataframes
+mt_to_mount = lambda peak: peak.replace('Mt.', 'Mount')
+df_difficulty['peak'] = df_difficulty['peak'].apply(mt_to_mount)
+
+df_difficulty.head()
+```

@@ -20,10 +20,44 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -66,6 +100,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="styles.css">
@@ -162,7 +199,22 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#concept" id="toc-concept" class="nav-link active" data-scroll-target="#concept">Concept</a></li>
   <li><a href="#the-pca-process" id="toc-the-pca-process" class="nav-link" data-scroll-target="#the-pca-process">The PCA Process</a></li>
   <li><a href="#pca-vs.-linear-regression" id="toc-pca-vs.-linear-regression" class="nav-link" data-scroll-target="#pca-vs.-linear-regression">PCA vs.&nbsp;Linear Regression</a></li>
-  <li><a href="#sklearn" id="toc-sklearn" class="nav-link" data-scroll-target="#sklearn">sklearn</a></li>
+  <li><a href="#implementation-sklearn" id="toc-implementation-sklearn" class="nav-link" data-scroll-target="#implementation-sklearn">Implementation (sklearn)</a>
+  <ul class="collapse">
+  <li><a href="#import-libraries-and-data" id="toc-import-libraries-and-data" class="nav-link" data-scroll-target="#import-libraries-and-data">Import Libraries and Data</a></li>
+  <li><a href="#scale-data" id="toc-scale-data" class="nav-link" data-scroll-target="#scale-data">Scale Data</a></li>
+  <li><a href="#implement-pca" id="toc-implement-pca" class="nav-link" data-scroll-target="#implement-pca">Implement PCA</a>
+  <ul class="collapse">
+  <li><a href="#question-1--using-principal-component-analysis-or-pca-in-short-to-reduce-the-dimensionality-of-the-data-in-order-to-optimize-the-result-of-the-clustering-5-points" id="toc-question-1--using-principal-component-analysis-or-pca-in-short-to-reduce-the-dimensionality-of-the-data-in-order-to-optimize-the-result-of-the-clustering-5-points" class="nav-link" data-scroll-target="#question-1--using-principal-component-analysis-or-pca-in-short-to-reduce-the-dimensionality-of-the-data-in-order-to-optimize-the-result-of-the-clustering-5-points">Question 1- Using Principal Component Analysis or PCA in short to reduce the dimensionality of the data in order to optimize the result of the clustering (5 Points)</a></li>
+  <li><a href="#question-2---create-a-dataframe-featuring-the-principal-components-that-you-acquired-through-pca-and-show-the-output-5-points" id="toc-question-2---create-a-dataframe-featuring-the-principal-components-that-you-acquired-through-pca-and-show-the-output-5-points" class="nav-link" data-scroll-target="#question-2---create-a-dataframe-featuring-the-principal-components-that-you-acquired-through-pca-and-show-the-output-5-points">Question 2 - Create a dataframe featuring the Principal components that you acquired through PCA and show the output (5 Points)</a></li>
+  <li><a href="#question-3---compute-the-amount-of-variance-that-each-pca-explains.-dispay-the-output-10-points" id="toc-question-3---compute-the-amount-of-variance-that-each-pca-explains.-dispay-the-output-10-points" class="nav-link" data-scroll-target="#question-3---compute-the-amount-of-variance-that-each-pca-explains.-dispay-the-output-10-points">Question 3 - Compute the amount of variance that each PCA explains. Dispay the output (10 Points)</a></li>
+  <li><a href="#question-4---calculate-the-cummulative-variances-to-4-decimals-places.-display-the-output-10-points" id="toc-question-4---calculate-the-cummulative-variances-to-4-decimals-places.-display-the-output-10-points" class="nav-link" data-scroll-target="#question-4---calculate-the-cummulative-variances-to-4-decimals-places.-display-the-output-10-points">Question 4 - Calculate the cummulative variances to 4 decimals places. Display the output (10 points)</a></li>
+  <li><a href="#question-5---compute-the-variance-plot-for-pca-components-obtained-and-comment-on-the-plot-10-points" id="toc-question-5---compute-the-variance-plot-for-pca-components-obtained-and-comment-on-the-plot-10-points" class="nav-link" data-scroll-target="#question-5---compute-the-variance-plot-for-pca-components-obtained-and-comment-on-the-plot-10-points">Question 5 - Compute the Variance plot for PCA components obtained and comment on the plot (10 points)</a></li>
+  <li><a href="#question-6---as-our-results-are-suggesting-to-use-first-3-principal-components-for-further-computation-extract-the-three-features-from-the-pca_dataset-into-pca1-pca2-pca3-10-points" id="toc-question-6---as-our-results-are-suggesting-to-use-first-3-principal-components-for-further-computation-extract-the-three-features-from-the-pca_dataset-into-pca1-pca2-pca3-10-points" class="nav-link" data-scroll-target="#question-6---as-our-results-are-suggesting-to-use-first-3-principal-components-for-further-computation-extract-the-three-features-from-the-pca_dataset-into-pca1-pca2-pca3-10-points">Question 6 - As our results are suggesting to use first 3 principal components for further computation, extract the three features from the PCA_dataset into PCA1, PCA2, PCA3 (10 points)</a></li>
+  <li><a href="#question-7---create-a-dataframe-for-further-clusering-algorithms-with-pca1-pca2-and-pca3-as-column-headings.-display-your-results-10-points" id="toc-question-7---create-a-dataframe-for-further-clusering-algorithms-with-pca1-pca2-and-pca3-as-column-headings.-display-your-results-10-points" class="nav-link" data-scroll-target="#question-7---create-a-dataframe-for-further-clusering-algorithms-with-pca1-pca2-and-pca3-as-column-headings.-display-your-results-10-points">Question 7 - Create a dataframe for further clusering algorithms with PCA1, PCA2 and PCA3 as column headings. Display your results (10 points)</a></li>
+  <li><a href="#question-8---as-done-in-class-go-ahead-and-visualize-the-results-of-the-3d-pca.-properly-label-the-x-y-and-z--axis.-comment-and-summarize-your-results-after-the-plot.-20-points" id="toc-question-8---as-done-in-class-go-ahead-and-visualize-the-results-of-the-3d-pca.-properly-label-the-x-y-and-z--axis.-comment-and-summarize-your-results-after-the-plot.-20-points" class="nav-link" data-scroll-target="#question-8---as-done-in-class-go-ahead-and-visualize-the-results-of-the-3d-pca.-properly-label-the-x-y-and-z--axis.-comment-and-summarize-your-results-after-the-plot.-20-points">Question 8 - As done in class, go ahead and visualize the results of the 3D PCA. Properly label the x, y, and z- axis. Comment and summarize your results after the plot. (20 points)</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -216,10 +268,688 @@ ul.task-list li input[type="checkbox"] {
 <p><em>Note that we are not trying to find a straight line that best fits our data.</em></p>
 <p><img src="images/pca_img2.png" class="img-fluid"></p>
 </section>
-<section id="sklearn" class="level1">
-<h1>sklearn</h1>
+<section id="implementation-sklearn" class="level1">
+<h1>Implementation (sklearn)</h1>
+<section id="import-libraries-and-data" class="level2">
+<h2 class="anchored" data-anchor-id="import-libraries-and-data">Import Libraries and Data</h2>
+<div id="ab32eb2a" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># from sklearn.preprocessing import StandardScaler (shown how to use in cell below)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div id="92e777a4" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the homework data set</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename the columns based on their features.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>columns <span class="op">=</span> [<span class="st">'class'</span>,<span class="st">'alcohol'</span>, <span class="st">'malic_acid'</span>, <span class="st">'ash'</span>, <span class="st">'alcalinity_of_ash'</span>, <span class="st">'magnesium'</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'total_phenols'</span>, <span class="st">'flavanoids'</span>, <span class="st">'nonflavanoid_phenols'</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'proanthocyanins'</span>, <span class="st">'color_intensity'</span>, <span class="st">'hue'</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'dilution_of_wines'</span>, <span class="st">'proline'</span>]</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/wine.csv'</span>, names<span class="op">=</span>columns, header<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
 
 
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">class</th>
+<th data-quarto-table-cell-role="th">alcohol</th>
+<th data-quarto-table-cell-role="th">malic_acid</th>
+<th data-quarto-table-cell-role="th">ash</th>
+<th data-quarto-table-cell-role="th">alcalinity_of_ash</th>
+<th data-quarto-table-cell-role="th">magnesium</th>
+<th data-quarto-table-cell-role="th">total_phenols</th>
+<th data-quarto-table-cell-role="th">flavanoids</th>
+<th data-quarto-table-cell-role="th">nonflavanoid_phenols</th>
+<th data-quarto-table-cell-role="th">proanthocyanins</th>
+<th data-quarto-table-cell-role="th">color_intensity</th>
+<th data-quarto-table-cell-role="th">hue</th>
+<th data-quarto-table-cell-role="th">dilution_of_wines</th>
+<th data-quarto-table-cell-role="th">proline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>1</td>
+<td>14.23</td>
+<td>1.71</td>
+<td>2.43</td>
+<td>15.6</td>
+<td>127</td>
+<td>2.80</td>
+<td>3.06</td>
+<td>0.28</td>
+<td>2.29</td>
+<td>5.64</td>
+<td>1.04</td>
+<td>3.92</td>
+<td>1065</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1</td>
+<td>13.20</td>
+<td>1.78</td>
+<td>2.14</td>
+<td>11.2</td>
+<td>100</td>
+<td>2.65</td>
+<td>2.76</td>
+<td>0.26</td>
+<td>1.28</td>
+<td>4.38</td>
+<td>1.05</td>
+<td>3.40</td>
+<td>1050</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1</td>
+<td>13.16</td>
+<td>2.36</td>
+<td>2.67</td>
+<td>18.6</td>
+<td>101</td>
+<td>2.80</td>
+<td>3.24</td>
+<td>0.30</td>
+<td>2.81</td>
+<td>5.68</td>
+<td>1.03</td>
+<td>3.17</td>
+<td>1185</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1</td>
+<td>14.37</td>
+<td>1.95</td>
+<td>2.50</td>
+<td>16.8</td>
+<td>113</td>
+<td>3.85</td>
+<td>3.49</td>
+<td>0.24</td>
+<td>2.18</td>
+<td>7.80</td>
+<td>0.86</td>
+<td>3.45</td>
+<td>1480</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1</td>
+<td>13.24</td>
+<td>2.59</td>
+<td>2.87</td>
+<td>21.0</td>
+<td>118</td>
+<td>2.80</td>
+<td>2.69</td>
+<td>0.39</td>
+<td>1.82</td>
+<td>4.32</td>
+<td>1.04</td>
+<td>2.93</td>
+<td>735</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="scale-data" class="level2">
+<h2 class="anchored" data-anchor-id="scale-data">Scale Data</h2>
+<p><strong>With <code>scale</code></strong></p>
+<div id="5d122b17" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Utilizing the standard scaler method to get the values converted into integers.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df.iloc[:, <span class="dv">1</span>:].values</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>X_normal <span class="op">=</span> scale(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>With <code>StandardScaler</code></strong></p>
+<div id="c1f60dba" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>X_normal <span class="op">=</span> scaler.fit_transform(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="implement-pca" class="level2">
+<h2 class="anchored" data-anchor-id="implement-pca">Implement PCA</h2>
+<section id="question-1--using-principal-component-analysis-or-pca-in-short-to-reduce-the-dimensionality-of-the-data-in-order-to-optimize-the-result-of-the-clustering-5-points" class="level3">
+<h3 class="anchored" data-anchor-id="question-1--using-principal-component-analysis-or-pca-in-short-to-reduce-the-dimensionality-of-the-data-in-order-to-optimize-the-result-of-the-clustering-5-points">Question 1- Using Principal Component Analysis or PCA in short to reduce the dimensionality of the data in order to optimize the result of the clustering (5 Points)</h3>
+<div id="95fa9149" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># implement pca with the normalized features</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>principalComponents <span class="op">=</span> pca.fit_transform(X_normal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="question-2---create-a-dataframe-featuring-the-principal-components-that-you-acquired-through-pca-and-show-the-output-5-points" class="level3">
+<h3 class="anchored" data-anchor-id="question-2---create-a-dataframe-featuring-the-principal-components-that-you-acquired-through-pca-and-show-the-output-5-points">Question 2 - Create a dataframe featuring the Principal components that you acquired through PCA and show the output (5 Points)</h3>
+<div id="03971fe9" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create the dataframe from the principal components</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>principalDf <span class="op">=</span> pd.DataFrame(data <span class="op">=</span> principalComponents)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>principalDf.columns <span class="op">=</span> [<span class="ss">f'principal component </span><span class="sc">{</span>col <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> col <span class="kw">in</span> <span class="bu">range</span>(principalDf.shape[<span class="dv">1</span>])]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># display the head of data</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>principalDf.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">principal component 1</th>
+<th data-quarto-table-cell-role="th">principal component 2</th>
+<th data-quarto-table-cell-role="th">principal component 3</th>
+<th data-quarto-table-cell-role="th">principal component 4</th>
+<th data-quarto-table-cell-role="th">principal component 5</th>
+<th data-quarto-table-cell-role="th">principal component 6</th>
+<th data-quarto-table-cell-role="th">principal component 7</th>
+<th data-quarto-table-cell-role="th">principal component 8</th>
+<th data-quarto-table-cell-role="th">principal component 9</th>
+<th data-quarto-table-cell-role="th">principal component 10</th>
+<th data-quarto-table-cell-role="th">principal component 11</th>
+<th data-quarto-table-cell-role="th">principal component 12</th>
+<th data-quarto-table-cell-role="th">principal component 13</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>3.316751</td>
+<td>-1.443463</td>
+<td>-0.165739</td>
+<td>-0.215631</td>
+<td>0.693043</td>
+<td>-0.223880</td>
+<td>0.596427</td>
+<td>0.065139</td>
+<td>0.641443</td>
+<td>1.020956</td>
+<td>-0.451563</td>
+<td>0.540810</td>
+<td>-0.066239</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2.209465</td>
+<td>0.333393</td>
+<td>-2.026457</td>
+<td>-0.291358</td>
+<td>-0.257655</td>
+<td>-0.927120</td>
+<td>0.053776</td>
+<td>1.024416</td>
+<td>-0.308847</td>
+<td>0.159701</td>
+<td>-0.142657</td>
+<td>0.388238</td>
+<td>0.003637</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>2.516740</td>
+<td>-1.031151</td>
+<td>0.982819</td>
+<td>0.724902</td>
+<td>-0.251033</td>
+<td>0.549276</td>
+<td>0.424205</td>
+<td>-0.344216</td>
+<td>-1.177834</td>
+<td>0.113361</td>
+<td>-0.286673</td>
+<td>0.000584</td>
+<td>0.021717</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>3.757066</td>
+<td>-2.756372</td>
+<td>-0.176192</td>
+<td>0.567983</td>
+<td>-0.311842</td>
+<td>0.114431</td>
+<td>-0.383337</td>
+<td>0.643593</td>
+<td>0.052544</td>
+<td>0.239413</td>
+<td>0.759584</td>
+<td>-0.242020</td>
+<td>-0.369484</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1.008908</td>
+<td>-0.869831</td>
+<td>2.026688</td>
+<td>-0.409766</td>
+<td>0.298458</td>
+<td>-0.406520</td>
+<td>0.444074</td>
+<td>0.416700</td>
+<td>0.326819</td>
+<td>-0.078366</td>
+<td>-0.525945</td>
+<td>-0.216664</td>
+<td>-0.079364</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="question-3---compute-the-amount-of-variance-that-each-pca-explains.-dispay-the-output-10-points" class="level3">
+<h3 class="anchored" data-anchor-id="question-3---compute-the-amount-of-variance-that-each-pca-explains.-dispay-the-output-10-points">Question 3 - Compute the amount of variance that each PCA explains. Dispay the output (10 Points)</h3>
+<div id="d62f0b52" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute explained variance each PCA explains</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>explained_variance <span class="op">=</span> pca.explained_variance_ratio_</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># numerical array of explained variance</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>explained_variance</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># dataframe of explained variance</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>explained_variance_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Principal Component'</span>: [<span class="ss">f'PC</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(explained_variance))],</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Explained Variance'</span>: explained_variance</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>explained_variance_df.<span class="bu">round</span>(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Principal Component</th>
+<th data-quarto-table-cell-role="th">Explained Variance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>PC1</td>
+<td>0.3620</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>PC2</td>
+<td>0.1921</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>PC3</td>
+<td>0.1112</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>PC4</td>
+<td>0.0707</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>PC5</td>
+<td>0.0656</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>PC6</td>
+<td>0.0494</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>PC7</td>
+<td>0.0424</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>PC8</td>
+<td>0.0268</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>PC9</td>
+<td>0.0222</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>PC10</td>
+<td>0.0193</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10</td>
+<td>PC11</td>
+<td>0.0174</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">11</td>
+<td>PC12</td>
+<td>0.0130</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12</td>
+<td>PC13</td>
+<td>0.0080</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="question-4---calculate-the-cummulative-variances-to-4-decimals-places.-display-the-output-10-points" class="level3">
+<h3 class="anchored" data-anchor-id="question-4---calculate-the-cummulative-variances-to-4-decimals-places.-display-the-output-10-points">Question 4 - Calculate the cummulative variances to 4 decimals places. Display the output (10 points)</h3>
+<div id="9aa414ff" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute cumulative variance through each PCA (to 4 decimal places)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>cumulative_variance <span class="op">=</span> np.cumsum(explained_variance.<span class="bu">round</span>(<span class="dv">4</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># numerical array of cumulative variance</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>cumulative_variance</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># dataframe of cumulative variance</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>cumulative_variance_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Principal Component'</span>: [<span class="ss">f'PC</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(cumulative_variance))],</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Cumulative Variance'</span>: cumulative_variance</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>cumulative_variance_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Principal Component</th>
+<th data-quarto-table-cell-role="th">Cumulative Variance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>PC1</td>
+<td>0.3620</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>PC2</td>
+<td>0.5541</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>PC3</td>
+<td>0.6653</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>PC4</td>
+<td>0.7360</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>PC5</td>
+<td>0.8016</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>PC6</td>
+<td>0.8510</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>PC7</td>
+<td>0.8934</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>PC8</td>
+<td>0.9202</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>PC9</td>
+<td>0.9424</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>PC10</td>
+<td>0.9617</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10</td>
+<td>PC11</td>
+<td>0.9791</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">11</td>
+<td>PC12</td>
+<td>0.9921</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12</td>
+<td>PC13</td>
+<td>1.0001</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="question-5---compute-the-variance-plot-for-pca-components-obtained-and-comment-on-the-plot-10-points" class="level3">
+<h3 class="anchored" data-anchor-id="question-5---compute-the-variance-plot-for-pca-components-obtained-and-comment-on-the-plot-10-points">Question 5 - Compute the Variance plot for PCA components obtained and comment on the plot (10 points)</h3>
+<div id="d99fa698" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot for individual explained variance</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(explained_variance) <span class="op">+</span> <span class="dv">1</span>), explained_variance, alpha<span class="op">=</span><span class="fl">0.5</span>, align<span class="op">=</span><span class="st">'center'</span>, color <span class="op">=</span> <span class="st">'blue'</span>, label <span class="op">=</span> <span class="st">'Explained Variance'</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(cumulative_variance) <span class="op">+</span> <span class="dv">1</span>), cumulative_variance, color <span class="op">=</span> <span class="st">'red'</span>, label <span class="op">=</span> <span class="st">'Cumulative Variance'</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Explained Variance Ratio'</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Principal Components'</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>plt.xticks(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(explained_variance) <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Individual Variance Explained by Each Principal Component'</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="pca_files/figure-html/cell-10-output-1.png" width="589" height="449" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In the chart above, we have displayed the <strong>individual explained variance</strong> and the <strong>cumulative variance</strong> of each principal component. We can see that <em>Principal Component 1</em> individually explains the most of the variance in the model right below 40%, and then the amount of variance the other components explain start to taper off. The cumulative explained variance reaches about 80% at <em>Principal Component 5</em>.</p>
+<p>Depending on our threshold (either explained variance or number of components), we have some information to choose which components we would like to include.</p>
+<p>If we wanted to keep our model to 3 principal components, we would get just about 60% explained variance.</p>
+<p>However, by including up to 5 or 6 principal components, we could increase our explained variance into the 80%s.</p>
+</section>
+<section id="question-6---as-our-results-are-suggesting-to-use-first-3-principal-components-for-further-computation-extract-the-three-features-from-the-pca_dataset-into-pca1-pca2-pca3-10-points" class="level3">
+<h3 class="anchored" data-anchor-id="question-6---as-our-results-are-suggesting-to-use-first-3-principal-components-for-further-computation-extract-the-three-features-from-the-pca_dataset-into-pca1-pca2-pca3-10-points">Question 6 - As our results are suggesting to use first 3 principal components for further computation, extract the three features from the PCA_dataset into PCA1, PCA2, PCA3 (10 points)</h3>
+<div id="1a05a76d" class="cell" data-execution_count="10">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the first three principal components into a final dataframe</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>final_df <span class="op">=</span> principalDf.iloc[:, :<span class="dv">3</span>]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>final_df.head()</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>final_df.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>(178, 3)</code></pre>
+</div>
+</div>
+</section>
+<section id="question-7---create-a-dataframe-for-further-clusering-algorithms-with-pca1-pca2-and-pca3-as-column-headings.-display-your-results-10-points" class="level3">
+<h3 class="anchored" data-anchor-id="question-7---create-a-dataframe-for-further-clusering-algorithms-with-pca1-pca2-and-pca3-as-column-headings.-display-your-results-10-points">Question 7 - Create a dataframe for further clusering algorithms with PCA1, PCA2 and PCA3 as column headings. Display your results (10 points)</h3>
+<div id="8e2fb072" class="cell" data-execution_count="11">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># join class column into final dtaframe</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>final_df <span class="op">=</span> pd.concat([final_df, df[<span class="st">'class'</span>]], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># change column headings</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>final_df.columns <span class="op">=</span> [<span class="st">'PCA1'</span>, <span class="st">'PCA2'</span>, <span class="st">'PCA3'</span>, <span class="st">'Class'</span>]</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># double check shape</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>final_df.shape</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># double check nulls</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>final_df.isnull().<span class="bu">sum</span>()</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># display the head of the results</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>final_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">PCA1</th>
+<th data-quarto-table-cell-role="th">PCA2</th>
+<th data-quarto-table-cell-role="th">PCA3</th>
+<th data-quarto-table-cell-role="th">Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>3.316751</td>
+<td>-1.443463</td>
+<td>-0.165739</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>2.209465</td>
+<td>0.333393</td>
+<td>-2.026457</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>2.516740</td>
+<td>-1.031151</td>
+<td>0.982819</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>3.757066</td>
+<td>-2.756372</td>
+<td>-0.176192</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1.008908</td>
+<td>-0.869831</td>
+<td>2.026688</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="question-8---as-done-in-class-go-ahead-and-visualize-the-results-of-the-3d-pca.-properly-label-the-x-y-and-z--axis.-comment-and-summarize-your-results-after-the-plot.-20-points" class="level3">
+<h3 class="anchored" data-anchor-id="question-8---as-done-in-class-go-ahead-and-visualize-the-results-of-the-3d-pca.-properly-label-the-x-y-and-z--axis.-comment-and-summarize-your-results-after-the-plot.-20-points">Question 8 - As done in class, go ahead and visualize the results of the 3D PCA. Properly label the x, y, and z- axis. Comment and summarize your results after the plot. (20 points)</h3>
+<div id="8c90f1d2" class="cell" data-execution_count="12">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the results</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize <span class="op">=</span> (<span class="dv">12</span>,<span class="dv">10</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,  projection<span class="op">=</span><span class="st">'3d'</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'PCA1'</span>, fontsize <span class="op">=</span> <span class="dv">15</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'PCA2'</span>, fontsize <span class="op">=</span> <span class="dv">15</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>ax.set_zlabel(<span class="st">'PCA3'</span>, fontsize <span class="op">=</span> <span class="dv">15</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'3 Component PCA'</span>, fontsize <span class="op">=</span> <span class="dv">20</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>targetsName <span class="op">=</span> [<span class="st">'1'</span>, <span class="st">'2'</span>, <span class="st">'3'</span>]</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>targets <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'r'</span>, <span class="st">'g'</span>, <span class="st">'b'</span>]</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> target, color <span class="kw">in</span> <span class="bu">zip</span>(targets, colors):</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    indicesToKeep <span class="op">=</span> final_df[<span class="st">'Class'</span>] <span class="op">==</span> target</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    ax.scatter(final_df.loc[indicesToKeep, <span class="st">'PCA1'</span>],</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>               final_df.loc[indicesToKeep, <span class="st">'PCA2'</span>],</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>               final_df.loc[indicesToKeep, <span class="st">'PCA3'</span>],</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>               c <span class="op">=</span> color,</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>               s <span class="op">=</span> <span class="dv">50</span>)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>ax.legend(targetsName)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>ax.grid()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="pca_files/figure-html/cell-13-output-1.png" width="798" height="787" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In the plot above, we created a 3-dimensional plot to display the result of our principal component analysis. Our three target classes of wine were given different colors:</p>
+<ul>
+<li>1: Red</li>
+<li>2: Green</li>
+<li>3: Blue</li>
+</ul>
+<p>As seen by the coloring, the PCA does a decent job of creating clusters between the 3 classes of wine. For the most part, each class of wine is within their own cluster. However, there is some minor overlap. There is overlap between <em>Class 1</em> and <em>Class 2</em>, and then again between <em>Class 2</em> and <em>Class 3</em>. However, it appears there is no overlap between the clusters of <em>Class 1</em> and <em>Class 3</em>.</p>
+
+
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->

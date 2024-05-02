@@ -144,19 +144,35 @@ Using the IQR, we can treat the following as outliers:
 - The computational cost of statistical methods depends on the models
 
 
-# Implementation (Python Coding)
+# Implementation
 
+## IQR Method
 
+### Set Up
 
+- `q1 = df['column'].quantile(0.25)`
+- `q3 = df['column'].quantile(0.75)`
+- `iqr = q3 - q1`
+- `upper_limit = q3 + (1.5 * iqr)`
+- `lower_limit = q1 - (1.5 * iqr)`
 
+### Outliers and Trimming Data
 
+- outliers: `df.loc[(df['column'] > upper_limit) | (df['column'] < lower_limit)]`
+- trimmed: `df.loc[(df['column'] < upper_limit) & (df['column'] > lower_limit)]`
 
+## Percentile Method
 
+Remove data below 1% quantile and above 99% quantile.
 
+### Set Up
 
+- `upper_limit = df['column'].quantile(0.99)`
+- `lower_limit = df['column'].quantile(0.01)`
 
+### Outliers and Trimming Data
 
+- outliers: `df.loc[(df['column'] > upper_limit) | (df['column'] < lower_limit)]`
+- trimmed: `df.loc[(df['column'] < upper_limit) & (df['column'] > lower_limit)]`
 
-
-
-
+> Use distribution plotting (**boxplots**, violinplots, etc.) to review data spread before and after

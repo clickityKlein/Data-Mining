@@ -114,10 +114,9 @@ $P(C_i|X) = \frac{P(X|C_i)P(C_i)}{P(X)}$
 
 $P(X)$ is constant for all classes, thus we only need to maximize:
 
-$\frac{P(X|C_i)P(C_i)}$
+$\frac{P(X|C_i)}{P(C_i)}$
 
 $\rightarrow P(X|C_i) = \prod_{k=1}^n P(x_k|C_i)$
-
 
 
 *Naive Assumption*: class conditional independence (no dependence between attributes).
@@ -293,5 +292,219 @@ Solution
 ![](images/logistic_regression_img1.png)
 
 
-# sklearn
+# Implementation (sklearn)
 
+## Import Libraries and Data
+
+```{python}
+# regular libraries
+import numpy as np
+import pandas as pd
+
+# import general sklearn libraries
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, precision_score, recall_score
+
+# import specific sklearn libraries
+
+# decision tree classifier
+from sklearn.tree import DecisionTreeClassifier
+# sklearn logistic regression
+from sklearn.linear_model import LogisticRegression
+# sklearn knn
+from sklearn.neighbors import KNeighborsClassifier 
+# sklearn svm (could import svm and use svm.SVC, but we'll directly import SVC)
+from sklearn.svm import SVC
+# sklearn naive bayes
+from sklearn.naive_bayes import GaussianNB
+```
+
+```{python}
+# load data
+df = pd.read_csv('data/diabetes.csv')
+
+# separate predictor and response
+X = df.drop('Outcome', axis = 1)
+y = df['Outcome']
+
+# separate train and test set
+X_train, X_test, y_train, y_test =  train_test_split(X, y, test_size = 0.30, random_state = 42)
+```
+
+## Decision Tree
+
+```{python}
+# train data
+clf = DecisionTreeClassifier().fit(X_train, y_train)
+
+# validate model through testing
+y_pred = clf.predict(X_test)
+
+# calculate metrics
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+confusion_matrix = confusion_matrix(y_test, y_pred)
+
+print(f'Test Accuracy: {accuracy}')
+print(f'Test Precision: {precision}')
+print(f'Test Recall: {recall}')
+print(f'Test F1: {f1}')
+print(f'Test Confusion Matrix: \n{confusion_matrix}')
+```
+
+## Logistic Regression
+
+Note that logistic regression works better with array type data in non-scaled data, but ultimately performs better with scaled data.
+
+### Non-Scaled Data
+
+Apply array to data:
+
+```{python}
+X_train_array = np.array(X_train)
+X_test_array = np.array(X_test)
+y_train_array = np.array(y_train)
+y_test_array = np.array(y_test)
+```
+
+```{python}
+# train data
+clf = LogisticRegression().fit(X_train_array, y_train_array)
+
+# validate model through testing
+y_pred = clf.predict(X_test_array)
+
+# calculate metrics
+accuracy = accuracy_score(y_test_array, y_pred)
+precision = precision_score(y_test_array, y_pred)
+recall = recall_score(y_test_array, y_pred)
+f1 = f1_score(y_test_array, y_pred)
+
+print(f'Test Accuracy: {accuracy}')
+print(f'Test Precision: {precision}')
+print(f'Test Recall: {recall}')
+print(f'Test F1: {f1}')
+```
+
+### Scaled Data
+
+Scale Data
+
+```{python}
+scaler = StandardScaler()
+X_train_normal = scaler.fit_transform(X_train)
+X_test_normal = scaler.fit_transform(X_test)
+```
+
+
+```{python}
+# train data
+clf = LogisticRegression().fit(X_train_normal, y_train)
+
+# validate model through testing
+y_pred = clf.predict(X_test_normal)
+
+# calculate metrics
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+
+print(f'Test Accuracy: {accuracy}')
+print(f'Test Precision: {precision}')
+print(f'Test Recall: {recall}')
+print(f'Test F1: {f1}')
+```
+
+
+## K-Nearest Neighbors (KNN)
+
+```{python}
+# train data
+clf = KNeighborsClassifier().fit(X_train, y_train)
+
+# validate model through testing
+y_pred = clf.predict(X_test)
+
+# calculate metrics
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+
+print(f'Test Accuracy: {accuracy}')
+print(f'Test Precision: {precision}')
+print(f'Test Recall: {recall}')
+print(f'Test F1: {f1}')
+```
+
+## Support Vector Machines (SVM)
+
+```{python}
+# train data
+clf = SVC().fit(X_train, y_train)
+
+# validate model through testing
+y_pred = clf.predict(X_test)
+
+# calculate metrics
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+
+print(f'Test Accuracy: {accuracy}')
+print(f'Test Precision: {precision}')
+print(f'Test Recall: {recall}')
+print(f'Test F1: {f1}')
+```
+
+> Confusion Matrix wasn't performing properly in a few methods above, and was thus removed for the purposes of this website.
+
+## GridSearchCV
+
+`GridSearchCV` can be used to test multiple parameters at once.
+
+```{python}
+# decision tree parameters to run through
+tree_parameters = {'criterion': ('gini', 'entropy', 'log_loss'),
+              'splitter': ('best', 'random'),
+              'max_depth': (None, 2, 4, 6, 8, 10),
+              'max_features': (None, 'sqrt', 'log2'),
+              'class_weight': (None, 'balanced')}
+              
+# create gridsearchcv object
+tree_clf_hyper = GridSearchCV(DecisionTreeClassifier(), tree_parameters)
+
+# train the model
+tree_clf_hyper.fit(X_train, y_train)
+
+# results
+tree_clf_hyper_results = pd.DataFrame(tree_clf_hyper.cv_results_)
+tree_clf_hyper_results
+```
+
+We can directly call the best parameters:
+
+```{python}
+# decision tree with best parameters
+clf = DecisionTreeClassifier(**tree_clf_hyper.best_params_).fit(X_train, y_train)
+
+# prediction
+y_pred = clf.predict(X_test)
+
+# results (will set average to weighted for multiclass vs binary)
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+
+print(f'Test Accuracy: {accuracy}')
+print(f'Test Precision: {precision}')
+print(f'Test Recall: {recall}')
+print(f'Test F1: {f1}')
+```

@@ -223,4 +223,152 @@ for i in range(1, 11):
 
 ![](images/feature_agglomerative.png)
 
-# sklearn
+# Implementation (sklearn)
+
+## Import Libraries and Make Data
+
+```{python}
+# libraries
+from sklearn.datasets import make_blobs
+from sklearn.cluster import KMeans
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# data
+x, y = make_blobs(n_samples=100,
+                  centers=4, n_features=2,
+                  cluster_std=[1,1.5,2, 2],
+                  random_state=7)
+                  
+# make blobs
+df_blobs = pd.DataFrame({
+    'x1': x[:,0],
+    'x2':x[:,1],
+    'y':y
+
+})
+
+df_blobs.head()
+```
+
+## 2-D Plot Function
+
+```{python}
+def plot_2d_clusters(x, y, ax):
+    y_uniques = pd.Series(y).unique()
+
+    for cl in y_uniques:
+        x[y==cl].plot(
+            title=f'{len(y_uniques)} Clusters',
+            kind='scatter',
+            x='x1',
+            y='x2',
+            marker = f'${cl}$',
+            ax = ax
+        )
+```
+
+## First Image
+
+```{python}
+fig, ax = plt.subplots(1,1, figsize=(15,10))
+x, y = df_blobs[['x1','x2']], df_blobs['y']
+plot_2d_clusters(x,y,ax)
+```
+
+## Applying Clustering
+
+```{python}
+kmeans = KMeans(n_clusters=100, random_state=7)
+y_pred = kmeans.fit_predict(x)
+```
+
+```{python}
+fig, axs = plt.subplots(1, 2, figsize=(20,12))
+plot_2d_clusters(x,y,axs[0])
+plot_2d_clusters(x,y_pred,axs[1])
+
+axs[0].set_title(f'Actual {axs[0].get_title()}')
+axs[1].set_title(f'Kmeans {axs[1].get_title()}')
+```
+
+## Test on Real Data
+
+```{python}
+df = pd.read_csv('data/uber_clean.csv')
+df.head()
+```
+
+```{python}
+x = df[["Lat", "Lon"]] # features
+x.head()
+```
+
+```{python}
+model = KMeans(n_clusters = 3)
+y_kmeans = model.fit_predict(x)
+df['y'] = y_kmeans  # store it in an actual frame
+df.head()
+plt.scatter(df['Lon'], df['Lat'], c=df['y']) # colorized based on y-values (clusters based on lat long k-means)
+```
+
+## Inertia
+
+```{python}
+# model inertia: measures how well a data set was clustered by k-means
+
+# meaure the distance between each data point and its centroid, square this distance, and sume up
+# these squares across one cluster
+
+# a good model is one with a low inertia value and low number of cluster (K)
+
+model.inertia_
+```
+
+## Elbow Method
+
+```{python}
+wcss = [] #  within-cluster sum of squares
+for i in range(1,11):
+    model = KMeans(n_clusters = i)
+    y_kmeans = model.fit_predict(x)
+    wcss.append(model.inertia_)  # adding accuracy to our model
+    
+plt.plot(range(1,11), wcss)
+plt.xlabel('Number of Clusters')
+plt.ylabel('WCSS')
+plt.title('Elbow Method')
+plt.show()
+```
+
+## Visualize Data on a Map
+
+```{python}
+# import folium
+import folium
+```
+
+```{python}
+# visaulize data in actual map
+
+df = df[:2000]  # instead of 40,000
+
+clusters1  = df[['Lat', "Lon"]][df['y'] == 0].values.tolist()
+clusters2  = df[['Lat', "Lon"]][df['y'] == 1].values.tolist()
+clusters3  = df[['Lat', "Lon"]][df['y'] == 2].values.tolist()
+
+# map
+city_map = folium.Map(location= [40.7128, -74.0060], zoom_start = 10, titles = "openstreetmap")
+
+for i in clusters1:
+    folium.CircleMarker(i, radius =2, color = 'blue', fill_color = 'lightblue').add_to(city_map)
+
+for i in clusters2:
+    folium.CircleMarker(i, radius =2, color = 'red', fill_color = 'lightred').add_to(city_map)
+
+for i in clusters3:
+    folium.CircleMarker(i, radius =2, color = 'green', fill_color = 'lightgreen').add_to(city_map)
+    
+city_map
+```

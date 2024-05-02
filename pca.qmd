@@ -29,6 +29,191 @@ Principal Component Analysis uses the following ideas:
 
 ![](images/pca_img2.png)
 
-# sklearn
+# Implementation (sklearn)
+
+## Import Libraries and Data
+
+```{python}
+# import libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import scale
+# from sklearn.preprocessing import StandardScaler (shown how to use in cell below)
+```
+
+```{python}
+# Load the homework data set
+
+# Rename the columns based on their features.
+
+columns = ['class','alcohol', 'malic_acid', 'ash', 'alcalinity_of_ash', 'magnesium',
+    'total_phenols', 'flavanoids', 'nonflavanoid_phenols',
+    'proanthocyanins', 'color_intensity', 'hue',
+    'dilution_of_wines', 'proline']
+
+df = pd.read_csv('data/wine.csv', names=columns, header=0)
+df.head()
+```
+
+## Scale Data
+
+**With `scale`**
+
+```{python}
+# Utilizing the standard scaler method to get the values converted into integers.
+X = df.iloc[:, 1:].values
+X_normal = scale(X)
+```
+
+**With `StandardScaler`**
+
+`scaler = StandardScaler()`
+`X_normal = scaler.fit_transform(X)`
 
 
+## Implement PCA
+
+### Question 1- Using Principal Component Analysis or PCA in short to reduce the dimensionality of the data in order to optimize the result of the clustering  (5 Points)
+
+```{python}
+# implement pca with the normalized features
+pca = PCA()
+principalComponents = pca.fit_transform(X_normal)
+```
+
+### Question 2 - Create a dataframe featuring the Principal components that you acquired through PCA and show the output (5 Points)
+
+```{python}
+# create the dataframe from the principal components
+principalDf = pd.DataFrame(data = principalComponents)
+principalDf.columns = [f'principal component {col + 1}' for col in range(principalDf.shape[1])]
+
+# display the head of data
+principalDf.head()
+```
+
+### Question 3 - Compute the amount of variance that each PCA explains. Dispay the output  (10 Points)
+
+```{python}
+# compute explained variance each PCA explains
+explained_variance = pca.explained_variance_ratio_
+
+# numerical array of explained variance
+explained_variance
+
+# dataframe of explained variance
+explained_variance_df = pd.DataFrame({
+    'Principal Component': [f'PC{i+1}' for i in range(len(explained_variance))],
+    'Explained Variance': explained_variance
+})
+
+explained_variance_df.round(4)
+```
+
+### Question 4 - Calculate the cummulative variances to 4 decimals places. Display the output (10 points)
+
+```{python}
+# compute cumulative variance through each PCA (to 4 decimal places)
+cumulative_variance = np.cumsum(explained_variance.round(4))
+
+# numerical array of cumulative variance
+cumulative_variance
+
+# dataframe of cumulative variance
+cumulative_variance_df = pd.DataFrame({
+    'Principal Component': [f'PC{i+1}' for i in range(len(cumulative_variance))],
+    'Cumulative Variance': cumulative_variance
+})
+
+cumulative_variance_df
+```
+
+### Question 5 - Compute the Variance plot for PCA components obtained  and comment on the plot (10 points)
+
+```{python}
+# plot for individual explained variance
+plt.figure()
+plt.bar(range(1, len(explained_variance) + 1), explained_variance, alpha=0.5, align='center', color = 'blue', label = 'Explained Variance')
+plt.plot(range(1, len(cumulative_variance) + 1), cumulative_variance, color = 'red', label = 'Cumulative Variance')
+plt.legend()
+plt.ylabel('Explained Variance Ratio')
+plt.xlabel('Principal Components')
+plt.xticks(range(1, len(explained_variance) + 1))
+plt.title('Individual Variance Explained by Each Principal Component')
+plt.grid(True)
+plt.show()
+```
+
+In the chart above, we have displayed the **individual explained variance** and the **cumulative variance** of each principal component. We can see that *Principal Component 1* individually explains the most of the variance in the model right below 40%, and then the amount of variance the other components explain start to taper off. The cumulative explained variance reaches about 80% at *Principal Component 5*.
+
+Depending on our threshold (either explained variance or number of components), we have some information to choose which components we would like to include.
+
+If we wanted to keep our model to 3 principal components, we would get just about 60% explained variance.
+
+However, by including up to 5 or 6 principal components, we could increase our explained variance into the 80%s.
+
+### Question 6 - As our results are suggesting to use first 3 principal components for further computation, extract the three features from  the PCA_dataset into PCA1, PCA2, PCA3 (10 points)
+
+```{python}
+# extract the first three principal components into a final dataframe
+final_df = principalDf.iloc[:, :3]
+
+final_df.head()
+
+final_df.shape
+```
+
+### Question 7 - Create a dataframe for further clusering algorithms with PCA1, PCA2 and PCA3 as column headings. Display your results (10 points)
+
+```{python}
+# join class column into final dtaframe
+final_df = pd.concat([final_df, df['class']], axis=1)
+
+# change column headings
+final_df.columns = ['PCA1', 'PCA2', 'PCA3', 'Class']
+
+# double check shape
+final_df.shape
+
+# double check nulls
+final_df.isnull().sum()
+
+# display the head of the results
+final_df.head()
+```
+
+### Question 8 - As done in class, go ahead and visualize the results of the 3D PCA. Properly label the x, y, and z- axis. Comment and summarize your results after the plot. (20 points)
+
+```{python}
+# visualize the results
+fig = plt.figure(figsize = (12,10))
+ax = fig.add_subplot(1,1,1,  projection='3d')
+ax.set_xlabel('PCA1', fontsize = 15)
+ax.set_ylabel('PCA2', fontsize = 15)
+ax.set_zlabel('PCA3', fontsize = 15)
+ax.set_title('3 Component PCA', fontsize = 20)
+
+targetsName = ['1', '2', '3']
+
+targets = [1, 2, 3]
+colors = ['r', 'g', 'b']
+for target, color in zip(targets, colors):
+    indicesToKeep = final_df['Class'] == target
+    ax.scatter(final_df.loc[indicesToKeep, 'PCA1'],
+               final_df.loc[indicesToKeep, 'PCA2'],
+               final_df.loc[indicesToKeep, 'PCA3'],
+               c = color,
+               s = 50)
+ax.legend(targetsName)
+ax.grid()
+```
+
+In the plot above, we created a 3-dimensional plot to display the result of our principal component analysis. Our three target classes of wine were given different colors:
+
+- 1: Red
+- 2: Green
+- 3: Blue
+
+As seen by the coloring, the PCA does a decent job of creating clusters between the 3 classes of wine. For the most part, each class of wine is within their own cluster. However, there is some minor overlap. There is overlap between *Class 1* and *Class 2*, and then again between *Class 2* and *Class 3*. However, it appears there is no overlap between the clusters of *Class 1* and *Class 3*.

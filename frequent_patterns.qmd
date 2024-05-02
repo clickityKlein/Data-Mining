@@ -185,7 +185,7 @@ def custom_apriori(transaction_dict, min_sup = 0.5):
 
 Suppose we were given the example of
 
-![frequent_patterns_img1](images/frequent_patterns_img1.png)
+![](images/frequent_patterns_img1.png)
 
 ```{python}
 transaction_dict = {'t1': {'M', 'N', 'P', 'X', 'Z'},
@@ -264,7 +264,7 @@ rules
   
 The partitioning method takes two data scans.
 
-![frequent_patterns_img2](images/frequent_patterns_img2.png)
+![](images/frequent_patterns_img2.png)
 
 ## Implementation
 
@@ -277,19 +277,19 @@ FP-Growth uses hash-trees to find frequent itemsets with candidate generation as
 3. Scan and construct the FP-tree
 4. Find conditional pattern base
 
-![frequent_patterns_img3](images/frequent_patterns_img3.png)
+![](images/frequent_patterns_img3.png)
 
 ::: columns
 ::: {.column width="45%"}
 
-![frequent_patterns_img4](images/frequent_patterns_img4.png)
+![](images/frequent_patterns_img4.png)
 :::
 
 ::: {.column width="10%"}
 :::
 
 ::: {.column width="45%"}
-![frequent_patterns_img5](images/frequent_patterns_img5.png)
+![](images/frequent_patterns_img5.png)
 :::
 :::
 
