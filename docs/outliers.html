@@ -178,7 +178,19 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#parametric-detection---interquartile-range-iqr---boxplot-5-number-summary" id="toc-parametric-detection---interquartile-range-iqr---boxplot-5-number-summary" class="nav-link" data-scroll-target="#parametric-detection---interquartile-range-iqr---boxplot-5-number-summary">Parametric Detection - Interquartile Range (IQR) - Boxplot (5-number Summary)</a></li>
   <li><a href="#nonparametric-detection---histogram" id="toc-nonparametric-detection---histogram" class="nav-link" data-scroll-target="#nonparametric-detection---histogram">Nonparametric Detection - Histogram</a></li>
   <li><a href="#pros-and-cons-of-statistical-methods" id="toc-pros-and-cons-of-statistical-methods" class="nav-link" data-scroll-target="#pros-and-cons-of-statistical-methods">Pros and Cons of Statistical Methods</a></li>
-  <li><a href="#implementation-python-coding" id="toc-implementation-python-coding" class="nav-link" data-scroll-target="#implementation-python-coding">Implementation (Python Coding)</a></li>
+  <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation">Implementation</a>
+  <ul class="collapse">
+  <li><a href="#iqr-method" id="toc-iqr-method" class="nav-link" data-scroll-target="#iqr-method">IQR Method</a>
+  <ul class="collapse">
+  <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up">Set Up</a></li>
+  <li><a href="#outliers-and-trimming-data" id="toc-outliers-and-trimming-data" class="nav-link" data-scroll-target="#outliers-and-trimming-data">Outliers and Trimming Data</a></li>
+  </ul></li>
+  <li><a href="#percentile-method" id="toc-percentile-method" class="nav-link" data-scroll-target="#percentile-method">Percentile Method</a>
+  <ul class="collapse">
+  <li><a href="#set-up-1" id="toc-set-up-1" class="nav-link" data-scroll-target="#set-up-1">Set Up</a></li>
+  <li><a href="#outliers-and-trimming-data-1" id="toc-outliers-and-trimming-data-1" class="nav-link" data-scroll-target="#outliers-and-trimming-data-1">Outliers and Trimming Data</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -399,10 +411,51 @@ ul.task-list li input[type="checkbox"] {
 <li>The computational cost of statistical methods depends on the models</li>
 </ul>
 </section>
-<section id="implementation-python-coding" class="level1">
-<h1>Implementation (Python Coding)</h1>
+<section id="implementation" class="level1">
+<h1>Implementation</h1>
+<section id="iqr-method" class="level2">
+<h2 class="anchored" data-anchor-id="iqr-method">IQR Method</h2>
+<section id="set-up" class="level3">
+<h3 class="anchored" data-anchor-id="set-up">Set Up</h3>
+<ul>
+<li><code>q1 = df['column'].quantile(0.25)</code></li>
+<li><code>q3 = df['column'].quantile(0.75)</code></li>
+<li><code>iqr = q3 - q1</code></li>
+<li><code>upper_limit = q3 + (1.5 * iqr)</code></li>
+<li><code>lower_limit = q1 - (1.5 * iqr)</code></li>
+</ul>
+</section>
+<section id="outliers-and-trimming-data" class="level3">
+<h3 class="anchored" data-anchor-id="outliers-and-trimming-data">Outliers and Trimming Data</h3>
+<ul>
+<li>outliers: <code>df.loc[(df['column'] &gt; upper_limit) | (df['column'] &lt; lower_limit)]</code></li>
+<li>trimmed: <code>df.loc[(df['column'] &lt; upper_limit) &amp; (df['column'] &gt; lower_limit)]</code></li>
+</ul>
+</section>
+</section>
+<section id="percentile-method" class="level2">
+<h2 class="anchored" data-anchor-id="percentile-method">Percentile Method</h2>
+<p>Remove data below 1% quantile and above 99% quantile.</p>
+<section id="set-up-1" class="level3">
+<h3 class="anchored" data-anchor-id="set-up-1">Set Up</h3>
+<ul>
+<li><code>upper_limit = df['column'].quantile(0.99)</code></li>
+<li><code>lower_limit = df['column'].quantile(0.01)</code></li>
+</ul>
+</section>
+<section id="outliers-and-trimming-data-1" class="level3">
+<h3 class="anchored" data-anchor-id="outliers-and-trimming-data-1">Outliers and Trimming Data</h3>
+<ul>
+<li>outliers: <code>df.loc[(df['column'] &gt; upper_limit) | (df['column'] &lt; lower_limit)]</code></li>
+<li>trimmed: <code>df.loc[(df['column'] &lt; upper_limit) &amp; (df['column'] &gt; lower_limit)]</code></li>
+</ul>
+<blockquote class="blockquote">
+<p>Use distribution plotting (<strong>boxplots</strong>, violinplots, etc.) to review data spread before and after</p>
+</blockquote>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->

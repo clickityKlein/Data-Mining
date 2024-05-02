@@ -545,7 +545,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Implementation (sklearn)</h1>
 <section id="import-libraries-and-data" class="level2">
 <h2 class="anchored" data-anchor-id="import-libraries-and-data">Import Libraries and Data</h2>
-<div id="77c64d17" class="cell" data-execution_count="1">
+<div id="76c2b66c" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># regular libraries</span></span>
@@ -572,7 +572,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.naive_bayes <span class="im">import</span> GaussianNB</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="a77d60ae" class="cell" data-execution_count="2">
+<div id="8a14ae61" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
@@ -589,7 +589,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="decision-tree" class="level2">
 <h2 class="anchored" data-anchor-id="decision-tree">Decision Tree</h2>
-<div id="580dcde8" class="cell" data-execution_count="3">
+<div id="df940f31" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># train data</span></span>
@@ -612,13 +612,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Test Confusion Matrix: </span><span class="ch">\n</span><span class="sc">{</span>confusion_matrix<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Accuracy: 0.7056277056277056
-Test Precision: 0.5612244897959183
-Test Recall: 0.6875
-Test F1: 0.6179775280898877
+<pre><code>Test Accuracy: 0.7142857142857143
+Test Precision: 0.5760869565217391
+Test Recall: 0.6625
+Test F1: 0.6162790697674418
 Test Confusion Matrix: 
-[[108  43]
- [ 25  55]]</code></pre>
+[[112  39]
+ [ 27  53]]</code></pre>
 </div>
 </div>
 </section>
@@ -628,7 +628,7 @@ Test Confusion Matrix:
 <section id="non-scaled-data" class="level3">
 <h3 class="anchored" data-anchor-id="non-scaled-data">Non-Scaled Data</h3>
 <p>Apply array to data:</p>
-<div id="1bf855e9" class="cell" data-execution_count="4">
+<div id="f23930bb" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>X_train_array <span class="op">=</span> np.array(X_train)</span>
@@ -637,7 +637,7 @@ Test Confusion Matrix:
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>y_test_array <span class="op">=</span> np.array(y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="0dee9fae" class="cell" data-execution_count="5">
+<div id="f3784ae5" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># train data</span></span>
@@ -680,7 +680,7 @@ Please also refer to the documentation for alternative solver options:
 <section id="scaled-data" class="level3">
 <h3 class="anchored" data-anchor-id="scaled-data">Scaled Data</h3>
 <p>Scale Data</p>
-<div id="297a1c81" class="cell" data-execution_count="6">
+<div id="fbd55934" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
@@ -688,7 +688,7 @@ Please also refer to the documentation for alternative solver options:
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>X_test_normal <span class="op">=</span> scaler.fit_transform(X_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="66fd0f58" class="cell" data-execution_count="7">
+<div id="b2d9bd19" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># train data</span></span>
@@ -719,7 +719,7 @@ Test F1: 0.6193548387096774</code></pre>
 </section>
 <section id="k-nearest-neighbors-knn" class="level2">
 <h2 class="anchored" data-anchor-id="k-nearest-neighbors-knn">K-Nearest Neighbors (KNN)</h2>
-<div id="c207a603" class="cell" data-execution_count="8">
+<div id="21d07acc" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># train data</span></span>
@@ -749,7 +749,7 @@ Test F1: 0.5555555555555556</code></pre>
 </section>
 <section id="support-vector-machines-svm" class="level2">
 <h2 class="anchored" data-anchor-id="support-vector-machines-svm">Support Vector Machines (SVM)</h2>
-<div id="a2af88a0" class="cell" data-execution_count="9">
+<div id="073940af" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># train data</span></span>
@@ -783,7 +783,7 @@ Test F1: 0.5611510791366906</code></pre>
 <section id="gridsearchcv" class="level2">
 <h2 class="anchored" data-anchor-id="gridsearchcv">GridSearchCV</h2>
 <p><code>GridSearchCV</code> can be used to test multiple parameters at once.</p>
-<div id="cdd8a1b6" class="cell" data-execution_count="10">
+<div id="678733bf" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># decision tree parameters to run through</span></span>
@@ -803,7 +803,7 @@ Test F1: 0.5611510791366906</code></pre>
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>tree_clf_hyper_results <span class="op">=</span> pd.DataFrame(tree_clf_hyper.cv_results_)</span>
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>tree_clf_hyper_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <div>
 
 
@@ -834,107 +834,107 @@ Test F1: 0.5611510791366906</code></pre>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
-<td>0.004593</td>
-<td>0.000333</td>
-<td>0.001318</td>
-<td>0.000481</td>
+<td>0.005719</td>
+<td>0.000966</td>
+<td>0.001904</td>
+<td>0.000525</td>
 <td>None</td>
 <td>gini</td>
 <td>None</td>
 <td>None</td>
 <td>best</td>
 <td>{'class_weight': None, 'criterion': 'gini', 'm...</td>
-<td>0.722222</td>
-<td>0.675926</td>
-<td>0.775701</td>
-<td>0.728972</td>
-<td>0.654206</td>
-<td>0.711405</td>
-<td>0.042638</td>
-<td>74</td>
+<td>0.768519</td>
+<td>0.703704</td>
+<td>0.757009</td>
+<td>0.719626</td>
+<td>0.635514</td>
+<td>0.716874</td>
+<td>0.047071</td>
+<td>65</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
-<td>0.002844</td>
-<td>0.000766</td>
-<td>0.001678</td>
-<td>0.000568</td>
+<td>0.002301</td>
+<td>0.000604</td>
+<td>0.001882</td>
+<td>0.000231</td>
 <td>None</td>
 <td>gini</td>
 <td>None</td>
 <td>None</td>
 <td>random</td>
 <td>{'class_weight': None, 'criterion': 'gini', 'm...</td>
-<td>0.620370</td>
-<td>0.685185</td>
-<td>0.691589</td>
-<td>0.644860</td>
-<td>0.719626</td>
-<td>0.672326</td>
-<td>0.035292</td>
-<td>171</td>
+<td>0.740741</td>
+<td>0.638889</td>
+<td>0.700935</td>
+<td>0.663551</td>
+<td>0.672897</td>
+<td>0.683403</td>
+<td>0.034874</td>
+<td>160</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
-<td>0.002722</td>
-<td>0.000609</td>
-<td>0.001607</td>
-<td>0.000323</td>
+<td>0.002790</td>
+<td>0.000282</td>
+<td>0.001506</td>
+<td>0.000444</td>
 <td>None</td>
 <td>gini</td>
 <td>None</td>
 <td>sqrt</td>
 <td>best</td>
 <td>{'class_weight': None, 'criterion': 'gini', 'm...</td>
-<td>0.731481</td>
-<td>0.675926</td>
-<td>0.700935</td>
-<td>0.672897</td>
-<td>0.682243</td>
-<td>0.692696</td>
-<td>0.021701</td>
-<td>135</td>
+<td>0.750000</td>
+<td>0.703704</td>
+<td>0.710280</td>
+<td>0.644860</td>
+<td>0.691589</td>
+<td>0.700087</td>
+<td>0.033854</td>
+<td>126</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
-<td>0.002299</td>
-<td>0.000398</td>
-<td>0.001002</td>
-<td>0.000317</td>
+<td>0.001910</td>
+<td>0.000184</td>
+<td>0.001261</td>
+<td>0.000386</td>
 <td>None</td>
 <td>gini</td>
 <td>None</td>
 <td>sqrt</td>
 <td>random</td>
 <td>{'class_weight': None, 'criterion': 'gini', 'm...</td>
-<td>0.638889</td>
-<td>0.666667</td>
-<td>0.682243</td>
-<td>0.710280</td>
-<td>0.710280</td>
-<td>0.681672</td>
-<td>0.027176</td>
-<td>155</td>
+<td>0.768519</td>
+<td>0.750000</td>
+<td>0.672897</td>
+<td>0.719626</td>
+<td>0.663551</td>
+<td>0.714919</td>
+<td>0.041304</td>
+<td>76</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
-<td>0.002841</td>
-<td>0.000331</td>
-<td>0.001354</td>
-<td>0.000401</td>
+<td>0.002949</td>
+<td>0.000457</td>
+<td>0.001405</td>
+<td>0.000481</td>
 <td>None</td>
 <td>gini</td>
 <td>None</td>
 <td>log2</td>
 <td>best</td>
 <td>{'class_weight': None, 'criterion': 'gini', 'm...</td>
-<td>0.694444</td>
-<td>0.703704</td>
-<td>0.719626</td>
-<td>0.728972</td>
-<td>0.710280</td>
-<td>0.711405</td>
-<td>0.012037</td>
+<td>0.768519</td>
+<td>0.675926</td>
+<td>0.738318</td>
+<td>0.691589</td>
+<td>0.700935</td>
+<td>0.715057</td>
+<td>0.033706</td>
 <td>72</td>
 </tr>
 <tr class="even">
@@ -960,108 +960,108 @@ Test F1: 0.5611510791366906</code></pre>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">211</td>
-<td>0.003445</td>
-<td>0.001160</td>
-<td>0.001827</td>
-<td>0.000417</td>
+<td>0.002653</td>
+<td>0.000374</td>
+<td>0.001172</td>
+<td>0.000203</td>
 <td>balanced</td>
 <td>log_loss</td>
 <td>10</td>
 <td>None</td>
 <td>random</td>
 <td>{'class_weight': 'balanced', 'criterion': 'log...</td>
+<td>0.731481</td>
 <td>0.694444</td>
-<td>0.657407</td>
-<td>0.728972</td>
-<td>0.728972</td>
-<td>0.785047</td>
-<td>0.718969</td>
-<td>0.042327</td>
-<td>52</td>
+<td>0.794393</td>
+<td>0.738318</td>
+<td>0.719626</td>
+<td>0.735652</td>
+<td>0.032954</td>
+<td>17</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">212</td>
-<td>0.003373</td>
-<td>0.000604</td>
-<td>0.001410</td>
-<td>0.000393</td>
+<td>0.003248</td>
+<td>0.000428</td>
+<td>0.001005</td>
+<td>0.000328</td>
 <td>balanced</td>
 <td>log_loss</td>
 <td>10</td>
 <td>sqrt</td>
 <td>best</td>
 <td>{'class_weight': 'balanced', 'criterion': 'log...</td>
-<td>0.685185</td>
+<td>0.712963</td>
 <td>0.740741</td>
-<td>0.635514</td>
-<td>0.728972</td>
-<td>0.757009</td>
-<td>0.709484</td>
-<td>0.043994</td>
-<td>83</td>
+<td>0.710280</td>
+<td>0.738318</td>
+<td>0.672897</td>
+<td>0.715040</td>
+<td>0.024517</td>
+<td>73</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">213</td>
-<td>0.002279</td>
-<td>0.000628</td>
-<td>0.001299</td>
-<td>0.000381</td>
+<td>0.001813</td>
+<td>0.000410</td>
+<td>0.001435</td>
+<td>0.000451</td>
 <td>balanced</td>
 <td>log_loss</td>
 <td>10</td>
 <td>sqrt</td>
 <td>random</td>
 <td>{'class_weight': 'balanced', 'criterion': 'log...</td>
-<td>0.685185</td>
-<td>0.675926</td>
-<td>0.719626</td>
-<td>0.616822</td>
-<td>0.635514</td>
-<td>0.666615</td>
-<td>0.036574</td>
-<td>182</td>
+<td>0.601852</td>
+<td>0.666667</td>
+<td>0.579439</td>
+<td>0.710280</td>
+<td>0.588785</td>
+<td>0.629405</td>
+<td>0.050666</td>
+<td>212</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">214</td>
-<td>0.003816</td>
-<td>0.000370</td>
-<td>0.001796</td>
-<td>0.000472</td>
+<td>0.003050</td>
+<td>0.000345</td>
+<td>0.001443</td>
+<td>0.000641</td>
 <td>balanced</td>
 <td>log_loss</td>
 <td>10</td>
 <td>log2</td>
 <td>best</td>
 <td>{'class_weight': 'balanced', 'criterion': 'log...</td>
-<td>0.657407</td>
-<td>0.740741</td>
-<td>0.719626</td>
-<td>0.672897</td>
-<td>0.728972</td>
-<td>0.703929</td>
-<td>0.032729</td>
-<td>100</td>
+<td>0.620370</td>
+<td>0.666667</td>
+<td>0.700935</td>
+<td>0.738318</td>
+<td>0.682243</td>
+<td>0.681706</td>
+<td>0.038893</td>
+<td>168</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">215</td>
-<td>0.002077</td>
-<td>0.000097</td>
-<td>0.001317</td>
-<td>0.000395</td>
+<td>0.002424</td>
+<td>0.000581</td>
+<td>0.001115</td>
+<td>0.000475</td>
 <td>balanced</td>
 <td>log_loss</td>
 <td>10</td>
 <td>log2</td>
 <td>random</td>
 <td>{'class_weight': 'balanced', 'criterion': 'log...</td>
-<td>0.657407</td>
-<td>0.666667</td>
-<td>0.691589</td>
-<td>0.663551</td>
-<td>0.663551</td>
-<td>0.668553</td>
-<td>0.011903</td>
-<td>179</td>
+<td>0.759259</td>
+<td>0.685185</td>
+<td>0.700935</td>
+<td>0.757009</td>
+<td>0.728972</td>
+<td>0.726272</td>
+<td>0.029565</td>
+<td>40</td>
 </tr>
 </tbody>
 </table>
@@ -1071,7 +1071,7 @@ Test F1: 0.5611510791366906</code></pre>
 </div>
 </div>
 <p>We can directly call the best parameters:</p>
-<div id="65132c80" class="cell" data-execution_count="11">
+<div id="acddce1a" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># decision tree with best parameters</span></span>
@@ -1092,10 +1092,10 @@ Test F1: 0.5611510791366906</code></pre>
 <span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Test F1: </span><span class="sc">{</span>f1<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test Accuracy: 0.7705627705627706
-Test Precision: 0.6956521739130435
-Test Recall: 0.6
-Test F1: 0.6442953020134228</code></pre>
+<pre><code>Test Accuracy: 0.7619047619047619
+Test Precision: 0.6811594202898551
+Test Recall: 0.5875
+Test F1: 0.6308724832214765</code></pre>
 </div>
 </div>
 

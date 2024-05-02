@@ -20,10 +20,44 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -66,6 +100,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="styles.css">
@@ -179,7 +216,363 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This page has information about web scraping.</p>
+<p>An example of webscraping using <code>BeautifulSoup</code>.</p>
+<div id="4829cc85" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import libaries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bs4 <span class="im">import</span> BeautifulSoup</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>My goal is to collect information on the Colorado 14ers, which are peaks in Colorado over 14,000 feet. There are 53 <em>ranked</em> 14ers, which means they have at least 300 feet of prominence, and an additional 5 <em>unranked</em> peaks.</p>
+<p>The website I’ll be scraping from is <a href="https://www.14ers.com/">here</a>, and plan to extract the following information:</p>
+<p><strong>Peaks</strong> - Peak Name - Link to Peak’s Page - Number of Routes - Elevatoin - Rank - Mountain Range - National Park - Forest - Latitude/Longitude - County - Towns - Member Ascents - Winter Ascents - Ski Ascents - <em>From a Peak’s Standard Route</em>: - Class - Altitude Gained - Distance Traveled</p>
+<p><strong>Members</strong></p>
+<p>As a note, there is a member database containing personal statistics of individuals on the 14ers. This could be interesting to come back to.</p>
+<div id="d7684366" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># main 14er list: contains a table with high level information</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'https://www.14ers.com/14ers'</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>page <span class="op">=</span> requests.get(url)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>soup <span class="op">=</span> BeautifulSoup(page.text, <span class="st">'lxml'</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># extract name, link, and number of routes</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>main_table <span class="op">=</span> soup.find(<span class="st">'table'</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>table_rows_html <span class="op">=</span> main_table.find_all(<span class="st">'tr'</span>)[<span class="dv">1</span>:]</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>url_start <span class="op">=</span> <span class="st">'https://www.14ers.com'</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>peak_names <span class="op">=</span> [row.find(<span class="st">'a'</span>).text.replace(<span class="st">'</span><span class="ch">\xa0</span><span class="st">'</span>,<span class="st">''</span>) <span class="cf">for</span> row <span class="kw">in</span> table_rows_html]</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>peak_links <span class="op">=</span> [<span class="ss">f'</span><span class="sc">{</span>url_start<span class="sc">}{</span>row<span class="sc">.</span>find(<span class="st">"a"</span>)<span class="sc">.</span>get(<span class="st">"href"</span>)<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> row <span class="kw">in</span> table_rows_html]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>num_routes <span class="op">=</span> [<span class="bu">int</span>(row.find_all(<span class="st">'td'</span>)[<span class="op">-</span><span class="dv">3</span>].text) <span class="cf">for</span> row <span class="kw">in</span> table_rows_html]</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>basics <span class="op">=</span> {<span class="st">'peak'</span>: peak_names, <span class="st">'links'</span>: peak_links, <span class="st">'routes'</span>: num_routes,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>             <span class="st">'elevation'</span>: [], <span class="st">'rank'</span>: [], <span class="st">'mountain_range'</span>: [], <span class="st">'nat_park'</span>: [],</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>             <span class="st">'forest'</span>: [], <span class="st">'lat_long'</span>: [], <span class="st">'county'</span>: [], <span class="st">'towns'</span>: [],</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>             <span class="st">'member_ascents'</span>: [], <span class="st">'winter_ascents'</span>: [], <span class="st">'ski_descents'</span>: []}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div id="a13d7ade" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function to return key stats not listed on the main 14er list page, only on the specialized peaks' pages</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_peak_stats(url):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create return dictionary</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    peak_stats <span class="op">=</span> {<span class="st">'elevation'</span>: <span class="va">None</span>, <span class="st">'rank'</span>: <span class="va">None</span>, <span class="st">'mountain_range'</span>: <span class="va">None</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'nat_park'</span>: <span class="va">None</span>, <span class="st">'forest'</span>: <span class="va">None</span>, <span class="st">'lat_long'</span>: <span class="va">None</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'county'</span>: <span class="va">None</span>, <span class="st">'towns'</span>: <span class="va">None</span>, <span class="st">'member_ascents'</span>: <span class="va">None</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'winter_ascents'</span>: <span class="va">None</span>, <span class="st">'ski_descents'</span>: <span class="va">None</span>}</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># go to page</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    page <span class="op">=</span> requests.get(url)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    soup <span class="op">=</span> BeautifulSoup(page.text, <span class="st">'lxml'</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># main stats</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    stats_html <span class="op">=</span> soup.find(<span class="st">'div'</span>, class_<span class="op">=</span><span class="st">'sidebar_content'</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    all_stats_html <span class="op">=</span> stats_html.find_all(<span class="st">'div'</span>, class_<span class="op">=</span><span class="st">'stat'</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># elevation</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    elevation <span class="op">=</span> <span class="bu">int</span>(re.search(<span class="vs">r'\d</span><span class="sc">{2}</span><span class="vs">,\d</span><span class="sc">{3}</span><span class="vs">'</span>, all_stats_html[<span class="dv">0</span>].text).group().replace(<span class="st">','</span>,<span class="st">''</span>))</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    peak_stats[<span class="st">'elevation'</span>] <span class="op">=</span> elevation</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># rank</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    rank <span class="op">=</span> all_stats_html[<span class="dv">2</span>].text.replace(<span class="st">'CO 14er Rank'</span>, <span class="st">''</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    peak_stats[<span class="st">'rank'</span>] <span class="op">=</span> rank</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># range</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    mountain_range <span class="op">=</span> all_stats_html[<span class="dv">3</span>].text.replace(<span class="st">'Range'</span>, <span class="st">''</span>)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    peak_stats[<span class="st">'mountain_range'</span>] <span class="op">=</span> mountain_range</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co">    Nat Park and Forest(s) may or may not be present, and most of the next entries have</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co">    potential to be plural or singular.</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co">    Inconsistencies after Range necessitate conditionals.</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co">        - Nat Park (if any)</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="co">        - Forest vs Forests (if any)</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="co">        - Lat/Long</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="co">        - County vs Counties</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co">        - Town vs. Towns (should always be "Towns", but just in case)</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co">    '''</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> stat <span class="kw">in</span> all_stats_html:</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Nat Park</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>        stat_text <span class="op">=</span> stat.text</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="st">'Nat Park'</span> <span class="kw">in</span> stat_text:</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>            nat_park <span class="op">=</span> stat_text.replace(<span class="st">'Nat Park'</span>, <span class="st">''</span>)</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>            peak_stats[<span class="st">'nat_park'</span>] <span class="op">=</span> nat_park</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Forest(s)</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="st">'Forest'</span> <span class="kw">in</span> stat_text:</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>            forest_text <span class="op">=</span> stat_text</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="st">'Forests'</span> <span class="kw">in</span> forest_text:</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>                forest_html <span class="op">=</span> stat.find_all(<span class="st">'a'</span>)</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>                forest <span class="op">=</span> [forest.text <span class="cf">for</span> forest <span class="kw">in</span> forest_html]</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>                forest <span class="op">=</span> [forest_text.replace(<span class="st">'Forest'</span>, <span class="st">''</span>)]</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>            peak_stats[<span class="st">'forest'</span>] <span class="op">=</span> forest</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Lat/Long</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="st">'Lat/Lon'</span> <span class="kw">in</span> stat_text:</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>            lat_long <span class="op">=</span> [<span class="bu">float</span>(loc) <span class="cf">for</span> loc <span class="kw">in</span> stat_text.replace(<span class="st">'Lat/Lon'</span>, <span class="st">''</span>).split(<span class="st">', '</span>)]</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>            peak_stats[<span class="st">'lat_long'</span>] <span class="op">=</span> lat_long</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>        <span class="co"># County or Counties</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="st">'Count'</span> <span class="kw">in</span> stat_text:</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="st">'County'</span> <span class="kw">in</span> stat_text:</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>                county <span class="op">=</span> [stat_text.replace(<span class="st">'County'</span>, <span class="st">''</span>)]</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>                county <span class="op">=</span> <span class="bu">str</span>(stat.find(<span class="st">'span'</span>, class_<span class="op">=</span><span class="st">'value'</span>))</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>                county <span class="op">=</span> county.replace(<span class="st">'&lt;span class="value"&gt;'</span>, <span class="st">''</span>)</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>                county <span class="op">=</span> county.replace(<span class="st">'&lt;/span&gt;'</span>, <span class="st">''</span>).split(<span class="st">'&lt;br/&gt;'</span>)</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>            peak_stats[<span class="st">'county'</span>] <span class="op">=</span> county</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Town(s)</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="st">'Town'</span> <span class="kw">in</span> stat_text:</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="st">'Towns'</span> <span class="kw">in</span> stat_text:</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>                towns <span class="op">=</span> stat_text.replace(<span class="st">'Towns'</span>, <span class="st">''</span>).split(<span class="st">', '</span>)</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>                towns <span class="op">=</span> [stat_text.replace(<span class="st">'Towns'</span>, <span class="st">''</span>)]</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>            peak_stats[<span class="st">'towns'</span>] <span class="op">=</span> towns</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the checklists secion contains ascent and descent data</span></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>    checklists_html <span class="op">=</span> soup.find(<span class="st">'ul'</span>, class_<span class="op">=</span><span class="st">'bulleted'</span>)</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>    all_checklists_html <span class="op">=</span> checklists_html.find_all(<span class="st">'li'</span>)</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>    <span class="co"># member ascents</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>    member_ascents <span class="op">=</span> <span class="bu">int</span>(re.search(<span class="vs">r'(.*)( Member Ascents)'</span>, all_checklists_html[<span class="dv">0</span>].text).groups()[<span class="dv">0</span>].replace(<span class="st">','</span>, <span class="st">''</span>))</span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>    peak_stats[<span class="st">'member_ascents'</span>] <span class="op">=</span> member_ascents</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>    <span class="co"># winter ascents</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>    winter_ascents <span class="op">=</span> <span class="bu">int</span>(re.search(<span class="vs">r'(.*)( Member Winter Ascents)'</span>, all_checklists_html[<span class="dv">1</span>].text).groups()[<span class="dv">0</span>].replace(<span class="st">','</span>, <span class="st">''</span>))</span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>    peak_stats[<span class="st">'winter_ascents'</span>] <span class="op">=</span> winter_ascents</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ski descents</span></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>    ski_descents <span class="op">=</span> <span class="bu">int</span>(re.search(<span class="vs">r'(.*)( Member Ski Descents)'</span>, all_checklists_html[<span class="dv">2</span>].text).groups()[<span class="dv">0</span>].replace(<span class="st">','</span>, <span class="st">''</span>))</span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>    peak_stats[<span class="st">'ski_descents'</span>] <span class="op">=</span> ski_descents</span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> peak_stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div id="eb78da6b" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run function for all peaks</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> link <span class="kw">in</span> peak_links:</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    stats <span class="op">=</span> get_peak_stats(link)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> stat <span class="kw">in</span> stats:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        basics[stat].append(stats[stat])</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># turn the basics into a dataframe</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>df_basics <span class="op">=</span> pd.DataFrame(basics)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>df_basics.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">peak</th>
+<th data-quarto-table-cell-role="th">links</th>
+<th data-quarto-table-cell-role="th">routes</th>
+<th data-quarto-table-cell-role="th">elevation</th>
+<th data-quarto-table-cell-role="th">rank</th>
+<th data-quarto-table-cell-role="th">mountain_range</th>
+<th data-quarto-table-cell-role="th">nat_park</th>
+<th data-quarto-table-cell-role="th">forest</th>
+<th data-quarto-table-cell-role="th">lat_long</th>
+<th data-quarto-table-cell-role="th">county</th>
+<th data-quarto-table-cell-role="th">towns</th>
+<th data-quarto-table-cell-role="th">member_ascents</th>
+<th data-quarto-table-cell-role="th">winter_ascents</th>
+<th data-quarto-table-cell-role="th">ski_descents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Mount Elbert</td>
+<td>https://www.14ers.com/peaks/10001/mount-elbert</td>
+<td>4</td>
+<td>14438</td>
+<td>1 of 53</td>
+<td>Sawatch</td>
+<td>None</td>
+<td>[San Isabel]</td>
+<td>[39.118075, -106.445417]</td>
+<td>[Lake]</td>
+<td>[Leadville, Twin Lakes, Aspen]</td>
+<td>15906</td>
+<td>601</td>
+<td>278</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Mount Massive</td>
+<td>https://www.14ers.com/peaks/10002/mount-massive</td>
+<td>3</td>
+<td>14427</td>
+<td>2 of 53</td>
+<td>Sawatch</td>
+<td>None</td>
+<td>[San Isabel]</td>
+<td>[39.187298, -106.475548]</td>
+<td>[Lake]</td>
+<td>[Leadville, Aspen]</td>
+<td>11221</td>
+<td>225</td>
+<td>101</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Mount Harvard</td>
+<td>https://www.14ers.com/peaks/10003/mount-harvard</td>
+<td>3</td>
+<td>14424</td>
+<td>3 of 53</td>
+<td>Sawatch</td>
+<td>None</td>
+<td>[San Isabel]</td>
+<td>[38.924328, -106.320618]</td>
+<td>[Chaffee]</td>
+<td>[Granite, Buena Vista, Leadville]</td>
+<td>8717</td>
+<td>101</td>
+<td>61</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Blanca Peak</td>
+<td>https://www.14ers.com/peaks/10004/blanca-peak</td>
+<td>3</td>
+<td>14350</td>
+<td>4 of 53</td>
+<td>Sangre de Cristo</td>
+<td>None</td>
+<td>[Rio Grande, San Isabel]</td>
+<td>[37.577473, -105.485443]</td>
+<td>[Alamosa, Huerfano, Costilla]</td>
+<td>[Fort Garland, Blanca, Alamosa]</td>
+<td>5727</td>
+<td>102</td>
+<td>49</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>La Plata Peak</td>
+<td>https://www.14ers.com/peaks/10005/la-plata-peak</td>
+<td>4</td>
+<td>14344</td>
+<td>5 of 53</td>
+<td>Sawatch</td>
+<td>None</td>
+<td>[San Isabel]</td>
+<td>[39.029251, -106.473145]</td>
+<td>[Chaffee]</td>
+<td>[Twin Lakes, Leadville, Buena Vista, Aspen]</td>
+<td>10825</td>
+<td>378</td>
+<td>150</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Note that the <em>forest</em>, <em>lat_long</em>, <em>county</em>, and <em>towns</em> attributes are list variables. The number of entries within the lists could be an attribute of interest themselves, but would like be most useful if unpacked.</p>
+<div id="fd3a8d0f" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note that most peaks have multiple routes (in *routes* attribute), this links to information about the "standard" routes</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'https://www.14ers.com/routes_bydifficulty.php'</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>page <span class="op">=</span> requests.get(url)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>soup <span class="op">=</span> BeautifulSoup(page.text, <span class="st">'lxml'</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># return the html for all rows in the standard route tables</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>row_html <span class="op">=</span> soup.find_all(<span class="st">'tr'</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>fields <span class="op">=</span> {<span class="st">'peak'</span>: [], <span class="st">'class'</span>: [], <span class="st">'altitude'</span>: [], <span class="st">'distance'</span>: []}</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> row_html:</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    search <span class="op">=</span> row.find_all(<span class="st">'td'</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(search) <span class="op">==</span> <span class="dv">1</span> <span class="kw">and</span> <span class="bu">len</span>(search[<span class="dv">0</span>].text) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        current_class <span class="op">=</span> search[<span class="dv">0</span>].text</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="bu">len</span>(search) <span class="op">&gt;</span> <span class="dv">1</span>:</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        fields[<span class="st">'peak'</span>].append(re.search(<span class="vs">r'(&lt;td&gt;)(.*)(&lt;div)'</span>, <span class="bu">str</span>(search[<span class="dv">1</span>])).groups()[<span class="dv">1</span>])</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        fields[<span class="st">'class'</span>].append(current_class)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        fields[<span class="st">'altitude'</span>].append(<span class="bu">int</span>(search[<span class="dv">3</span>].text.replace(<span class="st">"</span><span class="ch">\'</span><span class="st">"</span>, <span class="st">''</span>)))</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        fields[<span class="st">'distance'</span>].append(<span class="bu">float</span>(search[<span class="dv">4</span>].text.replace(<span class="st">' mi'</span>, <span class="st">''</span>)))</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co"># turn standard route information into a dataframe</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>df_difficulty <span class="op">=</span> pd.DataFrame(fields)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co"># lambda function to turn 'Mt.' into 'Mount' for consistency in our two dataframes</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>mt_to_mount <span class="op">=</span> <span class="kw">lambda</span> peak: peak.replace(<span class="st">'Mt.'</span>, <span class="st">'Mount'</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>df_difficulty[<span class="st">'peak'</span>] <span class="op">=</span> df_difficulty[<span class="st">'peak'</span>].<span class="bu">apply</span>(mt_to_mount)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>df_difficulty.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">peak</th>
+<th data-quarto-table-cell-role="th">class</th>
+<th data-quarto-table-cell-role="th">altitude</th>
+<th data-quarto-table-cell-role="th">distance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Handies Peak</td>
+<td>Class 1</td>
+<td>2500</td>
+<td>5.75</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Grays Peak</td>
+<td>Class 1</td>
+<td>3000</td>
+<td>7.50</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Torreys Peak</td>
+<td>Class 1</td>
+<td>3000</td>
+<td>7.75</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Quandary Peak</td>
+<td>Class 1</td>
+<td>3450</td>
+<td>6.75</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Mount Elbert</td>
+<td>Class 1</td>
+<td>4500</td>
+<td>9.75</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 
 
 
